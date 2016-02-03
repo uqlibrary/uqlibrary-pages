@@ -371,7 +371,7 @@ gulp.task('invalidate', function () {
   if (argv.path) {
     invalidatePath = argv.path + '/*';
   } else {
-    invalidatePath += '/uqlibrary-pages/*';
+    invalidatePath += '/pages/*';
   }
 
   $.util.log('Invalidation path: ' + invalidatePath);
