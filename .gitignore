@@ -1,0 +1,12 @@
+node_modules
+dist
+bower_components
+.tmp
+.publish/
+.idea
+*.map
+aws.json
+aws.json-e
+aws-env.sh
+.sass-cache
+.DS_Store
