@@ -80,12 +80,10 @@ sed -i -e "s#<S3BucketSubDir>#${S3BucketSubDir}#g" ${awsconfig}
 sed -i -e "s#<CFDistribution>#${CFDistribution}#g" ${awsconfig}
 sed -i -e "s#<AWSRegion>#${AWSRegion}#g" ${awsconfig}
 
-set +e
-
 echo "Run gulp task to upload to AWS..."
 gulp publish
 
-echo "Run Cloudfront Invalidation"
+echo "Run Cloudfront Invalidation: " gulp invalidate --path ${InvalidationPath}
 gulp invalidate --path ${InvalidationPath}
 
 echo "Clean up AWS configuration..."
