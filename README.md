@@ -1,7 +1,8 @@
-![](https://cloud.githubusercontent.com/assets/110953/7877439/6a69d03e-0590-11e5-9fac-c614246606de.png)
-## Polymer Starter Kit
+## UQ Library Pages
 
-> A starting point for building web applications with Polymer 1.0
+[ ![Codeship Status for uqlibrary/uqlibrary-pages](https://codeship.com/projects/c9f3c4c0-ac6d-0133-af8d-1e5da553331a/status?branch=master)](https://codeship.com/projects/131650)
+
+> UQ Library home page
 
 ### Included out of the box:
 
