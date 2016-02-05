@@ -112,10 +112,6 @@ paper-card {
   margin: 8px;
   min-width: 400px; }
 
-#search,
-#spotlight {
-  min-width: 400px; }
-
 #main {
   margin: 0;
   padding: 0; }

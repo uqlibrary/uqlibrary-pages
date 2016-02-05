@@ -60,8 +60,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     :root {
 
-      /*--accent-color: #00ff00;*/
-
       --paper-drawer-panel-scrim: {
         z-index: 100;
       }
@@ -69,6 +67,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     body {
       background-color: var(--body-color);
+    }
+
+    .card-actions {
+      text-align: right;
     }
 
     /* TODO: need a break point for mobile view to set min-width of components to 100% to prevent cut out */
@@ -85,6 +87,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div id="layout">
 
+
       <template is="dom-bind" id="app" unresolved>
 
       <div id="content">
@@ -92,10 +95,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div id="main">
         <div id="search">
           <paper-card heading="UQ Library Search">
-          <div class="card-content">Find something quick!</div>
+          <div class="card-content">Find something quick!
+
+            <!--<paper-button class="button-colored-accent">Search</paper-button>-->
+
+
+          </div>
           <div class="card-actions">
-            <paper-button>Help</paper-button>
-            <paper-button>Advanced search</paper-button>
+            <paper-button class="button-secondary">Help</paper-button>
+            <paper-button class="button-accent">Advanced search</paper-button>
           </div>
         </paper-card>
         </div>
@@ -121,11 +129,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div>
               <div class="card-content">
                 <uqlibrary-hours compact-view="true">
-                  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                 </uqlibrary-hours>
               </div>
               <div class="card-actions">
-                <paper-button>Book a room or a desk</paper-button>
+                <paper-button class="button-accent">Book a room or a desk</paper-button>
               </div>
             </div>
             <div>
