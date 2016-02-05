@@ -107,19 +107,47 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </div>
 
       <div id="sidebar">
-        <paper-card heading="Hours / Computers / Training">
-          <div class="card-content">
-            Library A .... Open <br>
-            Library A .... Open <br>
-            Library A .... Open <br>
-            Library A .... Open <br>
-            Library A .... Open <br>
-            Library A .... Open <br>
-            Library A .... Open <br>
-          </div>
-          <div class="card-actions">
-            <paper-button>Book a room or a desk</paper-button>
-          </div>
+        <paper-card>
+          <paper-tabs selected="{{selectedTab}}">
+            <paper-tab>HOURS</paper-tab>
+            <paper-tab>COMPUTERS</paper-tab>
+            <paper-tab>TRAINING</paper-tab>
+          </paper-tabs>
+
+          <iron-pages selected="{{selectedTab}}">
+            <div>
+              <div class="card-content">
+                <uqlibrary-hours compact-view="true">
+                  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                </uqlibrary-hours>
+              </div>
+              <div class="card-actions">
+                <paper-button>Book a room or a desk</paper-button>
+              </div>
+            </div>
+            <div>
+              <div class="card-content">
+                <uqlibrary-computers>
+                  Computers go here...
+                  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                </uqlibrary-computers>
+              </div>
+              <div class="card-actions">
+                <paper-button>View computers</paper-button>
+              </div>
+            </div>
+            <div>
+              <div class="card-content">
+                <uqlibrary-training>
+                  Training events ...
+                  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                </uqlibrary-training>
+              </div>
+              <div class="card-actions">
+                <paper-button>View all training events</paper-button>
+              </div>
+            </div>
+          </iron-pages>
         </paper-card>
       </div>
 
