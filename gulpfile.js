@@ -147,7 +147,7 @@ gulp.task('copy', function() {
   ]).pipe(gulp.dest(dist('bower_components')));
 
   var bower = gulp.src([
-    'app/bower_components/uqlibrary-api/mock/*'
+    'app/bower_components/uqlibrary-api/mock/**/*'
   ]).pipe(gulp.dest(dist('bower_components/uqlibrary-api/mock')));
 
   return merge(app, bower)
