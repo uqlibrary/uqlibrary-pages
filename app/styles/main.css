@@ -89,7 +89,6 @@ uql-connect-footer {
 
 paper-card {
   width: 100%;
-  min-width: 300px;
   position: relative;
   z-index: 0; }
 
@@ -109,8 +108,7 @@ paper-card {
 #sidebar,
 #search,
 #spotlight {
-  margin: 8px;
-  min-width: 400px; }
+  margin: 8px; }
 
 #main {
   margin: 0;
