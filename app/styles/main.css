@@ -1,0 +1,133 @@
+/*
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+*/
+body {
+  margin: 0px;
+  padding: 0px; }
+
+uq-minimal-header {
+  height: 100px;
+  background-color: #49075E;
+  width: 100%; }
+
+uq-minimal-footer {
+  display: block;
+  width: 100%;
+  background-color: #49075E;
+  min-height: 140px; }
+
+uql-connect-footer {
+  display: block;
+  width: 100%;
+  background-color: #e5e5e5;
+  min-height: 240px; }
+
+@media all and (max-width: 1047px) {
+  uq-minimal-header {
+    height: 66px; } }
+@media all and (min-width: 1048px) {
+  uql-menu {
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 2px 0px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 2px 0px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 2px 0px;
+    display: block;
+    width: 100%;
+    height: 67px;
+    background-color: #fff; } }
+html, body {
+  padding: 0;
+  margin: 0; }
+
+body {
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+
+html,
+body {
+  height: 100%;
+  margin: 0; }
+
+body {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column; }
+
+#layout {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  /* TODO: body width should come from common styles maybe? */
+  max-width: 1170px;
+  width: 90%;
+  margin: 0 auto; }
+
+/*#content::after {*/
+/*content: '\00a0';*/
+/*display: block;*/
+/*margin-top: 1.5em;*/
+/*height: 0;*/
+/*visibility: hidden;*/
+/*}*/
+uq-minimal-header,
+uq-minimal-footer,
+uql-connect-footer {
+  z-index: 1;
+  -ms-flex: none;
+  -webkit-flex: none;
+  flex: none;
+  position: relative; }
+
+paper-card {
+  width: 100%;
+  position: relative;
+  z-index: 0; }
+
+#main {
+  -webkit-box-flex: 4;
+  -webkit-flex: 4 0 auto;
+  -ms-flex: 4 0 auto;
+  flex: 4 0 auto; }
+
+#sidebar {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto; }
+
+#main,
+#sidebar,
+#search,
+#spotlight {
+  margin: 8px; }
+
+#main {
+  margin: 0;
+  padding: 0;
+  max-width: 770px;
+  width: 100%; }
+
+#content {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -ms-flex-direction: row;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  -ms-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  width: 100%; }
+
+/*# sourceMappingURL=main.css.map */

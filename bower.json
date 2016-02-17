@@ -10,7 +10,8 @@
     "uqlibrary-hours": "uqlibrary/uqlibrary-hours#polymer1.0",
     "uqlibrary-computers": "uqlibrary/uqlibrary-computers#polymer1.0",
     "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components#styles",
-    "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights"
+    "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights#master",
+    "uqlibrary-search": "uqlibrary/uqlibrary-search#polymer1.0"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
