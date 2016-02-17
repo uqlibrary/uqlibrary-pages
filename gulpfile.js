@@ -55,7 +55,8 @@ var styleTask = function(stylesPath, srcs) {
   return gulp.src(srcs.map(function(src) {
       return path.join('app', stylesPath, src);
     }))
-    .pipe($.changed(stylesPath, {extension: '.css'}))
+    .pipe($.changed(stylesPath, {extension: '.scss'}))
+    .pipe($.sass({ style: 'expanded' }))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
     .pipe(gulp.dest('.tmp/' + stylesPath))
     .pipe($.minifyCss())
@@ -104,7 +105,7 @@ var optimizeHtmlTask = function(src, dest) {
 
 // Compile and automatically prefix stylesheets
 gulp.task('styles', function() {
-  return styleTask('styles', ['**/*.css']);
+  return styleTask('styles', ['**/*.scss']);
 });
 
 gulp.task('elements', function() {
@@ -279,7 +280,7 @@ gulp.task('serve', ['styles', 'elements'], function() {
   });
 
   gulp.watch(['app/**/*.html', '!app/bower_components/**/*.html'], reload);
-  gulp.watch(['app/styles/**/*.css'], ['styles', reload]);
+  gulp.watch(['app/styles/**/*.scss'], ['styles', reload]);
   gulp.watch(['app/elements/**/*.css'], ['elements', reload]);
   gulp.watch(['app/scripts/**/*.js'], reload);
   gulp.watch(['app/images/**/*'], reload);
