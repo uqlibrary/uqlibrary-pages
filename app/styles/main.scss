@@ -12,50 +12,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 html, body {
   padding: 0;
   margin: 0;
+  height: 100%;
 }
 
 body {
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-html,
-body {
-  height: 100%;
-  margin: 0;
-}
-
-body {
-
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-
-  -ms-flex-direction: column;
-  -webkit-flex-direction: column;
-  flex-direction: column;
-}
-
-#layout {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1 0 auto;
-  -ms-flex: 1 0 auto;
-  flex: 1 0 auto;
-
+#content {
   /* TODO: body width should come from common styles maybe? */
   max-width: 1170px;
-  width: 90%;
-  margin: 0 auto;
+  width: calc(100% - 32px);
+  margin: 0 auto 8px auto;
+  min-height: calc(100vh - 550px);
 }
 
-/*#content::after {*/
-  /*content: '\00a0';*/
-  /*display: block;*/
-  /*margin-top: 1.5em;*/
-  /*height: 0;*/
-  /*visibility: hidden;*/
-/*}*/
+paper-card {
+  width: 100%;
+  position: relative;
+}
+
+#main,
+#sidebar,
+#search,
+#spotlight{
+  margin: 8px 0 0 0;
+  width: 100%;
+}
+
+#main {
+  margin: 0;
+  padding: 0;
+}
 
 uq-minimal-header,
 uq-minimal-footer,
@@ -67,62 +55,28 @@ uql-connect-footer {
   position: relative;
 }
 
-paper-card {
-  width: 100%;
-  //min-width: 300px;
-  position: relative;
-  z-index: 0;
+@media all and (min-width: 1048px) {
+
+  #main {
+  }
+
+  #sidebar {
+    margin-left: 8px;
+  }
+
+  #layout {
+    @include flexboxRow();
+  }
+
+  #main {
+    @include flex(2);
+  }
+
+  #sidebar {
+    @include flex(1);
+  }
 }
 
-#main {
-  -webkit-box-flex: 4;
-  -webkit-flex: 4 0 auto;
-  -ms-flex: 4 0 auto;
-  flex: 4 0 auto;
-}
+@media all and (max-width: 1047px) {
 
-#sidebar {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1 0 auto;
-  -ms-flex: 1 0 auto;
-  flex: 1 0 auto;
-}
-
-
-#main,
-#sidebar,
-#search,
-#spotlight{
-  margin: 8px;
-  //min-width: 400px;
-}
-
-#search,
-#spotlight{
-  //min-width: 400px;
-}
-
-#main {
-  margin: 0;
-  padding: 0;
-  max-width: 770px;
-  width: 100%;
-}
-
-#content {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-
-  -ms-flex-direction: row;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-
-  -ms-flex-wrap: wrap;
-  -webkit-flex-wrap: wrap;
-  flex-wrap: wrap;
-
-  width: 100%;
 }

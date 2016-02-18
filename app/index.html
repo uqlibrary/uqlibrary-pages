@@ -82,76 +82,77 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                        show-menu-button="true"></uq-minimal-header>
     <uql-menu></uql-menu>
 
-    <div id="layout">
+    <div id="content">
 
+      <template is="dom-bind" id="uqlFrontPage" unresolved>
 
-      <template is="dom-bind" id="app" unresolved>
+      <div id="layout">
 
-      <div id="content">
-
-      <div id="main">
-        <div id="search">
-          <paper-card heading="UQ Library Search">
-          <div class="card-content">
-            <uqlibrary-search></uqlibrary-search>
-          </div>
-          <div class="card-actions">
-            <paper-button class="button-secondary">Help</paper-button>
-            <paper-button class="button-accent">Advanced search</paper-button>
-          </div>
-        </paper-card>
-        </div>
-        <div id="spotlight">
-          <paper-card>
+        <div id="main">
+          <div id="search">
+            <paper-card heading="UQ Library Search">
             <div class="card-content">
-                <uqlibrary-spotlights></uqlibrary-spotlights>
+              <!--<uqlibrary-search on-selected-source-changed="updateSearchLinks"></uqlibrary-search>-->
+              <uqlibrary-search></uqlibrary-search>
+            </div>
+            <div class="card-actions">
+              <template is="dom-repeat" items="[[selectedSearchSource.helpLinks]]">
+                <paper-button class="button-secondary" tabindex="-1"><a href$="[[item.url]]">[[item.title]]</a></paper-button>
+              </template>
             </div>
           </paper-card>
+          </div>
+          <div id="spotlight">
+            <paper-card>
+              <div class="card-content">
+                  <uqlibrary-spotlights></uqlibrary-spotlights>
+              </div>
+            </paper-card>
+          </div>
         </div>
-      </div>
 
-      <div id="sidebar">
-        <paper-card>
-          <paper-tabs selected="{{selectedTab}}">
-            <paper-tab>HOURS</paper-tab>
-            <paper-tab>COMPUTERS</paper-tab>
-            <paper-tab>TRAINING</paper-tab>
-          </paper-tabs>
+        <div id="sidebar">
+          <paper-card>
+            <paper-tabs selected="{{selectedSidebarTab}}">
+              <paper-tab>HOURS</paper-tab>
+              <paper-tab>COMPUTERS</paper-tab>
+              <paper-tab>TRAINING</paper-tab>
+            </paper-tabs>
 
-          <iron-pages selected="{{selectedTab}}">
-            <div>
-              <div class="card-content">
-                <uqlibrary-hours compact-view="true">
-                </uqlibrary-hours>
+            <iron-pages selected="{{selectedSidebarTab}}">
+              <div>
+                <div class="card-content">
+                  <uqlibrary-hours compact-view="true">
+                  </uqlibrary-hours>
+                </div>
+                <div class="card-actions">
+                  <paper-button class="button-accent">Book a room or a desk</paper-button>
+                </div>
               </div>
-              <div class="card-actions">
-                <paper-button class="button-accent">Book a room or a desk</paper-button>
-              </div>
-            </div>
-            <div>
-              <div class="card-content">
-                <uqlibrary-computers compact-view="true">
+              <div>
+                <div class="card-content">
+                  <uqlibrary-computers compact-view="true">
 
-                </uqlibrary-computers>
+                  </uqlibrary-computers>
+                </div>
+                <div class="card-actions">
+                  <paper-button>View computers</paper-button>
+                </div>
               </div>
-              <div class="card-actions">
-                <paper-button>View computers</paper-button>
+              <div>
+                <div class="card-content">
+                  <uqlibrary-training>
+                    Training events ...
+                    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                  </uqlibrary-training>
+                </div>
+                <div class="card-actions">
+                  <paper-button>View all training events</paper-button>
+                </div>
               </div>
-            </div>
-            <div>
-              <div class="card-content">
-                <uqlibrary-training>
-                  Training events ...
-                  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                </uqlibrary-training>
-              </div>
-              <div class="card-actions">
-                <paper-button>View all training events</paper-button>
-              </div>
-            </div>
-          </iron-pages>
-        </paper-card>
-      </div>
+            </iron-pages>
+          </paper-card>
+        </div>
 
       </div>
 
