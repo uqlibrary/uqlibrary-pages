@@ -9,7 +9,7 @@
     "uqlibrary-styles": "uqlibrary/uqlibrary-styles#master",
     "uqlibrary-hours": "uqlibrary/uqlibrary-hours#polymer1.0",
     "uqlibrary-computers": "uqlibrary/uqlibrary-computers#polymer1.0",
-    "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components#styles",
+    "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components#master",
     "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights#master",
     "uqlibrary-search": "uqlibrary/uqlibrary-search#polymer1.0"
   },
