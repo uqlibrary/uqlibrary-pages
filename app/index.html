@@ -15,7 +15,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, target-densityDpi=device-dpi" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
   <meta name="generator" content="UQ Library">
   <title>UQ Library | Home Page</title>
 
@@ -93,8 +97,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <div id="search">
             <paper-card heading="UQ Library Search">
             <div class="card-content">
-              <!--<uqlibrary-search on-selected-source-changed="updateSearchLinks"></uqlibrary-search>-->
-              <uqlibrary-search></uqlibrary-search>
+              <uqlibrary-search gaAppName="Homepage search"></uqlibrary-search>
             </div>
             <div class="card-actions">
               <template is="dom-repeat" items="[[selectedSearchSource.helpLinks]]">

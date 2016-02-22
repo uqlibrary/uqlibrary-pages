@@ -200,19 +200,26 @@ gulp.task('vulcanize', ['vulcanize:clean_bower'], function() {
 // and do not rely on bower_components/element-x/elements.html
 gulp.task('vulcanize:clean_bower', function() {
 
-   return del(['app/bower_components/**/**/elements.html']).then(paths => {
+  var regEx = new RegExp("bower_components", "g");
 
-      //console.log('Deleted files and folders:\n', paths.join('\n'));
+  return gulp.src('app/bower_components/**/*.html')
+      .pipe(replace({patterns: [{ match: regEx, replacement: ".."}], usePrefix: false}))
+      .pipe(gulp.dest('app/bower_components'))
+      .pipe($.size({title: 'vulcanize:clean_bower'}));
 
-      //create an empty file?
-      for(var i=0; i < paths.length; i++)
-      {
-        var path = paths[i];
-        console.log(path);
-        fs.writeFile(path, '', function(){});
-      }
-
-  });
+  //
+  //return del(['app/bower_components/**/**/elements.html']).then(paths => {
+  //
+  //    //console.log('Deleted files and folders:\n', paths.join('\n'));
+  //
+  //    //create an empty file?
+  //    for(var i=0; i < paths.length; i++)
+  //    {
+  //      var path = paths[i];
+  //      console.log(path);
+  //      fs.writeFile(path, '', function(){});
+  //    }
+  //});
 });
 
 // Generate config data for the <sw-precache-cache> element.
