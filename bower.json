@@ -11,6 +11,7 @@
     "uqlibrary-computers": "uqlibrary/uqlibrary-computers#polymer1.0",
     "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components#master",
     "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights#master",
+    "uqlibrary-alerts": "uqlibrary/uqlibrary-alerts#master",
     "uqlibrary-search": "uqlibrary/uqlibrary-search#polymer1.0"
   },
   "devDependencies": {
