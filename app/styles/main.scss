@@ -55,6 +55,12 @@ uql-connect-footer {
   position: relative;
 }
 
+.card-content.training-container {
+  overflow-y: auto;
+  max-height: 500px;
+  padding: 0;
+}
+
 @media all and (min-width: 1048px) {
 
   #main {
