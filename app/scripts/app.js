@@ -10,7 +10,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 (function(document) {
   'use strict';
 
-  //document.cookie="UQLMockData=enabled";
+  document.cookie="UQLMockData=enabled";
 
   // imports are loaded and elements have been registered
   window.addEventListener('WebComponentsReady', function(e) {
