@@ -174,7 +174,7 @@ gulp.task('html', function() {
 });
 
 // Vulcanize granular configuration
-gulp.task('vulcanize', ['vulcanize:clean_bower'], function() {
+gulp.task('vulcanize', ['clean_bower'], function() {
 
   var menuJson=fs.readFileSync("app/bower_components/uqlibrary-reusable-components/resources/uql-menu.json", "utf8");
   var regEx = new RegExp("menuJsonFileData;", "g");
@@ -196,30 +196,15 @@ gulp.task('vulcanize', ['vulcanize:clean_bower'], function() {
     .pipe($.size({title: 'vulcanize'}));
 });
 
-// Clean elements.html from bower_components, all required elements should be defined in elements/elements.html
-// and do not rely on bower_components/element-x/elements.html
-gulp.task('vulcanize:clean_bower', function() {
+// update paths to bower_components for all components inside bower_components
+gulp.task('clean_bower', function() {
 
   var regEx = new RegExp("bower_components", "g");
 
   return gulp.src('app/bower_components/**/*.html')
       .pipe(replace({patterns: [{ match: regEx, replacement: ".."}], usePrefix: false}))
       .pipe(gulp.dest('app/bower_components'))
-      .pipe($.size({title: 'vulcanize:clean_bower'}));
-
-  //
-  //return del(['app/bower_components/**/**/elements.html']).then(paths => {
-  //
-  //    //console.log('Deleted files and folders:\n', paths.join('\n'));
-  //
-  //    //create an empty file?
-  //    for(var i=0; i < paths.length; i++)
-  //    {
-  //      var path = paths[i];
-  //      console.log(path);
-  //      fs.writeFile(path, '', function(){});
-  //    }
-  //});
+      .pipe($.size({title: 'clean_bower'}));
 });
 
 // Generate config data for the <sw-precache-cache> element.

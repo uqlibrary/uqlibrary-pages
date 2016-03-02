@@ -23,12 +23,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <body>
 
     <script>
-      WCT.loadSuites([
-//        'my-greeting-basic.html',
-//        'my-greeting-basic.html?dom=shadow',
-//        'my-list-basic.html',
-//        'my-list-basic.html?dom=shadow'
-      ]);
+      //suites will be initialized by running bin/codeship.sh testing
+      var suites = [];
+
+
+      WCT.loadSuites(suites);
     </script>
 
 

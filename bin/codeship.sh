@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # start debugging/tracing commands, -e - exit if command returns error (non-zero status)
 set -e
@@ -21,9 +21,29 @@ pwd
 cd ../${base}
 pwd
 
-echo "Check file syntax"
-#gulp syntax
+# test components
+gulp clean_bower
+cp -R app/bower_components app/test
+components=$(ls -d app/test/bower_components/uqlibrary-*/test/* | grep -v index)
+COUNTER=0
+list=""
 
+# Run the tests for each component
+for component in ${components[@]}; do
+  list="$list '$component',"
+done
+
+list="[ $list ]"
+dir="app/test/"
+
+sed -i -e "s#\[\]#${list}#g" "app/test/index.html"
+sed -i -e "s#${dir}##g" "app/test/index.html"
+
+gulp test
+
+#echo "Check file syntax"
+##gulp syntax
+#
 echo "Build distribution"
 gulp
 
@@ -43,17 +63,6 @@ if ! [ -f dist/elements/elements.js ]; then
     echo "Improperly vulcanized file - missing vulcanized.js"
     exit 1;
 fi
-
-#echo "Update elements to use its vulcanized version"
-#files=( test/uql* )
-#for file in "${files[@]}"; do
-#  file2=${file#test/}
-#  element=${file2%.html}
-#  sed -i -e "s#${element}/${file2}#elements.vulcanized.html#g" ${file}
-#done
-
-#echo "Run tests"
-#gulp test
 
 # use codeship branch environment variable to push to branch name dir unless it's 'production' branch (or master for now)
 if [ ${CI_BRANCH} != "production" ]; then

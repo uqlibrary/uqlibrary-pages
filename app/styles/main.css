@@ -12,6 +12,7 @@ body {
 
 uq-minimal-header {
   height: 100px;
+  display: block;
   background-color: #49075E;
   width: 100%; }
 
@@ -78,7 +79,7 @@ uql-connect-footer {
   flex: none;
   position: relative; }
 
-.card-content.training-container {
+#sidebar .card-content {
   overflow-y: auto;
   max-height: 500px;
   padding: 0; }
