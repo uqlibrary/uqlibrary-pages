@@ -81,7 +81,7 @@ uql-connect-footer {
 
 #sidebar .card-content {
   overflow-y: auto;
-  max-height: 500px;
+  height: 540px;
   padding: 0; }
 
 @media all and (min-width: 1048px) {
