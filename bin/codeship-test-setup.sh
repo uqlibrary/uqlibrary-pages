@@ -63,3 +63,9 @@ if ! [ -f dist/elements/elements.js ]; then
     echo "Improperly vulcanized file - missing vulcanized.js"
     exit 1;
 fi
+
+
+#replace Saucelabs keys in nightwatch.js
+nightwatchScript="bin/nightwatch.js"
+sed -i -e "s#<SAUCE_USERNAME>#${SAUCE_USERNAME}#g" ${nightwatchScript}
+sed -i -e "s#<SAUCE_ACCESS_KEY>#${SAUCE_ACCESS_KEY}#g" ${nightwatchScript}
