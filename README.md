@@ -4,6 +4,17 @@
 
 > UQ Library home page
 
+# Testing
+
+## Components testing
+
+## Integration testing
+
+### Local testing
+
+### SauceLabs testing
+
+
 ### Included out of the box:
 
 * [Polymer](https://www.polymer-project.org/), [Paper](https://elements.polymer-project.org/browse?package=paper-elements), [Iron](https://elements.polymer-project.org/browse?package=iron-elements) and [Neon](https://elements.polymer-project.org/browse?package=neon-elements) elements

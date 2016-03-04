@@ -6,10 +6,8 @@ var Logger = require('../../node_modules/nightwatch/lib/util/logger.js');
 var Nightwatch = require('../../node_modules/nightwatch/lib/index.js');
 
 sauceConnectLauncher({
-  //username: '<SAUCE_USERNAME>',
-  //accessKey: '<SAUCE_ACCESS_KEY>',
-  username: 'uqltest',
-  accessKey: '504d3039-a9d6-4f6a-aee2-6a71ff5318e5',
+  username: '<SAUCE_USERNAME>',
+  accessKey: '<SAUCE_ACCESS_KEY>',
   verbose: true,
   logger: console.log
 }, function (err, sauceConnectProcess) {
