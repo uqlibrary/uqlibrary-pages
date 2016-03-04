@@ -12,7 +12,7 @@ There are two testing procedures for uqlibrary-pages: components testing and int
 
 * done with [Web Component Tester](https://github.com/Polymer/web-component-tester)
 * configuration is defined in wct.conf.js, it contains configuration for local testing (chrome/firefox) and for remote testing on SauceLabs (IE/Safari/etc)
-* from bower_components all custom uqlibrary-* tests suites are collected with in codeship-test-setup.sh into app/test/index.html
+* from bower_components all custom uqlibrary-* tests suites are collected with in test-setup.sh into app/test/index.html
 * tests are launched with gulp test (gulp test:remote for testing on SauceLabs)
 
 ## Integration testing
@@ -20,22 +20,49 @@ There are two testing procedures for uqlibrary-pages: components testing and int
 Integration testing is performed using [Nightwatch.js](http://nightwatchjs.org/)
 
 * test scripts are located in tests/* (eg tests/e2e.js)
-* test configuration contains settings for local (bin/local/* ) and remote testing on SauceLabs (bin/saucelabs/*)
-* 
+* nightwatch.json - contains settings for local (bin/local/* ) and remote testing on SauceLabs (bin/saucelabs/*)
+* nightwatch.js - is a test runner script
 
 ### Local testing
 
+* Run Selenium server. Selenium is required to run tests locally [Selenium Installer] (http://selenium-release.storage.googleapis.com/index.html)
+
+```sh
+  java -jar selenium-server-standalone-{VERSION}.jar
+```
+
+* start server (will start server and project will be accessible at http://localhost:5001)
+
+```sh
+  gulp serve:dist
+```
+
+* start testing
+
+```sh
+  cd bin/local
+  ./nightwatch.js
+  ./nightwatch.js --env chrome
+```  
+
 ### SauceLabs testing
 
-* testing requires Sauce Connect node molude (installed with all node dependencies)
-* environment variables required for SauceLabs ($SAUCE_USERNAME, $SAUCE_ACCESS_KEY), codeshipt-test-setup.sh replaces placeholders in test setup stage
-* to run tests 
+* testing requires Sauce Connect node module (installed with all node dependencies)
+
+* environment variables required for SauceLabs ($SAUCE_USERNAME, $SAUCE_ACCESS_KEY), `test-setup.sh` replaces placeholders in test setup stage
+
+* start server (will start server and project will be accessible at http://localhost:5001)
+
+```sh
+  gulp serve:dist
+```
+* run tests 
  
 ```sh  
   cd bin/saucelabs 
   ./nightwatch.js
   ./nightwatch.js --env ie11  
- ```
+```
   
 
 ### Included out of the box:
