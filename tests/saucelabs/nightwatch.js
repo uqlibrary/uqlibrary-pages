@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-var sauceConnectLauncher = require('../node_modules/sauce-connect-launcher/lib/sauce-connect-launcher');
+var sauceConnectLauncher = require('../../node_modules/sauce-connect-launcher/lib/sauce-connect-launcher');
 
-var Logger = require('../node_modules/nightwatch/lib/util/logger.js');
-var Nightwatch = require('../node_modules/nightwatch/lib/index.js');
+var Logger = require('../../node_modules/nightwatch/lib/util/logger.js');
+var Nightwatch = require('../../node_modules/nightwatch/lib/index.js');
 
 sauceConnectLauncher({
   username: '<SAUCE_USERNAME>',

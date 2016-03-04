@@ -64,8 +64,7 @@ if ! [ -f dist/elements/elements.js ]; then
     exit 1;
 fi
 
-
 #replace Saucelabs keys in nightwatch.js
-nightwatchScript="bin/nightwatch.js"
+nightwatchScript="tests/saucelabs/nightwatch.js"
 sed -i -e "s#<SAUCE_USERNAME>#${SAUCE_USERNAME}#g" ${nightwatchScript}
 sed -i -e "s#<SAUCE_ACCESS_KEY>#${SAUCE_ACCESS_KEY}#g" ${nightwatchScript}
