@@ -14,7 +14,7 @@
 
   "test_settings" : {
     "default" : {
-      "launch_url" : "http://localhost:5002",
+      "launch_url" : "http://localhost:5001",
       "silent": true,
       "selenium_host": "ondemand.saucelabs.com",
       "selenium_port": 80,
@@ -27,7 +27,7 @@
       }
     },
     "local" : {
-      "launch_url" : "http://localhost:5002",
+      "launch_url" : "http://localhost:5001",
       "selenium_port"  : 4444,
       "selenium_host"  : "localhost",
       "silent": true,
