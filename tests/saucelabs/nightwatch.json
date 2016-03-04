@@ -25,21 +25,6 @@
         "platform": "Windows 10",
         "version": "48"
       }
-    },
-    "local" : {
-      "launch_url" : "http://localhost:5001",
-      "selenium_port"  : 4444,
-      "selenium_host"  : "localhost",
-      "silent": true,
-      "screenshots" : {
-        "enabled" : false,
-        "path" : ""
-      },
-      "desiredCapabilities": {
-        "browserName": "firefox",
-        "javascriptEnabled": true,
-        "acceptSslCerts": true
-      }
     }
   }
 }
