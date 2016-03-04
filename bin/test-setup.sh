@@ -3,17 +3,11 @@
 # start debugging/tracing commands, -e - exit if command returns error (non-zero status)
 set -e
 
-echo "Install prerequisites gulp/bower/packages"
-
-npm install -g gulp bower
-npm install
-bower install
-
 # Update paths in bower_components
 gulp clean_bower
 
 cp -R app/bower_components app/test
-components=$(ls -d app/test/bower_components/uqlibrary-*/test/* | grep -v index)
+components=$(ls -d app/test/bower_components/uqlibrary-*/test/*test* | grep -v index)
 COUNTER=0
 list=""
 
@@ -24,6 +18,8 @@ done
 
 list="[ $list ]"
 dir="app/test/"
+
+cp "app/test/template.index.html" "app/test/index.html"
 
 sed -i -e "s#\[\]#${list}#g" "app/test/index.html"
 sed -i -e "s#${dir}##g" "app/test/index.html"
@@ -52,6 +48,10 @@ if ! [ -f dist/elements/elements.js ]; then
 fi
 
 #replace Saucelabs keys in nightwatch.js
+nightwatchScriptTemp="bin/saucelabs/template.nightwatch.js"
 nightwatchScript="bin/saucelabs/nightwatch.js"
+
+cp $nightwatchScriptTemp $nightwatchScript
+
 sed -i -e "s#<SAUCE_USERNAME>#${SAUCE_USERNAME}#g" ${nightwatchScript}
 sed -i -e "s#<SAUCE_ACCESS_KEY>#${SAUCE_ACCESS_KEY}#g" ${nightwatchScript}

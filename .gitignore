@@ -11,3 +11,6 @@ aws-env.sh
 .sass-cache
 .DS_Store
 reports
+bin/saucelabs/nightwatch.js
+app/test/index.html
+*-e
