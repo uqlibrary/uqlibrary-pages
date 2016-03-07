@@ -42,6 +42,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     search.addEventListener('selected-source-changed', function(e) {
       uqlFrontPage.selectedSearchSource = search.selectedSource;
     });
+
+    // Add GA events to the sidebar tabs
+    var ga = document.querySelector('#home-ga');
+    var uqlSidebar = document.querySelector('#sidebar-tabs');
+    uqlSidebar.addEventListener('iron-select', function (e) {
+      ga.addEvent('Navigation', 'Sidebar tab ' + e.detail.item.innerText.toLowerCase());
+    });
   });
 
 })(document);

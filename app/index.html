@@ -83,6 +83,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <body>
   <span id="browser-sync-binding"></span>
     <uqlibrary-alerts ga-app-name='Alerts'></uqlibrary-alerts>
+    <uqlibrary-ga id="home-ga" app-name="Homepage"></uqlibrary-ga>
 
     <uq-minimal-header show-search-button="true"
                        show-menu-button="true"></uq-minimal-header>
@@ -118,7 +119,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <div id="sidebar">
           <paper-card>
-            <paper-tabs selected="{{selectedSidebarTab}}">
+            <paper-tabs id="sidebar-tabs" selected="{{selectedSidebarTab}}">
               <paper-tab>HOURS</paper-tab>
               <paper-tab>COMPUTERS</paper-tab>
               <paper-tab>TRAINING</paper-tab>
