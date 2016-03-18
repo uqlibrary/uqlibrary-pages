@@ -6,4 +6,9 @@ NETWORK:
 *
 
 CACHE:
-# list of files to cache
+http://assets.library.uq.edu.au/master/pages/favicon.ico
+http://assets.library.uq.edu.au/master/pages/scripts/app.js
+http://assets.library.uq.edu.au/master/pages/bower_components/webcomponentsjs/webcomponents-lite.min.js
+http://assets.library.uq.edu.au/master/pages/elements.html
+http://assets.library.uq.edu.au/master/pages/elements.js
+http://assets.library.uq.edu.au/master/pages/styles/main.css
