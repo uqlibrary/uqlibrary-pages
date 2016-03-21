@@ -62,6 +62,10 @@
       background-color: var(--body-color);
     }
 
+    .card-actions {
+      text-align: right;
+    }
+
   </style>
 </head>
 
@@ -83,7 +87,7 @@
             <div class="card-content">
               <uqlibrary-search ga-app-name="Homepage search"></uqlibrary-search>
             </div>
-            <div class="card-actions" style="text-align: right;">
+            <div class="card-actions">
               <template is="dom-repeat" items="[[selectedSearchSource.helpLinks]]">
                 <paper-button class="button-secondary" tabindex="-1"><a href$="[[item.url]]">[[item.title]]</a></paper-button>
               </template>
@@ -113,7 +117,7 @@
                   </uqlibrary-hours>
                 </div>
                 <div class="card-actions">
-                  <paper-button class="button-colored-secondary" tabindex="-1">
+                  <paper-button class="button-colored-accent" tabindex="-1">
                     <a href="https://www.library.uq.edu.au/fbs/ctrlpnl.php?">
                       Book a room or a desk
                     </a>
@@ -132,7 +136,7 @@
                   </uqlibrary-training>
                 </div>
                 <div class="card-actions">
-                  <paper-button class="button-colored-secondary">
+                  <paper-button class="button-colored-accent">
                     <a href="https://www.library.uq.edu.au/training/index.phtml">
                       View all training events
                     </a>
