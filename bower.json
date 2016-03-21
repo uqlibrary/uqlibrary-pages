@@ -12,7 +12,7 @@
     "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components#header-buttons-update",
     "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights#master",
     "uqlibrary-alerts": "uqlibrary/uqlibrary-alerts#master",
-    "uqlibrary-search": "uqlibrary/uqlibrary-search#v1.0.0",
+    "uqlibrary-search": "uqlibrary/uqlibrary-search#polymer1.0",
     "uqlibrary-training": "uqlibrary/uqlibrary-training#master"
   },
   "devDependencies": {
