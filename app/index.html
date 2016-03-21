@@ -51,6 +51,10 @@
   <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <!-- endbuild -->
 
+  <!-- build:js bower_components/uqlibrary-browser-supported/uqlibrary-browser-supported.js -->
+  <script src="bower_components/uqlibrary-browser-supported/uqlibrary-browser-supported.js"></script>
+  <!-- endbuild -->
+
   <!-- Because this project uses vulcanize this should be your only html import
        in this file. All other imports should go in elements.html -->
   <link rel="import" href="elements/elements.html">
@@ -71,87 +75,108 @@
 
 <body>
   <span id="browser-sync-binding"></span>
-    <uqlibrary-alerts ga-app-name='Alerts'></uqlibrary-alerts>
-    <uqlibrary-ga id="home-ga" app-name="Homepage"></uqlibrary-ga>
+  <!--<uqlibrary-alerts ga-app-name='Alerts'></uqlibrary-alerts>-->
+  <uqlibrary-ga id="home-ga" app-name="Homepage"></uqlibrary-ga>
 
-    <uq-minimal-header show-search-button="true"
-                       show-menu-button="true"></uq-minimal-header>
-    <uql-menu></uql-menu>
+  <uq-minimal-header show-search-button="true"
+                     show-menu-button="true"></uq-minimal-header>
+  <uql-menu></uql-menu>
 
-    <div id="content">
-      <template is="dom-bind" id="uqlFrontPage" unresolved>
-      <div id="layout">
-        <div id="main">
-          <div id="search">
-            <paper-card heading="UQ Library Search">
-            <div class="card-content">
-              <uqlibrary-search ga-app-name="Homepage search"></uqlibrary-search>
-            </div>
-            <div class="card-actions">
-              <template is="dom-repeat" items="[[selectedSearchSource.helpLinks]]">
-                <paper-button class="button-secondary" tabindex="-1"><a href$="[[item.url]]">[[item.title]]</a></paper-button>
-              </template>
-            </div>
-          </paper-card>
+  <div id="content">
+
+    <div id="preloader">
+      <!-- Preload spinner -->
+      <div id="preloader-loading" class="preloader-card">
+        <img src="images/loading.svg" width="48" />
+        <p id="loadingTitle" class="text-center">Loading UQ Library...</p>
+      </div>
+
+      <!-- Unsupported browser -->
+      <div id="preloader-unsupported" class="preloader-card">
+        <p>
+        Your current browser (<span id="browser-name">ie</span>, version <span id="browser-version">7</span>) is not on UQ
+        Library’s list of supported browsers. If you experience any problems with this site, please try using the site
+        with a different browser, or upgrade your current browser to the latest version.<br /> <br />
+        If you are using assistive technology, please refer to our support for users with disabilities.
+        If you experience any problems with this site, there are Library staff who can provide assistance and supply
+        information in a format that meets your needs.
+        </p>
+      </div>
+    </div>
+
+    <template is="dom-bind" id="uqlFrontPage" unresolved>
+    <div id="layout">
+      <div id="main">
+        <div id="search">
+          <paper-card heading="UQ Library Search">
+          <div class="card-content">
+            <uqlibrary-search ga-app-name="Homepage search"></uqlibrary-search>
           </div>
-          <div id="spotlight">
-            <paper-card>
-              <div class="card-content">
-                  <uqlibrary-spotlights></uqlibrary-spotlights>
-              </div>
-            </paper-card>
+          <div class="card-actions">
+            <template is="dom-repeat" items="[[selectedSearchSource.helpLinks]]">
+              <paper-button class="button-secondary" tabindex="-1"><a href$="[[item.url]]">[[item.title]]</a></paper-button>
+            </template>
           </div>
+        </paper-card>
         </div>
-        <div id="sidebar">
+        <div id="spotlight">
           <paper-card>
-            <paper-tabs id="sidebar-tabs" selected="{{selectedSidebarTab}}">
-              <paper-tab>HOURS</paper-tab>
-              <paper-tab>COMPUTERS</paper-tab>
-              <paper-tab>TRAINING</paper-tab>
-            </paper-tabs>
-
-            <iron-pages selected="{{selectedSidebarTab}}">
-              <div>
-                <div class="card-content">
-                  <uqlibrary-hours compact-view="true">
-                  </uqlibrary-hours>
-                </div>
-                <div class="card-actions">
-                  <paper-button class="button-colored-accent" tabindex="-1">
-                    <a href="https://www.library.uq.edu.au/fbs/ctrlpnl.php?">
-                      Book a room or a desk
-                    </a>
-                  </paper-button>
-                </div>
-              </div>
-              <div>
-                <div class="card-content">
-                  <uqlibrary-computers compact-view="true">
-                  </uqlibrary-computers>
-                </div>
-              </div>
-              <div>
-                <div class="card-content training-container">
-                  <uqlibrary-training>
-                  </uqlibrary-training>
-                </div>
-                <div class="card-actions">
-                  <paper-button class="button-colored-accent">
-                    <a href="https://www.library.uq.edu.au/training/index.phtml">
-                      View all training events
-                    </a>
-                  </paper-button>
-                </div>
-              </div>
-            </iron-pages>
+            <div class="card-content">
+                <uqlibrary-spotlights></uqlibrary-spotlights>
+            </div>
           </paper-card>
         </div>
       </div>
-      </template>
-    </div>
+      <div id="sidebar">
+        <paper-card>
+          <paper-tabs id="sidebar-tabs" selected="{{selectedSidebarTab}}">
+            <paper-tab>HOURS</paper-tab>
+            <paper-tab>COMPUTERS</paper-tab>
+            <paper-tab>TRAINING</paper-tab>
+          </paper-tabs>
 
-    <uql-connect-footer></uql-connect-footer>
-    <uq-minimal-footer></uq-minimal-footer>
+          <iron-pages selected="{{selectedSidebarTab}}">
+            <div>
+              <div class="card-content">
+                <uqlibrary-hours compact-view="true">
+                </uqlibrary-hours>
+              </div>
+              <div class="card-actions">
+                <paper-button class="button-colored-accent" tabindex="-1">
+                  <a href="https://www.library.uq.edu.au/fbs/ctrlpnl.php?">
+                    Book a room or a desk
+                  </a>
+                </paper-button>
+              </div>
+            </div>
+            <div>
+              <div class="card-content">
+                <uqlibrary-computers compact-view="true">
+                </uqlibrary-computers>
+              </div>
+            </div>
+            <div>
+              <div class="card-content training-container">
+                <uqlibrary-training>
+                </uqlibrary-training>
+              </div>
+              <div class="card-actions">
+                <paper-button class="button-colored-accent">
+                  <a href="https://www.library.uq.edu.au/training/index.phtml">
+                    View all training events
+                  </a>
+                </paper-button>
+              </div>
+            </div>
+          </iron-pages>
+        </paper-card>
+      </div>
+    </div>
+    </template>
+  </div>
+
+  <uql-connect-footer></uql-connect-footer>
+  <uq-minimal-footer></uq-minimal-footer>
 
 
   <!-- build:js scripts/app.js -->

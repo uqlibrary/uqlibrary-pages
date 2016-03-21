@@ -12,8 +12,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   document.cookie="UQLMockData=enabled";
 
+  var browserData = browserSupported();
+
+  if (!browserData.supported) {
+    document.querySelector('#browser-name').textContent = browserData.browser;
+    document.querySelector('#browser-version').textContent = browserData.version;
+    document.querySelector('#preloader-unsupported').style.display = 'block';
+
+    return;
+  }
+
+  document.querySelector('#preloader-loading').style.display = 'block';
+
   // imports are loaded and elements have been registered
   window.addEventListener('WebComponentsReady', function(e) {
+
+    document.querySelector('#preloader').style.display = 'none';
+    document.querySelector('#preloader-loading').style.display = 'none';
+    document.querySelector('#preloader-unsupported').style.display = 'none';
+
 
     //set up header required buttons and events
     var header = document.querySelector('uq-minimal-header');
@@ -31,6 +48,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   //// Listen for template bound event to know when bindings
   //// have resolved and content has been stamped to the page
   uqlFrontPage.addEventListener('dom-change', function() {
+
+    document.querySelector('#preloader').style.display = 'none';
+    document.querySelector('#preloader-loading').style.display = 'none';
+    document.querySelector('#preloader-unsupported').style.display = 'none';
 
     //set sidebar tab default
     uqlFrontPage.selectedSidebarTab = 0;
