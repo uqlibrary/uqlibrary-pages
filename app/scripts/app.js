@@ -7,21 +7,21 @@
  subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
 
+var browserData = browserSupported();
+
+if (!browserData.supported) {
+  document.getElementById('browser-name').innerHTML = browserData.browser;
+  document.getElementById('browser-version').innerHTML = browserData.version;
+  document.getElementById('preloader-unsupported').style.display = 'block';
+} else {
+  document.querySelector('#preloader-loading').style.display = 'block';
+}
+
+
 (function(document) {
   'use strict';
 
   document.cookie="UQLMockData=enabled";
-
-  var browserData = browserSupported();
-
-  if (!browserData.supported) {
-    document.getElementById('browser-name').innerHTML = browserData.browser;
-    document.getElementById('browser-version').innerHTML = browserData.version;
-    document.getElementById('preloader-unsupported').style.display = 'block';
-  } else {
-    document.querySelector('#preloader-loading').style.display = 'block';
-  }
-
 
   // imports are loaded and elements have been registered
   window.addEventListener('WebComponentsReady', function(e) {
