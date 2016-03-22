@@ -84,25 +84,29 @@
 
   <div id="content">
 
+    <!-- Preloader/Unsupported browser message -->
     <div id="preloader">
+
       <!-- Preload spinner -->
       <div id="preloader-loading" class="preloader-card">
-        <img src="images/loading.svg" width="48" />
+        <img src="../images/loading.svg" width="48" />
         <p id="loadingTitle" class="text-center">Loading UQ Library...</p>
       </div>
 
       <!-- Unsupported browser -->
       <div id="preloader-unsupported" class="preloader-card">
+        <h2>Unsupported browser detected</h2>
         <p>
-        Your current browser (<span id="browser-name">ie</span>, version <span id="browser-version">7</span>) is not on UQ
-        Library’s list of supported browsers. If you experience any problems with this site, please try using the site
-        with a different browser, or upgrade your current browser to the latest version.<br /> <br />
-        If you are using assistive technology, please refer to our support for users with disabilities.
-        If you experience any problems with this site, there are Library staff who can provide assistance and supply
-        information in a format that meets your needs.
+          Your current browser (<span id="browser-name">ie</span>, version <span id="browser-version">7</span>) is not on UQ
+          Library’s list of supported browsers. If you experience any problems with this site, please try using the site
+          with a different browser, or upgrade your current browser to the latest version.<br /> <br />
+          If you are using assistive technology, please refer to our support for users with disabilities.
+          If you experience any problems with this site, there are Library staff who can provide assistance and supply
+          information in a format that meets your needs.
         </p>
       </div>
     </div>
+    <!-- End of Preloader/Unsupported browser message -->
 
     <template is="dom-bind" id="uqlFrontPage" unresolved>
     <div id="layout">

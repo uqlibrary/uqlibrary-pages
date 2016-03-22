@@ -61,38 +61,6 @@ uql-connect-footer {
   padding: 0;
 }
 
-#preloader {
-  display: block;
-  margin: 16px auto;
-
-  .preloader-card {
-    background-color: #FFF;
-    text-align: center;
-    border-radius: 2px;
-    padding: 40px;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-    -moz-box-shadow:  0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-    -webkit-box-shadow:  0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-  }
-
-  .preloader-card p {
-    font-family: 'helvetica', 'times new roman', 'sans-serif';
-    text-align: center;
-    color: #595959;
-    text-transform: uppercase;
-  }
-
-  #unsupportedMessage,
-  #preloader-loading {
-    display: none;
-  }
-
-  #preloader-unsupported {
-    display: none;
-    //display: block;
-  }
-}
-
 @media all and (min-width: 1048px) {
 
   #main {
@@ -117,15 +85,4 @@ uql-connect-footer {
 
 @media all and (max-width: 1047px) {
 
-}
-
-@media all and (max-width: 800px) {
-  #preloader {
-    background-color: #FFF;
-
-    #card {
-      box-shadow: none;
-      border: none;
-    }
-  }
 }

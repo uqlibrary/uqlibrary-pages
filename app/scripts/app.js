@@ -1,11 +1,11 @@
 /*
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
-*/
+ Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+ This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+ The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+ The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+ Code distributed by Google as part of the polymer project is also
+ subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+ */
 
 (function(document) {
   'use strict';
@@ -15,22 +15,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   var browserData = browserSupported();
 
   if (!browserData.supported) {
-    document.querySelector('#browser-name').textContent = browserData.browser;
-    document.querySelector('#browser-version').textContent = browserData.version;
-    document.querySelector('#preloader-unsupported').style.display = 'block';
-
-    return;
+    document.getElementById('browser-name').innerHTML = browserData.browser;
+    document.getElementById('browser-version').innerHTML = browserData.version;
+    document.getElementById('preloader-unsupported').style.display = 'block';
+  } else {
+    document.querySelector('#preloader-loading').style.display = 'block';
   }
 
-  document.querySelector('#preloader-loading').style.display = 'block';
 
   // imports are loaded and elements have been registered
   window.addEventListener('WebComponentsReady', function(e) {
-
-    document.querySelector('#preloader').style.display = 'none';
     document.querySelector('#preloader-loading').style.display = 'none';
-    document.querySelector('#preloader-unsupported').style.display = 'none';
-
 
     //set up header required buttons and events
     var header = document.querySelector('uq-minimal-header');
@@ -48,10 +43,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   //// Listen for template bound event to know when bindings
   //// have resolved and content has been stamped to the page
   uqlFrontPage.addEventListener('dom-change', function() {
-
-    document.querySelector('#preloader').style.display = 'none';
-    document.querySelector('#preloader-loading').style.display = 'none';
-    document.querySelector('#preloader-unsupported').style.display = 'none';
 
     //set sidebar tab default
     uqlFrontPage.selectedSidebarTab = 0;
