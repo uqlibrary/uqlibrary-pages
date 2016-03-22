@@ -207,6 +207,19 @@ gulp.task('clean_bower', function() {
       .pipe($.size({title: 'clean_bower'}));
 });
 
+// inject browser-update.js code into html pages
+gulp.task('inject-browser-update', function() {
+
+  var regEx = new RegExp("//bower_components/uqlibrary-browser-supported/browser-update.js", "g");
+  var browserUpdate=fs.readFileSync("app/bower_components/uqlibrary-browser-supported/browser-update.js", "utf8");
+
+  return gulp.src(dist('*'))
+      .pipe(replace({patterns: [{ match: regEx, replacement: browserUpdate}], usePrefix: false}))
+      .pipe(gulp.dest(dist()))
+      .pipe($.size({title: 'inject-browser-update'}));
+});
+
+
 // Generate config data for the <sw-precache-cache> element.
 // This include a list of files that should be precached, as well as a (hopefully unique) cache
 // id that ensure that multiple PSK projects don't share the same Cache Storage.
@@ -310,6 +323,7 @@ gulp.task('default', ['clean'], function(cb) {
     ['images', 'fonts', 'html'],
     'vulcanize',
     'app-cache-version-update', // 'cache-config',
+    'inject-browser-update',
     cb);
 });
 
