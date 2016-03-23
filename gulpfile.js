@@ -219,6 +219,17 @@ gulp.task('inject-browser-update', function() {
       .pipe($.size({title: 'inject-browser-update'}));
 });
 
+// remove when PR is done and cleared
+gulp.task('monkey-patch-paper-input', function() {
+
+  var regEx = new RegExp("bind-value=\"{{value}}\"", "g");
+
+  return gulp.src(dist('**/elements.html'))
+      .pipe(replace({patterns: [{ match: regEx, replacement: "bind-value=\"{{value}}\" value$=\"[[value]]\" "}], usePrefix: false}))
+      .pipe(gulp.dest(dist()))
+      .pipe($.size({title: 'monkey-patch-paper-input'}));
+});
+
 
 // Generate config data for the <sw-precache-cache> element.
 // This include a list of files that should be precached, as well as a (hopefully unique) cache
@@ -321,10 +332,11 @@ gulp.task('default', ['clean'], function(cb) {
     ['ensureFiles', 'copy', 'styles'],
     'elements',
     ['images', 'fonts', 'html'],
-    'vulcanize',
+      'vulcanize',
     'app-cache-version-update', // 'cache-config',
     'inject-browser-update',
-    cb);
+      'monkey-patch-paper-input',
+      cb);
 });
 
 // Build then deploy to GitHub pages gh-pages branch
