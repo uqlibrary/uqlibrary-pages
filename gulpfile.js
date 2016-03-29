@@ -219,6 +219,18 @@ gulp.task('inject-browser-update', function() {
       .pipe($.size({title: 'inject-browser-update'}));
 });
 
+// inject preloader.html code into html pages
+gulp.task('inject-preloader', function() {
+
+  var regEx = new RegExp("#preloader#", "g");
+  var browserUpdate=fs.readFileSync("app/bower_components/uqlibrary-browser-supported/preloader.html", "utf8");
+
+  return gulp.src(dist('*'))
+      .pipe(replace({patterns: [{ match: regEx, replacement: browserUpdate}], usePrefix: false}))
+      .pipe(gulp.dest(dist()))
+      .pipe($.size({title: 'inject-preloader'}));
+});
+
 // remove when PR is done and cleared
 gulp.task('monkey-patch-paper-input', function() {
 
@@ -335,8 +347,9 @@ gulp.task('default', ['clean'], function(cb) {
       'vulcanize',
     'app-cache-version-update', // 'cache-config',
     'inject-browser-update',
-      'monkey-patch-paper-input',
-      cb);
+    'inject-preloader',
+    'monkey-patch-paper-input',
+    cb);
 });
 
 // Build then deploy to GitHub pages gh-pages branch

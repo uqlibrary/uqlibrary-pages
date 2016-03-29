@@ -8,6 +8,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 */
 #preloader {
   display: block; }
+  #preloader .header {
+    width: 100%;
+    height: 64px;
+    color: #FFF;
+    background-color: #49075E;
+    line-height: 64px;
+    padding-left: 10px;
+    font-family: 'Roboto', 'helvetica', 'times new roman', 'sans-serif';
+    font-size: 20px; }
   #preloader .preloader-card {
     margin: 16px auto;
     background-color: #FFF;

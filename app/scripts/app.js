@@ -1,13 +1,19 @@
 var browserData = browserSupported();
 
 if (!browserData.supported) {
-  document.getElementById('browser-name').innerHTML = browserData.browser;
-  document.getElementById('browser-version').innerHTML = browserData.version;
-  document.getElementById('preloader-unsupported').style.display = 'block';
-} else {
-  document.getElementById('preloader-loading').style.display = 'block';
-}
+  if (document.getElementById('browser-name'))
+    document.getElementById('browser-name').innerHTML = browserData.browser;
 
+  if (document.getElementById('browser-version'))
+    document.getElementById('browser-version').innerHTML = browserData.version;
+
+  if (document.getElementById('preloader-unsupported'))
+    document.getElementById('preloader-unsupported').style.display = 'block';
+} else {
+  if(document.getElementById('preloader-loading')) {
+    document.getElementById('preloader-loading').style.display = 'block';
+  }
+}
 
 (function(document) {
   'use strict';
@@ -16,7 +22,9 @@ if (!browserData.supported) {
 
   // imports are loaded and elements have been registered
   window.addEventListener('WebComponentsReady', function(e) {
-    document.querySelector('#preloader-loading').style.display = 'none';
+
+    if (document.querySelector('#preloader-loading'))
+      document.querySelector('#preloader-loading').style.display = 'none';
 
     //set up header required buttons and events
     var header = document.querySelector('uq-minimal-header');
