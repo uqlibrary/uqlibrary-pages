@@ -1,12 +1,6 @@
 var browserData = browserSupported();
 
 if (!browserData.supported) {
-  if (document.getElementById('browser-name'))
-    document.getElementById('browser-name').innerHTML = browserData.browser;
-
-  if (document.getElementById('browser-version'))
-    document.getElementById('browser-version').innerHTML = browserData.version;
-
   if (document.getElementById('preloader-unsupported'))
     document.getElementById('preloader-unsupported').style.display = 'block';
 } else {
@@ -22,6 +16,10 @@ if (!browserData.supported) {
 
   // imports are loaded and elements have been registered
   window.addEventListener('WebComponentsReady', function(e) {
+
+    //only display unsupported big message if web components can't be loaded
+    if (document.getElementById('preloader-unsupported'))
+      document.getElementById('preloader-unsupported').style.display = 'none';
 
     if (document.querySelector('#preloader-loading'))
       document.querySelector('#preloader-loading').style.display = 'none';
