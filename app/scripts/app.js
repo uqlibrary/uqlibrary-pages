@@ -12,8 +12,6 @@ if (!browserData.supported) {
 (function(document) {
   'use strict';
 
-  document.cookie="UQLMockData=enabled";
-
   // imports are loaded and elements have been registered
   window.addEventListener('WebComponentsReady', function(e) {
 
