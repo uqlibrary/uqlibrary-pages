@@ -1,0 +1,124 @@
+<!doctype html>
+
+<html manifest="//assets.library.uq.edu.au/master/pages/index.appcache">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="generator" content="UQ Library">
+
+  <title>Payment Receipt | UQ Library</title>
+
+  <!-- Place favicon.ico in the `app/` directory -->
+
+  <!-- Chrome for Android theme color -->
+  <meta name="theme-color" content="#49075E">
+
+  <!-- Web Application Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Tile color for Win8 -->
+  <meta name="msapplication-TileColor" content="##49075E">
+  <meta name="msapplication-navbutton-color" content="#49075E">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="UQ Library">
+  <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="UQ Library">
+  <link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="images/touch/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="images/touch/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="images/touch/apple-touch-icon-152x152.png">
+
+  <!-- Tile icon for Win8 (144x144) -->
+  <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+  <meta name="msapplication-square150x150logo" content="images/touch/apple-touch-icon-152x152.png">
+
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild-->
+
+  <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <!-- endbuild -->
+
+  <!-- build:js bower_components/uqlibrary-browser-supported/uqlibrary-browser-supported.js -->
+  <script src="bower_components/uqlibrary-browser-supported/uqlibrary-browser-supported.js"></script>
+  <!-- endbuild -->
+
+  <script>
+    //display browser update message for unsupported browsers,
+    //will be inserted by gulp task, do not remove
+    //bower_components/uqlibrary-browser-supported/browser-update.js
+  </script>
+
+  <!-- Because this project uses vulcanize this should be your only html import
+       in this file. All other imports should go in elements.html -->
+  <link rel="import" href="elements/elements.html">
+
+  <!-- For shared styles, shared-styles.html import in elements.html -->
+  <style is="custom-style" include="common-styles">
+    body {
+      background-color: var(--body-color);
+    }
+  </style>
+</head>
+
+<body>
+  <span id="browser-sync-binding"></span>
+  <uqlibrary-alerts ga-app-name='Alerts'></uqlibrary-alerts>
+  <uqlibrary-ga id="home-ga" app-name="Homepage"></uqlibrary-ga>
+
+  <uq-minimal-header show-search-button="true"
+                     show-menu-button="true"></uq-minimal-header>
+  <uql-menu></uql-menu>
+
+  <div id="content">
+
+    <!-- Preloader/Unsupported browser message -->
+    <!-- preloader will be inserted by gulp task, do not remove -->
+    #preloader#
+    <!-- End of Preloader/Unsupported browser message -->
+
+    <template is="dom-bind" id="uqlPaymentReceipt" unresolved>
+      <div id="layout">
+        <div id="paymentReceipt">
+          <paper-card heading="Payment receipt">
+            <div class="card-content">
+
+              # placeholder text # <br>
+              Thank you for using the UQ online payments system. <br><br><br>
+
+              Your transaction has been unsuccessful for the value of $10 <br>
+              Please check your email for your receipt #1234 <br>
+
+              <uqlibrary-payment-receipt></uqlibrary-payment-receipt>
+            </div>
+            <div class="card-actions">
+              Due to daily maintenance, if you top up your balance between <strong>12AM and 1AM</strong> please allow up to 1 hour for funds to be deposited in your account.
+            </div>
+          </paper-card>
+        </div>
+      </div>
+    </template>
+  </div>
+
+  <uql-connect-footer></uql-connect-footer>
+  <uq-minimal-footer></uq-minimal-footer>
+
+
+  <!-- build:js scripts/app.js -->
+  <script src="scripts/app.js"></script>
+  <!-- endbuild-->
+</body>
+
+</html>
