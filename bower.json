@@ -10,7 +10,7 @@
     "uqlibrary-hours": "uqlibrary/uqlibrary-hours#polymer1.0",
     "uqlibrary-computers": "uqlibrary/uqlibrary-computers#polymer1.0",
     "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components#master",
-    "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights#master",
+    "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights#v1.0.0",
     "uqlibrary-alerts": "uqlibrary/uqlibrary-alerts#master",
     "uqlibrary-search": "uqlibrary/uqlibrary-search#polymer1.0",
     "uqlibrary-training": "uqlibrary/uqlibrary-training#master",
@@ -21,6 +21,8 @@
   },
   "ignore": [],
   "resolutions": {
-    "uqlibrary-ga": "^1.0.0"
+    "uqlibrary-ga": "^1.0.0",
+    "byutv-jsonp": "~1.2.0",
+    "polymer-carousel": "0.1.1"
   }
 }
