@@ -75,6 +75,39 @@ sed -i -e "s#<S3BucketSubDir>#${S3BucketSubDir}#g" ${awsconfig}
 sed -i -e "s#<CFDistribution>#${CFDistribution}#g" ${awsconfig}
 sed -i -e "s#<AWSRegion>#${AWSRegion}#g" ${awsconfig}
 
+echo "Set all files to absolut paths..."
+distFolder=$(ls -d dist/*.html)
+
+absolutePath="//assets.library.uq.edu.au/pages"
+if [ ${CI_BRANCH} != "production" ]; then
+  absolutePath="//assets.library.uq.edu.au/${CI_BRANCH}/pages"
+fi
+
+toReplace=(
+  "href=\"manifest.json\""
+  "href=\"images/"
+  "href=\"styles/"
+  "href=\"elements/"
+  "src=\"bower_components/"
+  "src=\"scripts/"
+  )
+replaceWith=(
+  "href=\"${absolutePath}/manifest.json\""
+  "href=\"${absolutePath}/images/"
+  "href=\"${absolutePath}/styles/"
+  "href=\"${absolutePath}/elements/"
+  "src=\"${absolutePath}/bower_components/"
+  "src=\"${absolutePath}/scripts/"
+  )
+
+for htmlFile in ${distFolder[@]}; do
+  index=0
+  for find in ${toReplace[@]}; do
+    sed -i -e "s#${find}#${replaceWith[index]}#g" $htmlFile
+    index=${index}+1
+  done
+done
+
 echo "Run gulp task to upload to AWS..."
 gulp publish
 
