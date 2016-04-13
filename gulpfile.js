@@ -29,10 +29,13 @@ var cloudfront = require('gulp-invalidate-cloudfront');
 var replace = require('gulp-replace-task');
 var taskList = require('gulp-task-listing');
 var argv = require('yargs').argv;
+var RevAll = require('gulp-rev-all');
 
+var revAll = new RevAll({
+  dontRenameFile: [ /^\/index.html$/, /^\/payment-receipt.html$/, /^\/404.html$/, /.json/ ]
+});
 
 // var ghPages = require('gulp-gh-pages');
-
 var AUTOPREFIXER_BROWSERS = [
   'ie >= 10',
   'ie_mob >= 10',
@@ -152,9 +155,9 @@ gulp.task('copy', function() {
   ]).pipe(gulp.dest(dist('bower_components/uqlibrary-api/mock')));
 
   return merge(app, bower)
-    .pipe($.size({
-      title: 'copy'
-    }));
+      .pipe($.size({
+        title: 'copy'
+      }));
 });
 
 // Copy web fonts to dist
@@ -336,7 +339,6 @@ gulp.task('serve:dist', ['default'], function() {
     middleware: [historyApiFallback()]
   });
 });
-
 // Build production files, the default task
 gulp.task('default', ['clean'], function(cb) {
   // Uncomment 'cache-config' if you are going to use service workers.
@@ -453,6 +455,7 @@ gulp.task('publish', function () {
       .pipe($.rename(function (path) {
         path.dirname = awsConfig.params.bucketSubDir + '/' + path.dirname;
       }))
+      .pipe(revAll.revision())
       // gzip, Set Content-Encoding headers
       .pipe($.awspublish.gzip())
 
