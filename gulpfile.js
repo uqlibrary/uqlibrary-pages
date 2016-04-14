@@ -30,9 +30,11 @@ var replace = require('gulp-replace-task');
 var taskList = require('gulp-task-listing');
 var argv = require('yargs').argv;
 
+var rev = require('gulp-rev');
+var revReplace = require('gulp-rev-replace');
+var revDelete = require('gulp-rev-delete-original');
 
 // var ghPages = require('gulp-gh-pages');
-
 var AUTOPREFIXER_BROWSERS = [
   'ie >= 10',
   'ie_mob >= 10',
@@ -46,7 +48,6 @@ var AUTOPREFIXER_BROWSERS = [
 ];
 
 var DIST = 'dist';
-
 var dist = function(subpath) {
   return !subpath ? DIST : path.join(DIST, subpath);
 };
@@ -103,6 +104,11 @@ var optimizeHtmlTask = function(src, dest) {
     }));
 };
 
+var absolutePath = function () {
+  var branch = process.env.CI_BRANCH;
+  return '//assets.library.uq.edu.au/' + branch + "/";
+};
+
 // Compile and automatically prefix stylesheets
 gulp.task('styles', function() {
   return styleTask('styles', ['**/*.scss']);
@@ -152,9 +158,9 @@ gulp.task('copy', function() {
   ]).pipe(gulp.dest(dist('bower_components/uqlibrary-api/mock')));
 
   return merge(app, bower)
-    .pipe($.size({
-      title: 'copy'
-    }));
+      .pipe($.size({
+        title: 'copy'
+      }));
 });
 
 // Copy web fonts to dist
@@ -337,6 +343,57 @@ gulp.task('serve:dist', ['default'], function() {
   });
 });
 
+gulp.task('rev-appcache-update', function () {
+  var json = JSON.parse(fs.readFileSync(dist() + "/rev-manifest.json"));
+
+  var source = gulp.src(dist() + '/index.appcache');
+  for (var key in json) {
+    if (!json.hasOwnProperty(key)) continue;
+    source.pipe($.replace(key, json[key]));
+  }
+
+  return source.pipe(gulp.dest(dist()));
+});
+
+gulp.task('remove-rev-file', function () {
+  return gulp.src(dist() + '/rev-manifest.json', { read: false }).pipe($.rimraf());
+});
+
+gulp.task('rev', function () {
+  var fileFilter = [
+    '**/elements.html',
+    '**/elements.js',
+    '**/main.css',
+    '**/app.js'
+  ];
+
+  var filter = $.filter(fileFilter, {restore: true});
+  return gulp.src('dist/**')
+      .pipe(filter)
+      .pipe(rev())
+      .pipe(revDelete())
+      .pipe(filter.restore)
+      .pipe(revReplace())
+      .pipe(gulp.dest(dist()))
+      .pipe(rev.manifest())
+      .pipe(gulp.dest(dist()));
+});
+
+gulp.task('rev-replace-polymer-fix', function () {
+  // Polymer does not use a rev-replace compatible string so we need to manually replace
+  return gulp.src('dist/**/*.html')
+      .pipe(revReplace({
+        manifest: gulp.src('dist/rev-manifest.json')
+      }))
+      .pipe(gulp.dest(dist()));
+});
+
+gulp.task('monkey-patch-rev-manifest', function () {
+  return gulp.src('dist/rev-manifest.json')
+      .pipe($.replace('elements/elements', 'elements'))
+      .pipe(gulp.dest(dist()));
+});
+
 // Build production files, the default task
 gulp.task('default', ['clean'], function(cb) {
   // Uncomment 'cache-config' if you are going to use service workers.
@@ -345,10 +402,15 @@ gulp.task('default', ['clean'], function(cb) {
     'elements',
     ['images', 'fonts', 'html'],
       'vulcanize',
-    'app-cache-version-update', // 'cache-config',
     'inject-browser-update',
     'inject-preloader',
     'monkey-patch-paper-input',
+    'rev',
+    'monkey-patch-rev-manifest',
+    'rev-replace-polymer-fix',
+    'app-cache-version-update',
+    'rev-appcache-update',
+    'remove-rev-file',
     cb);
 });
 
@@ -372,15 +434,19 @@ gulp.task('deploy-gh-pages', function() {
     }), $.ghPages()));
 });
 
-// Update application cache manifest version
+// Update application cache manifest version and set all paths to absolute
 // use only for deployment
 gulp.task('app-cache-version-update', function() {
 
-  var regEx = new RegExp("<VERSION>", "g");
+  var regExVersion = new RegExp("<VERSION>", "g");
+  var regExPath = new RegExp("/pages", "g");
+  var absolutPath = absolutePath();
+
   var timeStamp = new Date();
 
   return gulp.src(dist('**/*.appcache'))
-      .pipe(replace({patterns: [{ match: regEx, replacement: timeStamp.getTime()}], usePrefix: false}))
+      .pipe(replace({patterns: [{ match: regExVersion, replacement: timeStamp.getTime()}], usePrefix: false}))
+      .pipe(replace({patterns: [{ match: regExPath, replacement: absolutPath + 'pages'}], usePrefix: false}))
       .pipe(gulp.dest(dist()));
 });
 
