@@ -29,7 +29,10 @@ var cloudfront = require('gulp-invalidate-cloudfront');
 var replace = require('gulp-replace-task');
 var taskList = require('gulp-task-listing');
 var argv = require('yargs').argv;
-var RevAll = require('gulp-rev-all');
+
+var rev = require('gulp-rev');
+var revReplace = require('gulp-rev-replace');
+var revDelete = require('gulp-rev-delete-original');
 
 // var ghPages = require('gulp-gh-pages');
 var AUTOPREFIXER_BROWSERS = [
@@ -341,20 +344,39 @@ gulp.task('serve:dist', ['default'], function() {
   });
 });
 
-gulp.task('rev-all', function () {
-  var revAll = new RevAll({
-    dontRenameFile: [
-        /^\/index.html$/,
-        /^\/payment-receipt.html$/,
-        /^\/404.html$/,
-        /.json/,
-        /uqlibrary-browser-supported.js/,
-        /loading.svg/,
-        /elements.js/,
-        /index.appcache/
-    ]
-  });
-  return gulp.src('dist/**').pipe(revAll.revision()).pipe(gulp.dest(cdn()));
+gulp.task('rev', function () {
+  var fileFilter = [
+    '**/elements.html',
+    '**/elements.js',
+    '**/main.css',
+    '**/app.js'
+  ];
+
+  var filter = $.filter(fileFilter, {restore: true});
+  return gulp.src('dist/**')
+      .pipe(filter)
+      .pipe(rev())
+      .pipe(revDelete())
+      .pipe(filter.restore)
+      .pipe(revReplace())
+      .pipe(gulp.dest(dist()))
+      .pipe(rev.manifest())
+      .pipe(gulp.dest(dist()));
+});
+
+gulp.task('rev-replace-polymer-fix', function () {
+  // Polymer does not use a rev-replace compatible string so we need to manually replace
+  return gulp.src('dist/**/*.html')
+      .pipe(revReplace({
+        manifest: gulp.src('dist/rev-manifest.json')
+      }))
+      .pipe(gulp.dest(dist()));
+});
+
+gulp.task('monkey-patch-rev-manifest', function () {
+  return gulp.src('dist/rev-manifest.json')
+      .pipe($.replace('elements/elements', 'elements'))
+      .pipe(gulp.dest(dist()));
 });
 
 // Build production files, the default task
@@ -369,6 +391,9 @@ gulp.task('default', ['clean'], function(cb) {
     'inject-browser-update',
     'inject-preloader',
     'monkey-patch-paper-input',
+    'rev',
+    'monkey-patch-rev-manifest',
+    'rev-replace-polymer-fix',
     cb);
 });
 
@@ -458,7 +483,7 @@ gulp.task('invalidate', function () {
 });
 
 // upload package to S3
-gulp.task('publish', ['rev-all'], function () {
+gulp.task('publish', function () {
 
   // create a new publisher using S3 options
   var awsConfig = JSON.parse(fs.readFileSync('./aws.json'));
