@@ -27,23 +27,6 @@ pwd
 echo "Build distribution"
 gulp
 
-# If these files are the same, it means an error in vulcanizing
-echo "Checking vulcanization was performed correctly"
-set +e
-result=`diff dist/elements/elements.html app/elements/elements.html`
-set -e
-
-if [ -z "${result}" ]; then
-    echo "Improperly vulcanized file"
-    echo "This happens sporadically, rebuilding should fix"
-    exit 1;
-fi
-
-if ! [ -f dist/elements/elements.js ]; then
-    echo "Improperly vulcanized file - missing vulcanized.js"
-    exit 1;
-fi
-
 echo "Update app cache manifest version"
 appcache="dist/index.appcache"
 version=$(git rev-parse HEAD)
