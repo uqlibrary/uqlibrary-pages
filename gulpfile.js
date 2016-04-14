@@ -105,8 +105,12 @@ var optimizeHtmlTask = function(src, dest) {
 };
 
 var absolutePath = function () {
-  var branch = process.env.CI_BRANCH;
-  return '//assets.library.uq.edu.au/' + branch + "/";
+  var branch = "";
+  if (process.env.CI_BRANCH != "production"){
+    branch = process.env.CI_BRANCH + "/";
+  }
+
+  return '//assets.library.uq.edu.au/' + branch;
 };
 
 // Compile and automatically prefix stylesheets
