@@ -104,6 +104,11 @@ var optimizeHtmlTask = function(src, dest) {
     }));
 };
 
+var absolutePath = function () {
+  var branch = process.env.CI_BRANCH;
+  return '//assets.library.uq.edu.au/' + branch + "/";
+};
+
 // Compile and automatically prefix stylesheets
 gulp.task('styles', function() {
   return styleTask('styles', ['**/*.scss']);
@@ -381,13 +386,13 @@ gulp.task('default', ['clean'], function(cb) {
     'elements',
     ['images', 'fonts', 'html'],
       'vulcanize',
-    'app-cache-version-update', // 'cache-config',
     'inject-browser-update',
     'inject-preloader',
     'monkey-patch-paper-input',
     'rev',
     'monkey-patch-rev-manifest',
     'rev-replace-polymer-fix',
+    'app-cache-version-update', // 'cache-config',
     cb);
 });
 
@@ -411,15 +416,19 @@ gulp.task('deploy-gh-pages', function() {
     }), $.ghPages()));
 });
 
-// Update application cache manifest version
+// Update application cache manifest version and set all paths to absolute
 // use only for deployment
 gulp.task('app-cache-version-update', function() {
 
-  var regEx = new RegExp("<VERSION>", "g");
+  var regExVersion = new RegExp("<VERSION>", "g");
+  var regExPath = new RegExp("/pages", "g");
+  var absolutPath = absolutePath();
+
   var timeStamp = new Date();
 
   return gulp.src(dist('**/*.appcache'))
-      .pipe(replace({patterns: [{ match: regEx, replacement: timeStamp.getTime()}], usePrefix: false}))
+      .pipe(replace({patterns: [{ match: regExVersion, replacement: timeStamp.getTime()}], usePrefix: false}))
+      .pipe(replace({patterns: [{ match: regExPath, replacement: absolutPath + 'pages'}], usePrefix: false}))
       .pipe(gulp.dest(dist()));
 });
 
