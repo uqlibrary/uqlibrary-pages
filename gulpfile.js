@@ -343,6 +343,22 @@ gulp.task('serve:dist', ['default'], function() {
   });
 });
 
+gulp.task('rev-appcache-update', function () {
+  var json = JSON.parse(fs.readFileSync(dist() + "/rev-manifest.json"));
+
+  var source = gulp.src(dist() + '/index.appcache');
+  for (var key in json) {
+    if (!json.hasOwnProperty(key)) continue;
+    source.pipe($.replace(key, json[key]));
+  }
+
+  return source.pipe(gulp.dest(dist()));
+});
+
+gulp.task('remove-rev-file', function () {
+  return gulp.src(dist() + '/rev-manifest.json', { read: false }).pipe($.rimraf());
+});
+
 gulp.task('rev', function () {
   var fileFilter = [
     '**/elements.html',
@@ -392,7 +408,9 @@ gulp.task('default', ['clean'], function(cb) {
     'rev',
     'monkey-patch-rev-manifest',
     'rev-replace-polymer-fix',
-    'app-cache-version-update', // 'cache-config',
+    'app-cache-version-update',
+    'rev-appcache-update',
+    'remove-rev-file',
     cb);
 });
 
