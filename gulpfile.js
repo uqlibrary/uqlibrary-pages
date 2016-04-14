@@ -48,12 +48,6 @@ var AUTOPREFIXER_BROWSERS = [
 ];
 
 var DIST = 'dist';
-var CDN = 'cdn';
-
-var cdn = function (subpath) {
-  return !subpath ? CDN : path.join(CDN, subpath);
-};
-
 var dist = function(subpath) {
   return !subpath ? DIST : path.join(DIST, subpath);
 };
@@ -494,7 +488,7 @@ gulp.task('publish', function () {
     'Cache-Control': 'max-age=315360000, no-transform, public'
   };
 
-  return gulp.src(cdn('**/*'))
+  return gulp.src(dist('**/*'))
       .pipe($.rename(function (path) {
         path.dirname = awsConfig.params.bucketSubDir + '/' + path.dirname;
       }))
