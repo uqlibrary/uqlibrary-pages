@@ -75,6 +75,7 @@ toReplace=(
   "src=\"scripts/"
   "content=\"images/"
   "src=\"images/"
+  "manifest=\"/pages"
   )
 replaceWith=(
   "href=\"${absolutePath}/manifest.json\""
@@ -85,6 +86,7 @@ replaceWith=(
   "src=\"${absolutePath}/scripts/"
   "content=\"${absolutePath}/images/"
   "src=\"${absolutePath}/images/"
+  "manifest=\"${absolutePath}/pages"
   )
 
 for htmlFile in ${distFolder[@]}; do
