@@ -14,3 +14,4 @@ reports
 bin/saucelabs/nightwatch.js
 app/test/index.html
 *-e
+cdn

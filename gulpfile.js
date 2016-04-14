@@ -49,6 +49,11 @@ var AUTOPREFIXER_BROWSERS = [
 ];
 
 var DIST = 'dist';
+var CDN = 'cdn';
+
+var cdn = function (subpath) {
+  return !subpath ? CDN : path.join(CDN, subpath);
+};
 
 var dist = function(subpath) {
   return !subpath ? DIST : path.join(DIST, subpath);
@@ -339,6 +344,11 @@ gulp.task('serve:dist', ['default'], function() {
     middleware: [historyApiFallback()]
   });
 });
+
+gulp.task('rev-all', function () {
+  return gulp.src('dist/**').pipe(revAll.revision()).pipe(gulp.dest(cdn()));
+});
+
 // Build production files, the default task
 gulp.task('default', ['clean'], function(cb) {
   // Uncomment 'cache-config' if you are going to use service workers.
@@ -440,7 +450,7 @@ gulp.task('invalidate', function () {
 });
 
 // upload package to S3
-gulp.task('publish', function () {
+gulp.task('publish', ['rev-all'], function () {
 
   // create a new publisher using S3 options
   var awsConfig = JSON.parse(fs.readFileSync('./aws.json'));
@@ -451,11 +461,10 @@ gulp.task('publish', function () {
     'Cache-Control': 'max-age=315360000, no-transform, public'
   };
 
-  return gulp.src(dist('**/*'))
+  return gulp.src(cdn('**/*'))
       .pipe($.rename(function (path) {
         path.dirname = awsConfig.params.bucketSubDir + '/' + path.dirname;
       }))
-      .pipe(revAll.revision())
       // gzip, Set Content-Encoding headers
       .pipe($.awspublish.gzip())
 
