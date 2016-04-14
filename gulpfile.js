@@ -31,10 +31,6 @@ var taskList = require('gulp-task-listing');
 var argv = require('yargs').argv;
 var RevAll = require('gulp-rev-all');
 
-var revAll = new RevAll({
-  dontRenameFile: [ /^\/index.html$/, /^\/payment-receipt.html$/, /^\/404.html$/, /.json/ ]
-});
-
 // var ghPages = require('gulp-gh-pages');
 var AUTOPREFIXER_BROWSERS = [
   'ie >= 10',
@@ -346,6 +342,18 @@ gulp.task('serve:dist', ['default'], function() {
 });
 
 gulp.task('rev-all', function () {
+  var revAll = new RevAll({
+    dontRenameFile: [
+        /^\/index.html$/,
+        /^\/payment-receipt.html$/,
+        /^\/404.html$/,
+        /.json/,
+        /uqlibrary-browser-supported.js/,
+        /loading.svg/,
+        /elements.js/,
+        /index.appcache/
+    ]
+  });
   return gulp.src('dist/**').pipe(revAll.revision()).pipe(gulp.dest(cdn()));
 });
 
