@@ -57,6 +57,39 @@ This installs the element sets (Paper, Iron, Platinum) and tools the starter kit
 
 ### Development workflow
 
+#### Default setup for pages (index.html, etc)
+
+##### IMS force login
+IMS script should be included in the header to force on-campus users to login to be able to access content on S3 and Internet
+
+```
+  <!-- force IMS login for on-campus users -->
+  <script src="//www.library.uq.edu.au/js/ims.js"></script>
+```
+
+##### Preloader
+Include following placeholder in body of html page and gulp task 'inject-preloader' to display standard loading screen
+
+```
+    <!-- Preloader/Unsupported browser message -->
+    <!-- preloader will be inserted by gulp task, do not remove -->
+    #preloader#
+    <!-- End of Preloader/Unsupported browser message -->
+```
+
+##### Unsupported browsers message 
+Include following placeholder and gulp task 'inject-browser-update' to include standard browser check
+
+```
+  <script>
+    //display browser update message for unsupported browsers,
+    //will be inserted by gulp task, do not remove
+    //bower_components/uqlibrary-browser-supported/browser-update.js
+  </script>
+```
+  
+TODO: more TBC
+
 #### Serve / watch
 
 ```sh
