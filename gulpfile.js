@@ -25,14 +25,13 @@ var packageJson = require('./package.json');
 var crypto = require('crypto');
 
 var ensureFiles = require('./tasks/ensure-files.js');
-var cloudfront = require('gulp-invalidate-cloudfront');
+
+var requireDir = require('require-dir');
+requireDir('./tasks');
+
 var replace = require('gulp-replace-task');
 var taskList = require('gulp-task-listing');
 var argv = require('yargs').argv;
-
-var rev = require('gulp-rev');
-var revReplace = require('gulp-rev-replace');
-var revDelete = require('gulp-rev-delete-original');
 
 // var ghPages = require('gulp-gh-pages');
 var AUTOPREFIXER_BROWSERS = [
@@ -104,15 +103,6 @@ var optimizeHtmlTask = function(src, dest) {
     }));
 };
 
-var absolutePath = function () {
-  var branch = "";
-  if (process.env.CI_BRANCH !== "production"){
-    branch = process.env.CI_BRANCH + "/";
-  }
-
-  return '//assets.library.uq.edu.au/' + branch;
-};
-
 // Compile and automatically prefix stylesheets
 gulp.task('styles', function() {
   return styleTask('styles', ['**/*.scss']);
@@ -145,7 +135,6 @@ gulp.task('copy', function() {
     '!app/test',
     '!app/elements',
     '!app/bower_components',
-    '!app/cache-config.json',
     '!**/.DS_Store'
   ], {
     dot: true
@@ -217,99 +206,6 @@ gulp.task('clean_bower', function() {
       .pipe($.size({title: 'clean_bower'}));
 });
 
-// inject browser-update.js code into html pages
-gulp.task('inject-browser-update', function() {
-
-  var regEx = new RegExp("//bower_components/uqlibrary-browser-supported/browser-update.js", "g");
-  var browserUpdate=fs.readFileSync("app/bower_components/uqlibrary-browser-supported/browser-update.js", "utf8");
-
-  return gulp.src(dist('*'))
-      .pipe(replace({patterns: [{ match: regEx, replacement: browserUpdate}], usePrefix: false}))
-      .pipe(gulp.dest(dist()))
-      .pipe($.size({title: 'inject-browser-update'}));
-});
-
-// inject preloader.html code into html pages
-gulp.task('inject-preloader', function() {
-
-  var regEx = new RegExp("#preloader#", "g");
-  var browserUpdate=fs.readFileSync("app/bower_components/uqlibrary-browser-supported/preloader.html", "utf8");
-
-  return gulp.src(dist('*'))
-      .pipe(replace({patterns: [{ match: regEx, replacement: browserUpdate}], usePrefix: false}))
-      .pipe(gulp.dest(dist()))
-      .pipe($.size({title: 'inject-preloader'}));
-});
-
-// inject values for GA
-gulp.task('inject-ga-values', function() {
-
-  if (process.env.CI_BRANCH !== "production")
-      return;
-  
-  var gaIdEx = new RegExp("<GA-TRACKING-ID>", "g");
-  var gaUrlEx = new RegExp("<GA-WEBSITE-URL>", "g");
-  var gaDomainEx = new RegExp("<GA-COOKIE-DOMAIN>", "g");
-
-  var gaId = 'UA-4365437-1';
-  var gaUrl = 'www.library.uq.edu.au';
-  var gaDomain = 'library.uq.edu.au';
-
-  return gulp.src(dist('**/elements/*.js'))
-      .pipe(replace({patterns: [{ match: gaIdEx, replacement: gaId}], usePrefix: false}))
-      .pipe(replace({patterns: [{ match: gaUrlEx, replacement: gaUrl}], usePrefix: false}))
-      .pipe(replace({patterns: [{ match: gaDomainEx, replacement: gaDomain}], usePrefix: false}))
-      .pipe(gulp.dest(dist()))
-      .pipe($.size({title: 'inject-ga-values'}));
-});
-
-// remove when PR is done and cleared
-gulp.task('monkey-patch-paper-input', function() {
-
-  var regEx = new RegExp("bind-value=\"{{value}}\"", "g");
-
-  return gulp.src(dist('**/elements.html'))
-      .pipe(replace({patterns: [{ match: regEx, replacement: "bind-value=\"{{value}}\" value$=\"[[value]]\" "}], usePrefix: false}))
-      .pipe(gulp.dest(dist()))
-      .pipe($.size({title: 'monkey-patch-paper-input'}));
-});
-
-
-// Generate config data for the <sw-precache-cache> element.
-// This include a list of files that should be precached, as well as a (hopefully unique) cache
-// id that ensure that multiple PSK projects don't share the same Cache Storage.
-// This task does not run by default, but if you are interested in using service worker caching
-// in your project, please enable it within the 'default' task.
-// See https://github.com/PolymerElements/polymer-starter-kit#enable-service-worker-support
-// for more context.
-gulp.task('cache-config', function(callback) {
-  var dir = dist();
-  var config = {
-    cacheId: packageJson.name || path.basename(__dirname),
-    disabled: false
-  };
-
-  glob([
-    'index.html',
-    './',
-    'bower_components/webcomponentsjs/webcomponents-lite.min.js',
-    '{elements,scripts,styles}/**/*.*'],
-    {cwd: dir}, function(error, files) {
-    if (error) {
-      callback(error);
-    } else {
-      config.precache = files;
-
-      var md5 = crypto.createHash('md5');
-      md5.update(JSON.stringify(config.precache));
-      config.precacheFingerprint = md5.digest('hex');
-
-      var configPath = path.join(dir, 'cache-config.json');
-      fs.writeFile(configPath, JSON.stringify(config), callback);
-    }
-  });
-});
-
 // Clean output directory
 gulp.task('clean', function() {
   return del(['.tmp', dist()]);
@@ -369,60 +265,9 @@ gulp.task('serve:dist', ['default'], function() {
   });
 });
 
-gulp.task('rev-appcache-update', function () {
-  var json = JSON.parse(fs.readFileSync(dist() + "/rev-manifest.json"));
-
-  var source = gulp.src(dist() + '/index.appcache');
-  for (var key in json) {
-    if (!json.hasOwnProperty(key)) continue;
-    source.pipe($.replace(key, json[key]));
-  }
-
-  return source.pipe(gulp.dest(dist()));
-});
-
-gulp.task('remove-rev-file', function () {
-  return gulp.src(dist() + '/rev-manifest.json', { read: false }).pipe($.rimraf());
-});
-
-gulp.task('rev', function () {
-  var fileFilter = [
-    '**/elements.html',
-    '**/elements.js',
-    '**/main.css',
-    '**/app.js'
-  ];
-
-  var filter = $.filter(fileFilter, {restore: true});
-  return gulp.src('dist/**')
-      .pipe(filter)
-      .pipe(rev())
-      .pipe(revDelete())
-      .pipe(filter.restore)
-      .pipe(revReplace())
-      .pipe(gulp.dest(dist()))
-      .pipe(rev.manifest())
-      .pipe(gulp.dest(dist()));
-});
-
-gulp.task('rev-replace-polymer-fix', function () {
-  // Polymer does not use a rev-replace compatible string so we need to manually replace
-  return gulp.src('dist/**/*.html')
-      .pipe(revReplace({
-        manifest: gulp.src('dist/rev-manifest.json')
-      }))
-      .pipe(gulp.dest(dist()));
-});
-
-gulp.task('monkey-patch-rev-manifest', function () {
-  return gulp.src('dist/rev-manifest.json')
-      .pipe($.replace('elements/elements', 'elements'))
-      .pipe(gulp.dest(dist()));
-});
 
 // Build production files, the default task
 gulp.task('default', ['clean'], function(cb) {
-  // Uncomment 'cache-config' if you are going to use service workers.
   runSequence(
     ['ensureFiles', 'copy', 'styles'],
     'elements',
@@ -441,42 +286,6 @@ gulp.task('default', ['clean'], function(cb) {
     cb);
 });
 
-// Build then deploy to GitHub pages gh-pages branch
-gulp.task('build-deploy-gh-pages', function(cb) {
-  runSequence(
-    'default',
-    'deploy-gh-pages',
-    cb);
-});
-
-// Deploy to GitHub pages gh-pages branch
-gulp.task('deploy-gh-pages', function() {
-  return gulp.src(dist('**/*'))
-    // Check if running task from Travis CI, if so run using GH_TOKEN
-    // otherwise run using ghPages defaults.
-    .pipe($.if(process.env.TRAVIS === 'true', $.ghPages({
-      remoteUrl: 'https://$GH_TOKEN@github.com/uqlibrary-pages/uqlibrary-pages.git',
-      silent: true,
-      branch: 'gh-pages'
-    }), $.ghPages()));
-});
-
-// Update application cache manifest version and set all paths to absolute
-// use only for deployment
-gulp.task('app-cache-version-update', function() {
-
-  var regExVersion = new RegExp("<VERSION>", "g");
-  var regExPath = new RegExp("/pages", "g");
-  var absolutPath = absolutePath();
-
-  var timeStamp = new Date();
-
-  return gulp.src(dist('**/*.appcache'))
-      .pipe(replace({patterns: [{ match: regExVersion, replacement: timeStamp.getTime()}], usePrefix: false}))
-      .pipe(replace({patterns: [{ match: regExPath, replacement: absolutPath + 'pages'}], usePrefix: false}))
-      .pipe(gulp.dest(dist()));
-});
-
 // Load tasks for web-component-tester
 // Adds tasks for `gulp test:local` and `gulp test:remote`
 require('web-component-tester').gulp.init(gulp);
@@ -487,75 +296,3 @@ try {
 } catch (err) {}
 
 gulp.task('help', taskList);
-
-/**
- * Command line param:
- *    --path {INVALIDATION_PATH}
- *
- * If no bucket path passed will invalidate production subdir
- */
-gulp.task('invalidate', function () {
-  var awsConfig = JSON.parse(fs.readFileSync('./aws.json'));
-
-  var invalidatePath = '';
-
-  if (argv.path) {
-    invalidatePath = argv.path + '/*';
-  } else {
-    invalidatePath += '/pages/*';
-  }
-
-  $.util.log('Invalidation path: ' + invalidatePath);
-
-  var invalidationBatch = {
-    CallerReference: new Date().toString(),
-    Paths: {
-      Quantity: 1,
-      Items: [
-        invalidatePath
-      ]
-    }
-  };
-
-  var awsSettings = {
-    credentials: {
-      accessKeyId: awsConfig.accessKeyId,
-      secretAccessKey: awsConfig.secretAccessKey
-    },
-    distributionId: awsConfig.params.distribution,
-    region: awsConfig.params.region
-  };
-
-  return gulp.src(['**/*'])
-      .pipe(cloudfront(invalidationBatch, awsSettings));
-});
-
-// upload package to S3
-gulp.task('publish', function () {
-
-  // create a new publisher using S3 options
-  var awsConfig = JSON.parse(fs.readFileSync('./aws.json'));
-  var publisher = $.awspublish.create(awsConfig);
-
-  // define custom headers
-  var headers = {
-    'Cache-Control': 'max-age=315360000, no-transform, public'
-  };
-
-  return gulp.src(dist('**/*'))
-      .pipe($.rename(function (path) {
-        path.dirname = awsConfig.params.bucketSubDir + '/' + path.dirname;
-      }))
-      // gzip, Set Content-Encoding headers
-      .pipe($.awspublish.gzip())
-
-      // publisher will add Content-Length, Content-Type and headers specified above
-      // If not specified it will set x-amz-acl to public-read by default
-      .pipe(publisher.publish(headers))
-
-      // create a cache file to speed up consecutive uploads
-      .pipe(publisher.cache())
-
-      // print upload updates to console
-      .pipe($.awspublish.reporter());
-});
