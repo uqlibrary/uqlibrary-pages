@@ -106,7 +106,7 @@ var optimizeHtmlTask = function(src, dest) {
 
 var absolutePath = function () {
   var branch = "";
-  if (process.env.CI_BRANCH != "production"){
+  if (process.env.CI_BRANCH !== "production"){
     branch = process.env.CI_BRANCH + "/";
   }
 
@@ -239,6 +239,28 @@ gulp.task('inject-preloader', function() {
       .pipe(replace({patterns: [{ match: regEx, replacement: browserUpdate}], usePrefix: false}))
       .pipe(gulp.dest(dist()))
       .pipe($.size({title: 'inject-preloader'}));
+});
+
+// inject values for GA
+gulp.task('inject-ga-values', function() {
+
+  if (process.env.CI_BRANCH !== "production")
+      return;
+  
+  var gaIdEx = new RegExp("<GA-TRACKING-ID>", "g");
+  var gaUrlEx = new RegExp("<GA-WEBSITE-URL>", "g");
+  var gaDomainEx = new RegExp("<GA-COOKIE-DOMAIN>", "g");
+
+  var gaId = 'UA-4365437-1';
+  var gaUrl = 'www.library.uq.edu.au';
+  var gaDomain = 'library.uq.edu.au';
+
+  return gulp.src(dist('**/elements/*.js'))
+      .pipe(replace({patterns: [{ match: gaIdEx, replacement: gaId}], usePrefix: false}))
+      .pipe(replace({patterns: [{ match: gaUrlEx, replacement: gaUrl}], usePrefix: false}))
+      .pipe(replace({patterns: [{ match: gaDomainEx, replacement: gaDomain}], usePrefix: false}))
+      .pipe(gulp.dest(dist()))
+      .pipe($.size({title: 'inject-ga-values'}));
 });
 
 // remove when PR is done and cleared
@@ -408,6 +430,7 @@ gulp.task('default', ['clean'], function(cb) {
       'vulcanize',
     'inject-browser-update',
     'inject-preloader',
+    'inject-ga-values',
     'monkey-patch-paper-input',
     'rev',
     'monkey-patch-rev-manifest',
