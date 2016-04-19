@@ -8,7 +8,7 @@
     "polymer": "Polymer/polymer#^1.2.0",
     "uqlibrary-styles": "uqlibrary/uqlibrary-styles#v1.0.0",
     "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components#production",
-    "uqlibrary-hours": "uqlibrary/uqlibrary-hours#v1.0.6",
+    "uqlibrary-hours": "uqlibrary/uqlibrary-hours#^1.0.8",
     "uqlibrary-computers": "uqlibrary/uqlibrary-computers#v1.0.7",
     "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights#v1.0.3",
     "uqlibrary-alerts": "uqlibrary/uqlibrary-alerts#v1.0.1",
