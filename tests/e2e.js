@@ -1,7 +1,7 @@
 module.exports = {
   'load uqlibrary index page' : function (client) {
     client
-        .url('http://localhost:5001')
+        .url('http://dev-app.library.uq.edu.au:5001')
         .pause(5000)
         .waitForElementVisible('body', 1000)
         .assert.elementPresent('uq-minimal-header', 'uq header component is present')
@@ -14,7 +14,7 @@ module.exports = {
 
   'test sidebar components' : function (client) {
     client
-        .url('http://localhost:5001')
+        .url('http://dev-app.library.uq.edu.au:5001')
         .pause(5000)
         .waitForElementVisible('body', 1000)
         .assert.elementPresent('paper-tabs', 'paper-tabs component is present')

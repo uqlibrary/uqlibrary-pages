@@ -1,7 +1,8 @@
 module.exports = {
-  'load uqlibrary index page' : function (client) {
+  
+  'load uqlibrary payment receipt - standard header/menu/footer' : function (client) {
     client
-        .url('http://localhost:5001')
+        .url('http://dev-app.library.uq.edu.au:5001/payment-receipt.html?Success=1&AmountPaid=1099&Receipt=ABC123')
         .pause(5000)
         .waitForElementVisible('body', 1000)
         .assert.elementPresent('uq-minimal-header', 'uq header component is present')
@@ -12,12 +13,13 @@ module.exports = {
         .end();
   },
 
-  'test sidebar components' : function (client) {
+  'uqlibrary payment receipt - should display receipt' : function (client) {
     client
-        .url('http://localhost:5001')
+        .url('http://dev-app.library.uq.edu.au:5001/payment-receipt.html?Success=1&AmountPaid=1099&Receipt=ABC123')
         .pause(5000)
         .waitForElementVisible('body', 1000)
-        .assert.elementPresent('paper-tabs', 'paper-tabs component is present')
-        .end();
+        .assert.elementPresent('uqlibrary-receipt', 'receipt component is present')
+        .assert.containsText('#paymentReceipt .title-text', 'Payment receipt');
+      client.end();
   }
 };

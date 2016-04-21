@@ -205,7 +205,9 @@ gulp.task('clean', function() {
 // Watch files for changes & reload
 gulp.task('serve', ['clean_bower', 'styles', 'elements'], function() {
   browserSync({
-    port: 5000,
+    open: "external",
+    host: 'dev-app.library.uq.edu.au',
+    port: 9999,
     notify: false,
     logPrefix: 'UQL',
     snippetOptions: {
@@ -236,6 +238,8 @@ gulp.task('serve', ['clean_bower', 'styles', 'elements'], function() {
 // Build and serve the output from the dist build
 gulp.task('serve:dist', ['default'], function() {
   browserSync({
+    open: "external",
+    host: 'dev-app.library.uq.edu.au',
     port: 5001,
     notify: false,
     logPrefix: 'UQL',
