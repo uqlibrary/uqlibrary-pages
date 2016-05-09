@@ -24,7 +24,7 @@
   "ignore": [],
   "resolutions": {
     "byutv-jsonp": "~1.2.0",
-    "polymer-carousel": "0.1.2",
-    "uqlibrary-ga": "v1.0.3"
+    "uqlibrary-ga": "v1.0.3",
+    "uqlibrary-api": "^1.0.3"
   }
 }
