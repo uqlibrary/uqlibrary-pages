@@ -36,13 +36,13 @@ case "$branch" in
     echo "install selenium"
     curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/packages/selenium_server.sh | bash -s
     cd bin/local
-    ./nightwatch.js
-    ./nightwatch.js --env chrome
+    #./nightwatch.js
+    #./nightwatch.js --env chrome
   ;;
   "3")
     cd bin/saucelabs
-    ./nightwatch.js
-    ./nightwatch.js --env ie11
+    #./nightwatch.js
+    #./nightwatch.js --env ie11
   ;;
   esac
   ;;
