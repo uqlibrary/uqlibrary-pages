@@ -12,7 +12,7 @@
     "uqlibrary-computers": "uqlibrary/uqlibrary-computers#v1.0.7",
     "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights#v1.0.5",
     "uqlibrary-alerts": "uqlibrary/uqlibrary-alerts#v1.0.1",
-    "uqlibrary-search": "uqlibrary/uqlibrary-search#v1.1.0",
+    "uqlibrary-search": "uqlibrary/uqlibrary-search#v1.1.2",
     "uqlibrary-training": "uqlibrary/uqlibrary-training#v1.0.1",
     "uqlibrary-browser-supported": "uqlibrary/uqlibrary-browser-supported#v1.0.0",
     "uqlibrary-receipt": "uqlibrary/uqlibrary-receipt#v1.0.5",
@@ -25,7 +25,7 @@
   "resolutions": {
     "byutv-jsonp": "~1.2.0",
     "uqlibrary-ga": "v1.0.3",
-    "uqlibrary-api": "^1.0.3",
+    "uqlibrary-api": "^1.0.5",
     "uqlibrary-iron-dropdown": "^1.2.2",
     "uqlibrary-autosuggest-input": "v1.0.6"
   }
