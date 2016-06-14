@@ -16,7 +16,8 @@
     "uqlibrary-training": "uqlibrary/uqlibrary-training#v1.0.1",
     "uqlibrary-browser-supported": "uqlibrary/uqlibrary-browser-supported#v1.0.0",
     "uqlibrary-receipt": "uqlibrary/uqlibrary-receipt#v1.0.5",
-    "uqlibrary-ga": "uqlibrary/uqlibrary-ga#v1.0.3"
+    "uqlibrary-ga": "uqlibrary/uqlibrary-ga#v1.0.3",
+    "uqlibrary-api": "uqlibrary/uqlibrary-api#primo"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
@@ -26,7 +27,7 @@
     "byutv-jsonp": "~1.2.0",
     "uqlibrary-ga": "v1.0.3",
     "uqlibrary-styles": "v1.0.3",
-    "uqlibrary-api": "^1.0.8",
+    "uqlibrary-api": "primo",
     "uqlibrary-iron-dropdown": "^1.2.2",
     "uqlibrary-autosuggest-input": "v1.0.9"
   }
