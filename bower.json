@@ -25,9 +25,10 @@
   "resolutions": {
     "byutv-jsonp": "~1.2.0",
     "uqlibrary-ga": "v1.0.3",
-   "uqlibrary-styles": "v1.0.3",
+    "uqlibrary-styles": "v1.0.3",
     "uqlibrary-api": "^1.1.8",
-   "uqlibrary-iron-dropdown": "^1.2.2",
-    "uqlibrary-autosuggest-input": "v1.0.9"
+    "uqlibrary-iron-dropdown": "^1.2.2",
+    "uqlibrary-autosuggest-input": "v1.0.9",
+    "uqlibrary-browser-supported": "v1.0.1"
   }
 }
