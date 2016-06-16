@@ -19,9 +19,17 @@
     .upgrade-form,
     .upgrade-process{
       max-width: 600px;
+      width: 600px;
       margin: 20px auto;
 
       border: 1px solid #b31e00;
+    }
+
+    .button-container {
+      text-align: center;
+    }
+    .button-colored-accent {
+      margin: 10px 0;
     }
 
     .upgrade-process {
@@ -47,7 +55,9 @@
         <paper-input id="username" label="Your library user name" required="true" value="{{userName::input}}"></paper-input>
         <paper-input id="email" label="Your email account" required="true" value="{{email::input}}"></paper-input>
 
-        <paper-button class="button-colored-accent" on-tap="_startUpgrade">Upgrade (or a better word)</paper-button>
+        <div class="button-container">
+          <paper-button class="button-colored-accent" on-tap="_startUpgrade">Upgrade (or a better word)</paper-button>
+        </div>
 
       </div>
     </template>
@@ -176,6 +186,8 @@
         },
 
         _startUpgrade: function() {
+          console.log(this.userName);
+
           if (this.userName && this.email) {
             this.displayForm = false;
             this.displayProcess = true;
