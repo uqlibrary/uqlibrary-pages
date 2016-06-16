@@ -7,7 +7,7 @@
     "paper-elements": "PolymerElements/paper-elements#^1.0.1",
     "polymer": "Polymer/polymer#^1.2.0",
     "uqlibrary-styles": "uqlibrary/uqlibrary-styles#v1.0.3",
-    "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components#production",
+    "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components#master",
     "uqlibrary-hours": "uqlibrary/uqlibrary-hours#^1.1.3",
     "uqlibrary-computers": "uqlibrary/uqlibrary-computers#v1.0.7",
     "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights#v1.0.6",

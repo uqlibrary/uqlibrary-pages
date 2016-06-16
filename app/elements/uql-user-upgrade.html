@@ -1,0 +1,220 @@
+<dom-module id="uql-user-upgrade">
+
+  <link rel="import" href="elements.html">
+  <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+  <link rel="import" href="../bower_components/paper-input/paper-input.html.html">
+  <link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+  <style is="custom-style" include="common-styles">
+
+    :host {
+      display: block;
+      min-height: 50vh;
+    }
+
+    .preloader-card {
+      text-align: center;
+    }
+
+    .upgrade-form,
+    .upgrade-process{
+      max-width: 600px;
+      margin: 20px auto;
+
+      border: 1px solid #b31e00;
+    }
+
+    .upgrade-process {
+      text-align: center;
+    }
+
+  </style>
+
+  <template>
+    <iron-ajax id="upgradeApi"
+               url="https://app-testing.library.uq.edu.au/api/membership/upgrade"
+               handle-as="json"
+               on-response="_upgradeCompleted"></iron-ajax>
+
+    <div> why we are going through the process text ...</div>
+
+    <template is="dom-if" if="[[displayForm]]">
+
+      <div class="upgrade-form">
+
+        <p> Some text here about this form ....</p>
+
+        <paper-input id="username" label="Your library user name" required="true" value="{{userName::input}}"></paper-input>
+        <paper-input id="email" label="Your email account" required="true" value="{{email::input}}"></paper-input>
+
+        <paper-button class="button-colored-accent" on-tap="_startUpgrade">Upgrade (or a better word)</paper-button>
+
+      </div>
+    </template>
+
+    <template is="dom-if" if="[[displayProcess]]">
+
+        <div class="upgrade-process">
+          <img src="../images/loading.svg" width="48" />
+          <p id="loadingTitle" class="text-center">Processing your request...</p>
+        </div>
+
+    </template>
+
+    <template is="dom-if" if="[[displaySuccess]]">
+
+      <div class="upgrade-form">
+        <h3>Your account has been updated </h3>
+        <p>
+          Your new library login is:
+          <ul><li>[[newUserName]]</li></ul>
+        </p>
+        <p>
+          You will receive aknowledgement email and email with instructions how to reset password.
+          any more text?
+        </p>
+      </div>
+
+    </template>
+
+    <template is="dom-if" if="[[displayError]]">
+
+      <div class="upgrade-form">
+
+        <template is="dom-if" if="[[displayError]]">
+        <h3> Duplicate upgrade request </h3>
+        <p>
+          Your account has been upgraded. Your new user name is:
+        </p>
+        <ul><li>[[newUserName]]</li></ul>
+        <p>
+            You should have received aknowledgement email and email with instructions how to reset password.
+            if you haven't please contact us .... more text??
+          </p>
+        </template>
+
+        <template is="dom-if" if="[[displayError]]">
+        <h3> Error processing your request </h3>
+        <p>
+          Invalid combination of user name and email. <a href="https://www.library.uq.edu.au/upgrade.html">Please try again.</a>
+        </p>
+        </template>
+
+        <template is="dom-if" if="[[displayError]]">
+        <h3> Upgrade request submitted</h3>
+        <p>
+          Your account upgrade process is in progress and will be completed shortly.
+          You will receive aknowledgement email and email with instructions how to reset password.
+
+          any more text?
+        </p>
+        </template>
+
+      </div>
+
+    </template>
+
+  </template>
+
+  <script>
+    (function() {
+      Polymer({
+        is: 'uql-user-upgrade',
+
+        properties: {
+          displayForm : {
+            type: Boolean,
+            value: false
+          },
+
+          displayProcess : {
+            type: Boolean,
+            value: false
+          },
+
+          displaySuccess : {
+            type: Boolean,
+            value: false
+          },
+
+          displayError : {
+            type: Boolean,
+            value: false
+          },
+
+          userName: {
+            type: String
+          },
+
+          newUserName: {
+            type: String
+          },
+
+          email: {
+            type: String
+          }
+
+        },
+
+        ready: function() {
+
+          this.userName = this._getQueryVariable('userName');
+          this.email = this._getQueryVariable('email');
+
+          this.displayForm = !this.userName || !this.email;
+
+          if (!this.displayForm)
+            this._startUpgrade();
+
+          //TODO: remove, just for testing...
+          this.displayForm = true;
+          this.displayProcess = true;
+          this.displaySuccess = true;
+          this.displayError = true;
+          this.newUserName = 'emHelloWorld';
+
+        },
+
+        _startUpgrade: function() {
+          if (this.userName && this.email) {
+            this.displayForm = false;
+            this.displayProcess = true;
+
+            this.$.upgradeApi.params.userName = this.userName;
+            this.$.upgradeApi.params.email = this.email;
+            this.$.upgradeApi.generateRequest();
+          }
+        },
+
+        _upgradeCompleted: function(event) {
+          var that = this;
+          setTimeout(function(){
+            that.displayProcess = false;
+            that.displaySuccess = true;
+            console.log(JSON.parse(event.detail.response));
+          }, 1000);
+        },
+
+        /**
+         * Gets a query variable from the URL
+         * @param variable
+         * @returns {*}
+         * @private
+         */
+        _getQueryVariable: function (variable) {
+          var query = window.location.search.substring(1);
+          var vars = query.split("&");
+          for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+              return pair[1];
+            }
+          }
+          return ('');
+        }
+
+      });
+    })();
+  </script>
+
+</dom-module>
