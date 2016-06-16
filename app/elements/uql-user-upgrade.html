@@ -19,10 +19,8 @@
     .upgrade-form,
     .upgrade-process{
       max-width: 600px;
-      width: 600px;
+      width: 80vw;
       margin: 20px auto;
-
-      border: 1px solid #b31e00;
     }
 
     .button-container {
@@ -40,8 +38,10 @@
 
   <template>
     <iron-ajax id="upgradeApi"
-               url="https://app-testing.library.uq.edu.au/api/membership/upgrade"
+               url="https://app-testing.library.uq.edu.au/api/user_upgrade"
+               method="POST"
                handle-as="json"
+               content-type="application/json"
                on-response="_upgradeCompleted"></iron-ajax>
 
     <div> why we are going through the process text ...</div>
@@ -91,7 +91,14 @@
 
       <div class="upgrade-form">
 
-        <template is="dom-if" if="[[displayError]]">
+        <template is="dom-if" if="[[_displayError(errorCode, 10)]]">
+          <h3> Error processing your request </h3>
+          <p>
+            Invalid combination of user name and email. <a href="https://www.library.uq.edu.au/upgrade.html">Please try again.</a>
+          </p>
+        </template>
+
+        <template is="dom-if" if="[[_displayError(errorCode, 20)]]">
         <h3> Duplicate upgrade request </h3>
         <p>
           Your account has been upgraded. Your new user name is:
@@ -103,14 +110,7 @@
           </p>
         </template>
 
-        <template is="dom-if" if="[[displayError]]">
-        <h3> Error processing your request </h3>
-        <p>
-          Invalid combination of user name and email. <a href="https://www.library.uq.edu.au/upgrade.html">Please try again.</a>
-        </p>
-        </template>
-
-        <template is="dom-if" if="[[displayError]]">
+        <template is="dom-if" if="[[_displayError(errorCode, 30)]]">
         <h3> Upgrade request submitted</h3>
         <p>
           Your account upgrade process is in progress and will be completed shortly.
@@ -152,6 +152,11 @@
             value: false
           },
 
+          errorCode : {
+            type: Number,
+            value: 0
+          },
+
           userName: {
             type: String
           },
@@ -177,34 +182,58 @@
             this._startUpgrade();
 
           //TODO: remove, just for testing...
-          this.displayForm = true;
-          this.displayProcess = true;
-          this.displaySuccess = true;
-          this.displayError = true;
-          this.newUserName = 'emHelloWorld';
+          if (this._getQueryVariable('all')) {
+            this.displayForm = true;
+            this.displayProcess = true;
+            this.displaySuccess = true;
+            this.displayError = true;
+          }
 
         },
 
         _startUpgrade: function() {
-          console.log(this.userName);
-
           if (this.userName && this.email) {
+
             this.displayForm = false;
+            that.displaySuccess = false;
+            that.displayError = false;
             this.displayProcess = true;
 
-            this.$.upgradeApi.params.userName = this.userName;
-            this.$.upgradeApi.params.email = this.email;
+
+            this.$.upgradeApi.body = {
+              username : this.userName,
+              email : this.email
+            };
+
             this.$.upgradeApi.generateRequest();
           }
         },
 
         _upgradeCompleted: function(event) {
           var that = this;
+
           setTimeout(function(){
             that.displayProcess = false;
-            that.displaySuccess = true;
-            console.log(JSON.parse(event.detail.response));
+            this.displayForm = false;
+            that.displaySuccess = false;
+            that.displayError = false;
+
+            var response = event.detail.response;
+
+            if (!response.error) {
+              that.displaySuccess = true;
+              that.newUserName = response.username;
+            } else {
+              that.displayError = true;
+              that.errorCode = response.code;
+            }
+
           }, 1000);
+
+        },
+
+        _displayError: function(incomingCode, compareCode){
+          return incomingCode == compareCode || this._getQueryVariable('all');
         },
 
         /**
