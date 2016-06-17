@@ -28,6 +28,6 @@
     "uqlibrary-styles": "v1.0.5",
     "uqlibrary-api": "primo",
     "uqlibrary-iron-dropdown": "^1.2.2",
-    "uqlibrary-autosuggest-input": "v1.0.9"
+    "uqlibrary-autosuggest-input": "v1.1.0"
   }
 }
