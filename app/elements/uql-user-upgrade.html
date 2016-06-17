@@ -44,19 +44,28 @@
                content-type="application/json"
                on-response="_upgradeCompleted"></iron-ajax>
 
-    <div> why we are going through the process text ...</div>
+    <div>
+      <p>
+        Upgrade your UQ Library account now to receive your new user name and password for the new UQ Library search via email.
+      </p>
+      <p>
+        The upgrade is required for membership types: <br>
+        UQ Alumni, Alumni Friends, Community, Cyberschool, Hospital Staff (RBWH, LCCH and Mater), Official Visitor, Proxy Borrowers, Reciprocal Borrower, Retired UQ Staff, Staff awaiting Aurion access and UQ Associate members.
+      </p>
+
+    </div>
 
     <template is="dom-if" if="[[displayForm]]">
 
       <div class="upgrade-form">
 
-        <p> Some text here about this form ....</p>
+        <h3>Upgrade now</h3>
 
         <paper-input id="username" label="Your library user name" required="true" value="{{userName::input}}"></paper-input>
         <paper-input id="email" label="Your email account" required="true" value="{{email::input}}"></paper-input>
 
         <div class="button-container">
-          <paper-button class="button-colored-accent" on-tap="_startUpgrade">Upgrade (or a better word)</paper-button>
+          <paper-button class="button-colored-accent" on-tap="_startUpgrade">Upgrade account</paper-button>
         </div>
 
       </div>
@@ -74,14 +83,12 @@
     <template is="dom-if" if="[[displaySuccess]]">
 
       <div class="upgrade-form">
-        <h3>Your account has been updated </h3>
+        <h3>Upgrade complete, your account has been activated</h3>
         <p>
-          Your new library login is:
-          <ul><li>[[newUserName]]</li></ul>
-        </p>
-        <p>
-          You will receive aknowledgement email and email with instructions how to reset password.
-          any more text?
+          Your new username is <strong>[[newUserName]]</strong> <br><br>
+          We have sent you a confirmation email. <br>
+          You will also reset a link to set a new password for your account in a second email shortly.
+          Your account is active.  <a href="https://www.library.uq.edu.au/">Return to the Library.</a>
         </p>
       </div>
 
@@ -94,7 +101,7 @@
         <template is="dom-if" if="[[_displayError(errorCode, 10)]]">
           <h3> Error processing your request </h3>
           <p>
-            Invalid combination of user name and email. <a href="https://www.library.uq.edu.au/upgrade.html">Please try again.</a>
+            Invalid combination of user name and email. <a href="https://test.library.uq.edu.au/upgrade.html">Please try again.</a>
           </p>
         </template>
 
@@ -105,8 +112,8 @@
         </p>
         <ul><li>[[newUserName]]</li></ul>
         <p>
-            You should have received aknowledgement email and email with instructions how to reset password.
-            if you haven't please contact us .... more text??
+          You should have received your new user name and password for the new UQ Library search via email.
+          If you haven't please <a href="https://web.library.uq.edu.au/contact-us">contact us</a>.
           </p>
         </template>
 
@@ -114,9 +121,7 @@
         <h3> Upgrade request submitted</h3>
         <p>
           Your account upgrade process is in progress and will be completed shortly.
-          You will receive aknowledgement email and email with instructions how to reset password.
-
-          any more text?
+          You will receive your new user name and password for the new UQ Library search via email.
         </p>
         </template>
 

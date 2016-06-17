@@ -28,6 +28,11 @@ if (!browserData.supported) {
       var menu = document.querySelector('uql-menu');
       menu.toggleMenu();
     });
+
+    // GA events
+    var ga = document.querySelector('#home-ga');
+    // record page view
+    ga.addPageView(document.location.href);
   });
 
   //// Grab a reference to our auto-binding template
@@ -35,31 +40,28 @@ if (!browserData.supported) {
   //// Learn more about auto-binding templates at http://goo.gl/Dx1u2g
   var uqlFrontPage = document.querySelector('#uqlFrontPage');
 
-  //// Listen for template bound event to know when bindings
-  //// have resolved and content has been stamped to the page
-  uqlFrontPage.addEventListener('dom-change', function() {
+  if (typeof(uqlFrontPage) !== 'undefined' && uqlFrontPage) {
+    //// Listen for template bound event to know when bindings
+    //// have resolved and content has been stamped to the page
+    uqlFrontPage.addEventListener('dom-change', function () {
 
-    //set sidebar tab default
-    uqlFrontPage.selectedSidebarTab = 0;
+      //set sidebar tab default
+      uqlFrontPage.selectedSidebarTab = 0;
 
-    //set search card help links
-    var search = Polymer.dom(document).querySelector("uqlibrary-search");
-    uqlFrontPage.selectedSearchSource = search.selectedSource;
-
-    search.addEventListener('selected-source-changed', function(e) {
+      //set search card help links
+      var search = Polymer.dom(document).querySelector("uqlibrary-search");
       uqlFrontPage.selectedSearchSource = search.selectedSource;
-    });
 
-    // GA events
-    var ga = document.querySelector('#home-ga');
-    // record page view
-    ga.addPageView(document.location.href);
+      search.addEventListener('selected-source-changed', function (e) {
+        uqlFrontPage.selectedSearchSource = search.selectedSource;
+      });
 
-    // Add GA events to the sidebar tabs
-    var uqlSidebar = document.querySelector('#sidebar-tabs');
-    uqlSidebar.addEventListener('iron-select', function (e) {
-      ga.addEvent('Navigation', 'Sidebar tab ' + e.detail.item.innerText.toLowerCase());
+      // Add GA events to the sidebar tabs
+      var uqlSidebar = document.querySelector('#sidebar-tabs');
+      uqlSidebar.addEventListener('iron-select', function (e) {
+        ga.addEvent('Navigation', 'Sidebar tab ' + e.detail.item.innerText.toLowerCase());
+      });
     });
-  });
+  }
 
 })(document);
