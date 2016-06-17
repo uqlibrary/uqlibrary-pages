@@ -28,7 +28,7 @@
     "uqlibrary-styles": "v1.0.3",
     "uqlibrary-api": "^1.1.8",
     "uqlibrary-iron-dropdown": "^1.2.2",
-    "uqlibrary-autosuggest-input": "v1.0.9",
+    "uqlibrary-autosuggest-input": "v1.1.0",
     "uqlibrary-browser-supported": "v1.0.2"
   }
 }
