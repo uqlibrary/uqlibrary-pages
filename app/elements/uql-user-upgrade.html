@@ -131,6 +131,14 @@
         </p>
         </template>
 
+        <template is="dom-if" if="[[_displayError(errorCode, 40)]]">
+          <h3> Invalid upgrade request</h3>
+          <p>
+            Your account has not been confirmed by library staff. You will receive library membership confirmation email when your membership will be confirmed by library staff and then you can proceed with the upgrade process. <br>
+            If you have any queries please <a href="https://web.library.uq.edu.au/contact-us">contact us for assistance</a>.
+          </p>
+        </template>
+
       </div>
 
     </template>
