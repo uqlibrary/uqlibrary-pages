@@ -4,6 +4,7 @@
   <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
   <link rel="import" href="../bower_components/paper-input/paper-input.html">
   <link rel="import" href="../bower_components/paper-button/paper-button.html">
+  <script src="../scripts/md5.js"></script>
 
   <style is="custom-style" include="common-styles">
 
@@ -204,10 +205,13 @@
             this.displayError = false;
             this.displayProcess = true;
 
+            var md5email = CryptoJS.MD5(this.email).toString();
+
+            console.log(md5email);
 
             this.$.upgradeApi.body = {
               username : this.userName,
-              email : this.email
+              email : md5email
             };
 
             this.$.upgradeApi.generateRequest();
