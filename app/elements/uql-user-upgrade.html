@@ -50,8 +50,13 @@
         Upgrade your UQ Library account now to receive your new user name and password for the new UQ Library search via email.
       </p>
       <p>
-        The upgrade is required for membership types: <br>
+        <strong>The upgrade is required for membership types: </strong><br>
         UQ Alumni, Alumni Friends, Community, Cyberschool, Hospital Staff (RBWH, LCCH and Mater), Official Visitor, Proxy Borrowers, Reciprocal Borrower, Retired UQ Staff, Staff awaiting Aurion access and UQ Associate members.
+        <a href="https://web.library.uq.edu.au/blog/2016/06/upgrade-your-library-account-our-non-uq-members" target="_blank">More information about this upgrade.</a>
+      </p>
+
+      <p>
+        If you have any questions please <a href="https://web.library.uq.edu.au/contact-us" target="_blank">contact us for assistance</a>.
       </p>
 
     </div>
@@ -114,7 +119,7 @@
         <ul><li>[[newUserName]]</li></ul>
         <p>
           You should have received your new user name and password for the new UQ Library search via email.
-          If you haven't please <a href="https://web.library.uq.edu.au/contact-us">contact us</a>.
+          If you haven't please <a href="https://web.library.uq.edu.au/contact-us">contact us for assistance</a>.
           </p>
         </template>
 
@@ -129,6 +134,14 @@
       </div>
 
     </template>
+
+    <div>
+      <p class="caption">
+        <strong>Privacy statement:</strong> The University of Queensland Library only requests and uses personal information for the specific purpose for which it is requested. Your personal information is treated in strict compliance with relevant privacy laws. We disclose personal information with your express consent only, or where required by law. See our 
+        <a href="http://ppl.app.uq.edu.au/content/1.60.02-privacy-management" target="_blank">Privacy Management Policy and Procedures</a> for details.
+
+      </p>
+    </div>
 
   </template>
 
@@ -171,6 +184,10 @@
             type: String
           },
 
+          md5email: {
+            type: String
+          },
+
           email: {
             type: String
           }
@@ -180,9 +197,9 @@
         ready: function() {
 
           this.userName = this._getQueryVariable('userName');
-          this.email = this._getQueryVariable('email');
+          this.md5email = this._getQueryVariable('email');
 
-          this.displayForm = !this.userName || !this.email;
+          this.displayForm = !this.userName || !this.md5email;
 
           if (!this.displayForm)
             this._startUpgrade();
@@ -198,20 +215,20 @@
         },
 
         _startUpgrade: function() {
-          if (this.userName && this.email) {
+          if (this.userName && (this.md5email || this.email)) {
 
             this.displayForm = false;
             this.displaySuccess = false;
             this.displayError = false;
             this.displayProcess = true;
 
-            var md5email = CryptoJS.MD5(this.email).toString();
-
-            console.log(md5email);
+            if (!this.md5email) {
+              this.md5email = CryptoJS.MD5(this.email).toString();
+            }
 
             this.$.upgradeApi.body = {
               username : this.userName,
-              email : md5email
+              email : this.md5email
             };
 
             this.$.upgradeApi.generateRequest();
