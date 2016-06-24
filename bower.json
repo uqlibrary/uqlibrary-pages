@@ -12,7 +12,7 @@
     "uqlibrary-computers": "uqlibrary/uqlibrary-computers#v1.0.7",
     "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights#v1.0.6",
     "uqlibrary-alerts": "uqlibrary/uqlibrary-alerts#v1.0.1",
-    "uqlibrary-search": "uqlibrary/uqlibrary-search#primo",
+    "uqlibrary-search": "uqlibrary/uqlibrary-search#v1.2.0",
     "uqlibrary-training": "uqlibrary/uqlibrary-training#v1.0.1",
     "uqlibrary-browser-supported": "uqlibrary/uqlibrary-browser-supported#v1.0.5",
     "uqlibrary-receipt": "uqlibrary/uqlibrary-receipt#v1.0.5",
@@ -23,11 +23,9 @@
   },
   "ignore": [],
   "resolutions": {
-    "byutv-jsonp": "~1.2.0",
-    "uqlibrary-ga": "v1.0.3",
     "uqlibrary-styles": "v1.0.5",
-    "uqlibrary-api": "primo",
-    "uqlibrary-iron-dropdown": "^1.2.2",
-    "uqlibrary-search": "primo"
+    "uqlibrary-search": "v1.2.0",
+    "uqlibrary-ga": "v1.0.3",
+    "uqlibrary-api": "v1.2.0"
   }
 }
