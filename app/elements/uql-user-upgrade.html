@@ -211,15 +211,6 @@
 
           if (!this.displayForm)
             this._startUpgrade();
-
-          //TODO: remove, just for testing...
-          if (this._getQueryVariable('all')) {
-            this.displayForm = true;
-            this.displayProcess = true;
-            this.displaySuccess = true;
-            this.displayError = true;
-          }
-
         },
 
         _startUpgrade: function() {
