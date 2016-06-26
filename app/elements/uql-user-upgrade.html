@@ -1,0 +1,286 @@
+<dom-module id="uql-user-upgrade">
+
+  <link rel="import" href="elements.html">
+  <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+  <link rel="import" href="../bower_components/paper-input/paper-input.html">
+  <link rel="import" href="../bower_components/paper-button/paper-button.html">
+  <script src="../scripts/md5.js"></script>
+
+  <style is="custom-style" include="common-styles">
+
+    :host {
+      display: block;
+      min-height: 50vh;
+    }
+
+    .preloader-card {
+      text-align: center;
+    }
+
+    .upgrade-form,
+    .upgrade-process{
+      max-width: 600px;
+      width: 80vw;
+      margin: 20px auto;
+    }
+
+    .button-container {
+      text-align: center;
+    }
+    .button-colored-accent {
+      margin: 10px 0;
+    }
+
+    .upgrade-process {
+      text-align: center;
+    }
+
+  </style>
+
+  <template>
+    <iron-ajax id="upgradeApi"
+               url="https://app-testing.library.uq.edu.au/api/user_upgrade"
+               method="POST"
+               handle-as="json"
+               content-type="application/json"
+               on-response="_upgradeCompleted"></iron-ajax>
+
+    <div>
+      <p>
+        Upgrade your UQ Library account now to receive your new user name and password for the new UQ Library search via email.
+      </p>
+      <p>
+        <strong>The upgrade is required for membership types: </strong><br>
+        UQ Alumni, Alumni Friends, Community, Cyberschool, Hospital Staff (RBWH, LCCH and Mater), Official Visitor, Proxy Borrowers, Reciprocal Borrower, Retired UQ Staff, Staff awaiting Aurion access and UQ Associate members.
+        <a href="https://web.library.uq.edu.au/blog/2016/06/upgrade-your-library-account-our-non-uq-members" target="_blank">More information about this upgrade.</a>
+      </p>
+
+      <p>
+        If you have any questions please <a href="https://web.library.uq.edu.au/contact-us" target="_blank">contact us for assistance</a>.
+      </p>
+
+    </div>
+
+    <template is="dom-if" if="[[displayForm]]">
+
+      <div class="upgrade-form">
+
+        <h3>Upgrade now</h3>
+
+        <paper-input id="username" label="Your library user name" required="true" value="{{userName::input}}"></paper-input>
+        <paper-input id="email" label="Your email account" required="true" value="{{email::input}}"></paper-input>
+
+        <div class="button-container">
+          <paper-button class="button-colored-accent" on-tap="_startUpgrade">Upgrade account</paper-button>
+        </div>
+
+      </div>
+    </template>
+
+    <template is="dom-if" if="[[displayProcess]]">
+
+        <div class="upgrade-process">
+          <img src="../images/loading.svg" width="48" />
+          <p id="loadingTitle" class="text-center">Processing your request...</p>
+        </div>
+
+    </template>
+
+    <template is="dom-if" if="[[displaySuccess]]">
+
+      <div class="upgrade-form">
+        <h3>Upgrade complete, your account has been activated</h3>
+        <p>
+          Your new username is <strong>[[newUserName]]</strong> <br><br>
+          We have sent you a confirmation email. <br>
+          You will also reset a link to set a new password for your account in a second email shortly.
+          Your account is active.  <a href="https://www.library.uq.edu.au/">Return to the Library.</a>
+        </p>
+      </div>
+
+    </template>
+
+    <template is="dom-if" if="[[displayError]]">
+
+      <div class="upgrade-form">
+
+        <template is="dom-if" if="[[_displayError(errorCode, 10)]]">
+          <h3> Error processing your request </h3>
+          <p>
+            Invalid combination of user name and email. <a href="https://test.library.uq.edu.au/upgrade.html">Please try again.</a>
+          </p>
+        </template>
+
+        <template is="dom-if" if="[[_displayError(errorCode, 20)]]">
+        <h3> Duplicate upgrade request </h3>
+        <p>
+          Your account has been upgraded. Your new user name is:
+        </p>
+        <ul><li>[[newUserName]]</li></ul>
+        <p>
+          You should have received your new user name and password for the new UQ Library search via email.
+          If you haven't please <a href="https://web.library.uq.edu.au/contact-us">contact us for assistance</a>.
+          </p>
+        </template>
+
+        <template is="dom-if" if="[[_displayError(errorCode, 30)]]">
+        <h3> Upgrade request submitted</h3>
+        <p>
+          Your account upgrade process is in progress and will be completed shortly.
+          You will receive your new user name and password for the new UQ Library search via email.
+        </p>
+        </template>
+
+        <template is="dom-if" if="[[_displayError(errorCode, 40)]]">
+          <h3> Invalid upgrade request</h3>
+          <p>
+            Your account has not been confirmed by library staff. You will receive library membership confirmation email when your membership will be confirmed by library staff and then you can proceed with the upgrade process. <br>
+            If you have any queries please <a href="https://web.library.uq.edu.au/contact-us">contact us for assistance</a>.
+          </p>
+        </template>
+
+      </div>
+
+    </template>
+
+    <div>
+      <p class="caption">
+        <strong>Privacy statement:</strong> The University of Queensland Library only requests and uses personal information for the specific purpose for which it is requested. Your personal information is treated in strict compliance with relevant privacy laws. We disclose personal information with your express consent only, or where required by law. See our 
+        <a href="http://ppl.app.uq.edu.au/content/1.60.02-privacy-management" target="_blank">Privacy Management Policy and Procedures</a> for details.
+
+      </p>
+    </div>
+
+  </template>
+
+  <script>
+    (function() {
+      Polymer({
+        is: 'uql-user-upgrade',
+
+        properties: {
+          displayForm : {
+            type: Boolean,
+            value: false
+          },
+
+          displayProcess : {
+            type: Boolean,
+            value: false
+          },
+
+          displaySuccess : {
+            type: Boolean,
+            value: false
+          },
+
+          displayError : {
+            type: Boolean,
+            value: false
+          },
+
+          errorCode : {
+            type: Number,
+            value: 0
+          },
+
+          userName: {
+            type: String
+          },
+
+          newUserName: {
+            type: String
+          },
+
+          md5email: {
+            type: String
+          },
+
+          email: {
+            type: String
+          }
+
+        },
+
+        ready: function() {
+
+          this.userName = this._getQueryVariable('userName');
+          this.md5email = this._getQueryVariable('email');
+
+          this.displayForm = !this.userName || !this.md5email;
+
+          if (!this.displayForm)
+            this._startUpgrade();
+        },
+
+        _startUpgrade: function() {
+          if (this.userName && (this.md5email || this.email)) {
+
+            this.displayForm = false;
+            this.displaySuccess = false;
+            this.displayError = false;
+            this.displayProcess = true;
+
+            if (!this.md5email) {
+              this.md5email = CryptoJS.MD5(this.email).toString();
+            }
+
+            this.$.upgradeApi.body = {
+              username : this.userName,
+              email : this.md5email
+            };
+
+            this.$.upgradeApi.generateRequest();
+          }
+        },
+
+        _upgradeCompleted: function(event) {
+          var that = this;
+
+          setTimeout(function(){
+            that.displayProcess = false;
+            that.displayForm = false;
+            that.displaySuccess = false;
+            that.displayError = false;
+
+            var response = event.detail.response;
+
+            if (!response.error) {
+              that.displaySuccess = true;
+              that.newUserName = response.username;
+            } else {
+              that.displayError = true;
+              that.errorCode = response.code;
+            }
+
+          }, 1000);
+
+        },
+
+        _displayError: function(incomingCode, compareCode){
+          return incomingCode == compareCode || this._getQueryVariable('all');
+        },
+
+        /**
+         * Gets a query variable from the URL
+         * @param variable
+         * @returns {*}
+         * @private
+         */
+        _getQueryVariable: function (variable) {
+          var query = window.location.search.substring(1);
+          var vars = query.split("&");
+          for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+              return pair[1];
+            }
+          }
+          return ('');
+        }
+
+      });
+    })();
+  </script>
+
+</dom-module>
