@@ -6,6 +6,8 @@ This project contains pages for UQ Library website:
 
 > UQ Library Home page [demo](http://assets.library.uq.edu.au/master/pages/index.html)
 
+ (Swap out alternate branch names for 'master' in this url to test other branches).
+ 
  Please, read [polymer development style guide](http://polymerelements.github.io/style-guide/) before development. 
   
 ### Install dependencies
