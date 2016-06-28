@@ -93,7 +93,7 @@
         <p>
           Your new username is <strong>[[newUserName]]</strong> <br><br>
           We have sent you a confirmation email. <br>
-          You will also reset a link to set a new password for your account in a second email shortly.
+          You will also receive a link to set a new password for your account in a second email shortly.
           Your account is active.  <a href="https://www.library.uq.edu.au/">Return to the Library.</a>
         </p>
       </div>
@@ -134,7 +134,7 @@
         <template is="dom-if" if="[[_displayError(errorCode, 40)]]">
           <h3> Invalid upgrade request</h3>
           <p>
-            Your account has not been confirmed by library staff. You will receive library membership confirmation email when your membership will be confirmed by library staff and then you can proceed with the upgrade process. <br>
+            Your account has not been confirmed by library staff. You will receive a library membership confirmation email when your membership is confirmed by library staff and then you can proceed with the upgrade process. <br>
             If you have any queries please <a href="https://web.library.uq.edu.au/contact-us">contact us for assistance</a>.
           </p>
         </template>
@@ -211,6 +211,14 @@
 
           if (!this.displayForm)
             this._startUpgrade();
+            
+            //TODO: remove, just for testing...		
+           if (this._getQueryVariable('all')) {		
+             this.displayForm = true;		
+             this.displayProcess = true;		
+             this.displaySuccess = true;		
+             this.displayError = true;		
+           }
         },
 
         _startUpgrade: function() {
