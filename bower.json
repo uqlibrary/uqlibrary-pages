@@ -23,7 +23,7 @@
   },
   "ignore": [],
   "resolutions": {
-    "uqlibrary-styles": "v1.0.5",
+    "uqlibrary-styles": "v1.0.8",
     "uqlibrary-ga": "v1.0.3",
     "uqlibrary-api": "v1.2.0"
   }
