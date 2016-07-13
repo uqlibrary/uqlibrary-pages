@@ -12,7 +12,7 @@
     "uqlibrary-computers": "uqlibrary/uqlibrary-computers#v1.1.6",
     "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights#v1.0.6",
     "uqlibrary-alerts": "uqlibrary/uqlibrary-alerts#v1.0.1",
-    "uqlibrary-search": "uqlibrary/uqlibrary-search#v1.2.1",
+    "uqlibrary-search": "uqlibrary/uqlibrary-search#v1.2.2",
     "uqlibrary-training": "uqlibrary/uqlibrary-training#careerhub",
     "uqlibrary-browser-supported": "uqlibrary/uqlibrary-browser-supported#v1.0.5",
     "uqlibrary-receipt": "uqlibrary/uqlibrary-receipt#v1.0.5",
@@ -25,6 +25,6 @@
   "resolutions": {
     "uqlibrary-styles": "v1.0.9",
     "uqlibrary-ga": "v1.0.3",
-    "uqlibrary-api": "training"
+    "uqlibrary-api": "v1.2.0"
   }
 }
