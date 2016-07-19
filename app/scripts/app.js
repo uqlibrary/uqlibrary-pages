@@ -32,7 +32,7 @@ if (!browserData.supported) {
     // GA events
     var ga = document.querySelector('#home-ga');
     // record page view
-    ga.addPageView(document.location.href);
+    ga.addPageView('');
   });
 
   //// Grab a reference to our auto-binding template
