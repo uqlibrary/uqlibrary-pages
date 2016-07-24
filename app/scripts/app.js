@@ -59,7 +59,10 @@ if (!browserData.supported) {
       // Add GA events to the sidebar tabs
       var uqlSidebar = document.querySelector('#sidebar-tabs');
       uqlSidebar.addEventListener('iron-select', function (e) {
-        ga.addEvent('Navigation', 'Sidebar tab ' + e.detail.item.innerText.toLowerCase());
+        document.querySelector('#home-ga').addEvent('Navigation', 'Sidebar tab ' + e.detail.item.innerText.toLowerCase());
+        if (e.detail.item.innerText.toLowerCase() === 'training') {
+          Polymer.dom(document).querySelector("uqlibrary-training").reset();
+        }
       });
     });
   }
