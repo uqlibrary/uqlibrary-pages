@@ -8,15 +8,15 @@
     "polymer": "Polymer/polymer#^1.2.0",
     "uqlibrary-styles": "uqlibrary/uqlibrary-styles#v1.0.9",
     "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components#production",
-    "uqlibrary-hours": "uqlibrary/uqlibrary-hours#v1.1.6",
-    "uqlibrary-computers": "uqlibrary/uqlibrary-computers#v1.1.6",
+    "uqlibrary-hours": "uqlibrary/uqlibrary-hours#v1.1.7",
+    "uqlibrary-computers": "uqlibrary/uqlibrary-computers#v1.1.8",
     "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights#v1.0.6",
     "uqlibrary-alerts": "uqlibrary/uqlibrary-alerts#v1.0.1",
-    "uqlibrary-search": "uqlibrary/uqlibrary-search#v1.2.2",
+    "uqlibrary-search": "uqlibrary/uqlibrary-search#v1.2.3",
     "uqlibrary-training": "uqlibrary/uqlibrary-training#careerhub",
     "uqlibrary-browser-supported": "uqlibrary/uqlibrary-browser-supported#v1.0.5",
     "uqlibrary-receipt": "uqlibrary/uqlibrary-receipt#v1.0.5",
-    "uqlibrary-ga": "uqlibrary/uqlibrary-ga#v1.0.3"
+    "uqlibrary-ga": "uqlibrary/uqlibrary-ga#v1.0.5"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
@@ -25,7 +25,7 @@
   "resolutions": {
     "uqlibrary-styles": "v1.0.9",
     "uqlibrary-ga": "v1.0.3",
-    "uqlibrary-api": "training",
+    "uqlibrary-api": "v1.2.0",
     "uqlibrary-search": "v1.2.2"
   }
 }
