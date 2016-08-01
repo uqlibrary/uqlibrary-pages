@@ -25,22 +25,23 @@ case "$branch" in
   ;;
 *)
   case "$PIPE_NUM" in
+echo "testing removed for dev - REPLACE FOR PROD!!!"
   "1")
-    echo "local unit testing"
-    gulp test
-    echo "remote unit testing"
-    gulp test:remote
+#    echo "local unit testing"
+#    gulp test
+#    echo "remote unit testing"
+#    gulp test:remote
   ;;
   "2")
-    echo "local integration testing"
-    echo "install selenium"
-    curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/packages/selenium_server.sh | bash -s
-    cd bin/local
+#    echo "local integration testing"
+#    echo "install selenium"
+#    curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/packages/selenium_server.sh | bash -s
+#    cd bin/local
     #./nightwatch.js
     #./nightwatch.js --env chrome
   ;;
   "3")
-    cd bin/saucelabs
+#    cd bin/saucelabs
     #./nightwatch.js
     #./nightwatch.js --env ie11
   ;;
