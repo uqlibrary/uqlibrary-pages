@@ -24,8 +24,8 @@ case "$branch" in
   esac
   ;;
 *)
-  case "$PIPE_NUM" in
 echo "testing removed for dev - REPLACE FOR PROD!!!"
+  case "$PIPE_NUM" in
   "1")
 #    echo "local unit testing"
 #    gulp test
