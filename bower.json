@@ -25,6 +25,7 @@
   "resolutions": {
     "uqlibrary-styles": "v1.0.9",
     "uqlibrary-ga": "v1.0.5",
-    "uqlibrary-api": "v1.2.8"
+    "uqlibrary-api": "v1.2.8",
+    "uqlibrary-alerts": "v1.0.2"
   }
 }
