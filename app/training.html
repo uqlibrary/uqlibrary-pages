@@ -100,7 +100,18 @@
 
 </div>
 
-<uqlibrary-training-list2></uqlibrary-training-list2>
+<template is="dom-bind" id="uqlTraining" unresolved>
+  <div id="layout">
+    <div>
+      <paper-card heading="Training Items">
+        <div class="card-content">
+          <uqlibrary-training-list2></uqlibrary-training-list2>
+        </div>
+      </paper-card>
+    </div>
+  </div>
+</template>
+
 
 <uql-connect-footer></uql-connect-footer>
 <uq-minimal-footer></uq-minimal-footer>
