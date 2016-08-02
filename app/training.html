@@ -77,8 +77,8 @@
     .card-actions {
       text-align: right;
     }
-    .maintraining,
-    .maintraining .trainingitem {
+
+    #maintraining paper-card {
       margin: 1em;
       padding: 1em;
     }
@@ -86,6 +86,7 @@
     #content {
       min-height: auto;
     }
+
 
   </style>
 </head>
@@ -109,10 +110,18 @@
   <!-- End of Preloader/Unsupported browser message -->
 
 
-</div>
 
-<div class="maintraining">
-  <uqlibrary-training-list2></uqlibrary-training-list2>
+  <template is="dom-bind" id="uqlUserUpgrade" unresolved>
+    <div id="layout">
+      <div id="maintraining">
+        <paper-card heading="Library training">
+          <div class="card-content">
+            <uqlibrary-training-list2></uqlibrary-training-list2>
+          </div>
+        </paper-card>
+      </div>
+    </div>
+  </template>
 </div>
 
 <uql-connect-footer></uql-connect-footer>
