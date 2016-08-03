@@ -9,10 +9,15 @@ This project contains pages for UQ Library website:
  (Swap out alternate branch names for 'master' in this url to test other branches).
  
  Please, read [polymer development style guide](http://polymerelements.github.io/style-guide/) before development. 
-  
-### Install dependencies
 
-#### Quick-start (for experienced users)
+### Quick-start 
+
+#### Install dependencies
+
+- Node.js, used to run JavaScript tools from the command line
+- npm, the node package manager, installed with Node.js and used to install Node.js packages
+- gulp, a Node.js-based build tool
+- bower, a Node.js-based package manager used to install front-end packages (like Polymer)
 
 With Node.js installed, run the following one liner from the root of your Polymer Starter Kit download:
 
@@ -20,42 +25,21 @@ With Node.js installed, run the following one liner from the root of your Polyme
 npm install -g gulp bower && npm install && bower install
 ```
 
-#### Prerequisites (for everyone)
-
-The full starter kit requires the following major dependencies:
-
-- Node.js, used to run JavaScript tools from the command line.
-- npm, the node package manager, installed with Node.js and used to install Node.js packages.
-- gulp, a Node.js-based build tool.
-- bower, a Node.js-based package manager used to install front-end packages (like Polymer).
-
-**To install dependencies:**
-
-1)  Check your Node.js version.
+#### Serve / watch
 
 ```sh
-node --version
+gulp serve
 ```
 
-The version should be at or above 0.12.x.
+This outputs an IP address you can use to locally test and another that can be used on devices connected to your network.
 
-2)  If you don't have Node.js installed, or you have a lower version, go to [nodejs.org](https://nodejs.org) and click on the big green Install button.
-
-3)  Install `gulp` and `bower` globally.
+#### Build & Vulcanize
 
 ```sh
-npm install -g gulp bower
+gulp
 ```
 
-This lets you run `gulp` and `bower` from the command line.
-
-4)  Install the starter kit's local `npm` and `bower` dependencies.
-
-```sh
-cd polymer-starter-kit && npm install && bower install
-```
-
-This installs the element sets (Paper, Iron, Platinum) and tools the starter kit requires to build and serve apps.
+Build and optimize the current project, ready for deployment. This includes vulcanization, image, script, stylesheet and HTML optimization and minification.
 
 ### Development workflow
 
@@ -89,24 +73,6 @@ Include following placeholder and gulp task 'inject-browser-update' to include s
     //bower_components/uqlibrary-browser-supported/browser-update.js
   </script>
 ```
-  
-TODO: more TBC
-
-#### Serve / watch
-
-```sh
-gulp serve
-```
-
-This outputs an IP address you can use to locally test and another that can be used on devices connected to your network.
-
-#### Build & Vulcanize
-
-```sh
-gulp
-```
-
-Build and optimize the current project, ready for deployment. This includes vulcanization, image, script, stylesheet and HTML optimization and minification.
 
 ## Testing
 
