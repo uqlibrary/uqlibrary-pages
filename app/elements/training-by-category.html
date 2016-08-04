@@ -1,0 +1,101 @@
+<dom-module id="training-by-category">
+
+  <link rel="import" href="elements.html">
+  <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+  <link rel="import" href="../bower_components/paper-input/paper-input.html">
+  <link rel="import" href="../bower_components/paper-button/paper-button.html">
+  <script src="../scripts/md5.js"></script>
+
+  <style is="custom-style" include="common-styles">
+    span {
+      padding: 0 8px;
+    }
+  </style>
+
+  <template>
+    <uqlibrary-api-training id="trainingApi" on-uqlibrary-api-training="_processData"></uqlibrary-api-training>
+    <template is="dom-repeat" items="{{trainingEvents}}" as="category">
+
+      <h4>[[category.displayName]]</h4>
+
+      <template is="dom-repeat" items="{{category.events}}" as="trainingEvent">
+        <paper-item>
+          <span> [[trainingEvent.formattedDate]] </span>
+          <span><a href="#">[[trainingEvent.name]] ([[ trainingEvent.categories.campus ]])</a></span></paper-item>
+      </template>
+    </template>
+
+
+  </template>
+
+  <script>
+    (function() {
+      Polymer({
+        is: 'training-by-category',
+
+        properties: {
+
+          trainingEvents: {
+            type: Array
+          },
+
+          campusList: {
+            type: Array
+          }
+
+        },
+
+        ready: function() {
+          this.$.trainingApi.get();
+        },
+
+        _processData: function(e) {
+          var events = e.detail;
+          var campuses = [];
+          var processedEvents = [];
+
+          events.forEach(function(event){
+
+            //set up all categories
+            if (event.labels) {
+              event.labels.forEach(function(category){
+                if (!processedEvents[category.id]) {
+                  category.events = [];
+                  category.displayName = category.name.replace(/.*\./ , '');
+
+                  processedEvents[category.id] = category;
+                }
+
+                if (!category.events)
+                  category = processedEvents[category.id];
+
+                //create display string for start date
+                var startDate = new Date(event.start);
+                event.formattedDate = startDate.toDateString();
+
+                //add this event to the category
+                category.events.push(event);
+
+              });
+            }
+
+            //setup all campuses
+            if (event.categories && event.categories.campus) {
+              event.categories.campus.forEach(function(campus){
+                if (campuses.indexOf(campus) < 0) {
+                  campuses.push(campus);
+                }
+              });
+            }
+
+          });
+
+          this.trainingEvents = processedEvents;
+          this.campusList = campuses;
+        }
+
+      });
+    })();
+  </script>
+
+</dom-module>
