@@ -11,11 +11,11 @@
     "uqlibrary-hours": "uqlibrary/uqlibrary-hours#v1.1.7",
     "uqlibrary-computers": "uqlibrary/uqlibrary-computers#v1.1.8",
     "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights#v1.0.6",
-    "uqlibrary-alerts": "uqlibrary/uqlibrary-alerts#v1.0.1",
     "uqlibrary-training": "uqlibrary/uqlibrary-training#prototypech",
     "uqlibrary-browser-supported": "uqlibrary/uqlibrary-browser-supported#v1.0.5",
     "uqlibrary-receipt": "uqlibrary/uqlibrary-receipt#v1.0.5",
-    "uqlibrary-ga": "uqlibrary/uqlibrary-ga#v1.0.5"
+    "uqlibrary-ga": "uqlibrary/uqlibrary-ga#v1.0.5",
+    "uqlibrary-api": "uqlibrary/uqlibrary-api#training"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
