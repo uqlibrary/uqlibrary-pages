@@ -26,6 +26,7 @@
     "uqlibrary-styles": "v1.0.9",
     "uqlibrary-ga": "v1.0.3",
     "uqlibrary-api": "training",
-    "uqlibrary-search": "v1.2.3"
+    "uqlibrary-search": "v1.2.3",
+    "uqlibrary-alerts": "v1.0.2"
   }
 }
