@@ -64,6 +64,25 @@ if (!browserData.supported) {
           Polymer.dom(document).querySelector("uqlibrary-training").reset();
         }
       });
+
+      // Training setup
+      var trainingElement = document.querySelector('uqlibrary-training');
+      trainingElement.addEventListener('show-list', function () {
+        uqlFrontPage.trainingButton = {
+          label: 'MORE TRAINING EVENTS',
+          href: 'https://web.library.uq.edu.au/library-services/training'
+        };
+      });
+
+      trainingElement.addEventListener('event-clicked', function (e) {
+        uqlFrontPage.trainingButton = {
+          label: 'LOG IN AND BOOK',
+          href: e.detail.link
+        };
+      });
+
+      // Fire off the show-list event to kick things off
+      trainingElement.dispatchEvent(new Event('show-list'));
     });
   }
 
