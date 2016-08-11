@@ -1,9 +1,9 @@
-<dom-module id="training-by-category">
-
+<dom-module id="protoype-4">
   <link rel="import" href="elements.html">
   <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
   <link rel="import" href="../bower_components/paper-input/paper-input.html">
   <link rel="import" href="../bower_components/paper-button/paper-button.html">
+
   <script src="../scripts/md5.js"></script>
 
   <style is="custom-style" include="common-styles">
@@ -14,16 +14,31 @@
 
   <template>
     <uqlibrary-api-training id="trainingApi" on-uqlibrary-api-training="_processData"></uqlibrary-api-training>
-    <template is="dom-repeat" items="{{trainingEvents}}" as="category">
 
-      <h4>[[category.displayName]]</h4>
+    <div>
+      <template is="dom-if" hidden$="{{!areMultipleCampuses}}">
+        <template is="dom-repeat" items="{{campusList}}" as="campus">
+          <paper-checkbox checked>{{campus}}</paper-checkbox>
+        </template>
+      </template>
+    </div>
+
+<!--
+    <div>
+      <template is="dom-if" hidden$="{{!areMultipleLabels}}">
+        <template is="dom-repeat" items="{{labelList}}" as="label">
+          <paper-checkbox checked>{{label}}</paper-checkbox>
+        </template>
+      </template>
+    </div>
+ -->
 
       <template is="dom-repeat" items="{{category.events}}" as="trainingEvent">
         <paper-item>
           <span> [[trainingEvent.formattedDate]] </span>
-          <span><a href="#">[[trainingEvent.name]] ([[ trainingEvent.categories.campus ]])</a></span></paper-item>
+          <span><a href="#">[[trainingEvent.name]] ([[ trainingEvent.categories.campus ]])</a></span>
+        </paper-item>
       </template>
-    </template>
 
 
   </template>
@@ -31,7 +46,7 @@
   <script>
     (function() {
       Polymer({
-        is: 'training-by-category',
+        is: 'prototype-4',
 
         properties: {
 
@@ -41,18 +56,24 @@
 
           campusList: {
             type: Array
+          },
+
+          labelList: {
+            type: Array
           }
 
         },
 
         ready: function() {
-console.log("by-category in ready");
+console.log("in ready");
           this.$.trainingApi.get();
         },
 
         _processData: function(e) {
+
           var events = e.detail;
           var campuses = [];
+          var labels = [];
           var processedEvents = [];
 
           events.forEach(function(event){
@@ -89,10 +110,28 @@ console.log("by-category in ready");
               });
             }
 
+            //setup all labels
+            if (event.labels) {
+              event.labels.forEach(function(labelItem){
+                if (labels.indexOf(labelItem.name) < 0) {
+                  labels.push(labelItem.name);
+                }
+              });
+            }
+
           });
 
           this.trainingEvents = processedEvents;
           this.campusList = campuses;
+          this.labelList = labels;
+        },
+
+        areMultipleCampuses: function (){
+          return this.campusList.length > 1;
+        },
+
+        areMultipleLabels: function (){
+          return this.labelList.length > 1;
         }
 
       });
