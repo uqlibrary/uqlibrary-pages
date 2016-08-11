@@ -1,11 +1,10 @@
-<dom-module id="protoype-4">
-  <link rel="import" href="elements.html">
-  <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-  <link rel="import" href="../bower_components/paper-input/paper-input.html">
-  <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="elements.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<script src="../scripts/md5.js"></script>
 
-  <script src="../scripts/md5.js"></script>
-
+<dom-module id="prototype-4">
   <style is="custom-style" include="common-styles">
     span {
       padding: 0 8px;
@@ -23,28 +22,29 @@
       </template>
     </div>
 
-<!--
+    <!--
     <div>
       <template is="dom-if" hidden$="{{!areMultipleLabels}}">
         <template is="dom-repeat" items="{{labelList}}" as="label">
           <paper-checkbox checked>{{label}}</paper-checkbox>
         </template>
++
       </template>
     </div>
  -->
 
-      <template is="dom-repeat" items="{{category.events}}" as="trainingEvent">
-        <paper-item>
-          <span> [[trainingEvent.formattedDate]] </span>
-          <span><a href="#">[[trainingEvent.name]] ([[ trainingEvent.categories.campus ]])</a></span>
-        </paper-item>
-      </template>
+    <template is="dom-repeat" items="{{category.events}}" as="trainingEvent">
+      <paper-item>
+        <span> [[trainingEvent.formattedDate]] </span>
+        <span><a href="#">[[trainingEvent.name]] ([[ trainingEvent.categories.campus ]])</a></span>
+      </paper-item>
+    </template>
 
 
   </template>
 
   <script>
-    (function() {
+    (function () {
       Polymer({
         is: 'prototype-4',
 
@@ -64,26 +64,25 @@
 
         },
 
-        ready: function() {
-console.log("in ready");
+        ready: function () {
           this.$.trainingApi.get();
         },
 
-        _processData: function(e) {
+        _processData: function (e) {
 
           var events = e.detail;
           var campuses = [];
           var labels = [];
           var processedEvents = [];
 
-          events.forEach(function(event){
+          events.forEach(function (event) {
 
             //set up all categories
             if (event.labels) {
-              event.labels.forEach(function(category){
+              event.labels.forEach(function (category) {
                 if (!processedEvents[category.id]) {
                   category.events = [];
-                  category.displayName = category.name.replace(/.*\./ , '');
+                  category.displayName = category.name.replace(/.*\./, '');
 
                   processedEvents[category.id] = category;
                 }
@@ -103,7 +102,7 @@ console.log("in ready");
 
             //setup all campuses
             if (event.categories && event.categories.campus) {
-              event.categories.campus.forEach(function(campus){
+              event.categories.campus.forEach(function (campus) {
                 if (campuses.indexOf(campus) < 0) {
                   campuses.push(campus);
                 }
@@ -112,7 +111,7 @@ console.log("in ready");
 
             //setup all labels
             if (event.labels) {
-              event.labels.forEach(function(labelItem){
+              event.labels.forEach(function (labelItem) {
                 if (labels.indexOf(labelItem.name) < 0) {
                   labels.push(labelItem.name);
                 }
@@ -126,11 +125,11 @@ console.log("in ready");
           this.labelList = labels;
         },
 
-        areMultipleCampuses: function (){
+        areMultipleCampuses: function () {
           return this.campusList.length > 1;
         },
 
-        areMultipleLabels: function (){
+        areMultipleLabels: function () {
           return this.labelList.length > 1;
         }
 

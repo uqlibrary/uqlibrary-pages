@@ -8,7 +8,7 @@
     "polymer": "Polymer/polymer#^1.2.0",
     "uqlibrary-styles": "uqlibrary/uqlibrary-styles#v1.0.9",
     "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components#production",
-    "uqlibrary-hours": "uqlibrary/uqlibrary-hours#v1.1.7",
+    "uqlibrary-hours": "uqlibrary/uqlibrary-hours#v1.1.8",
     "uqlibrary-computers": "uqlibrary/uqlibrary-computers#v1.1.8",
     "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights#v1.0.6",
     "uqlibrary-training": "uqlibrary/uqlibrary-training#prototypech",
@@ -24,6 +24,12 @@
   "resolutions": {
     "uqlibrary-styles": "v1.0.9",
     "uqlibrary-ga": "v1.0.5",
-    "uqlibrary-api": "prototypech"
+    "uqlibrary-api": "prototypech",
+    "uqlibrary-alerts": "v1.0.2",
+    "uqlibrary-callout": "v1.0.5",
+    "uqlibrary-iron-dropdown": "^1.2.2",
+    "uqlibrary-browser-supported": "v1.0.5",
+    "uqlibrary-autosuggest-input": "v1.1.0",
+    "uqlibrary-search": "v1.2.4"
   }
 }
