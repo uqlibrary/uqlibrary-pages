@@ -24,9 +24,9 @@
     <paper-card elevation="1" id="filter">
       <div id="selectCampus">
         <template is="dom-if" if="[[areMultipleCampuses]]">
-          <p>Choose a campus:</p>
-          <template is="dom-repeat" items="{{selectedCampusList}}" as="campus">
-            <paper-checkbox checked="{{campus.selected}}" on-change="refilter">{{campus.name}}</paper-checkbox>
+          <span>Choose a campus:</span>
+          <template id="campustemplate" is="dom-repeat" items="{{selectedCampusList}}" as="campus">
+            <paper-checkbox checked="{{campus.selected}}" on-change="refilterData">{{campus.name}}</paper-checkbox>
           </template>
         </template>
         <template is="dom-if" if="[[!areMultipleCampuses]]">
@@ -36,9 +36,9 @@
 
       <div id="selectMonth">
         <template is="dom-if" if="[[areMultipleMonths]]">
-          <p>Choose a month:</p>
+          <span>Choose a month:</span>
           <template is="dom-repeat" items="{{selectedMonthList}}" as="month">
-            <paper-checkbox checked="{{month.selected}}" on-change="refilter">{{month.display}}</paper-checkbox>
+            <paper-checkbox checked="{{month.selected}}" on-change="refilterData">{{month.display}}</paper-checkbox>
           </template>
         </template>
         <template is="dom-if" if="[[!areMultipleCampuses]]">
@@ -46,30 +46,22 @@
         </template>
       </div>
 
-      <!--
-            <div id="selectLabels">
-              <template is="dom-if" if="[[areMultipleLabels]]">
-                <p>Choose a label:</p>
-                <template is="dom-repeat" items="{{displayLabelList}}" as="label">
-                  <paper-checkbox checked="{{label.selected}}" on-change="refilter">{{label.formattedName}}</paper-checkbox>
-                </template>
-              </template>
-            </div>
-       -->
-      <span>text filter tbd</span>
+      <div>text filter tbd</div>
 
-      <paper-button  on-tap="refreshData">Clear filters</paper-button>
+      <paper-button  on-tap="resetFilters">Reset filters</paper-button>
 
     </paper-card>
+
+
 
     <paper-card elevation="1">
         <template is="dom-repeat" items="{{displayedEvents}}" as="displayedEvent">
           <paper-item>
-            <span> [[displayedEvent.formattedDate]] </span>
-            <span>[[displayedEvent.name]] ([[ displayedEvent.categories.campus ]])</span>
-            <span> [[displayedEvent.categories.campus]] </span>
+            <span> [[displayedEvent.startDateFormatted]] </span>
+            <span> [[displayedEvent.name]] </span>
+            <span> ([[ displayedEvent.categories.campus ]])</span>
 
-            <paper-button  on-tap="xxx">Expand</paper-button>
+            <paper-button on-tap="xxx">Expand</paper-button>
           </paper-item>
         </template>
 
@@ -84,55 +76,57 @@
 
         properties: {
 
-          trainingEvents: {
-            type: Array
-          },
-
           /*
            * all the campuses that are provided in the data
            * (matches to filter options displayed)
            */
-          campusList: {
-            type: Array
+          displayCampusList: {
+            type: Array,
+            value: []
           },
-
           selectedCampusList: {
-            type: Array
+            type: Array,
+            value: [],
+            notify: true
           },
-          areMultipleCampuses: {
-            type: Boolean
-          },
+          areMultipleCampuses: Boolean,
+
 
           displayMonthList: {
-            type: Array
+            type: Array,
+            value: []
           },
           selectedMonthList: {
+            type: Array,
+            value: [],
+            notify: true
+          },
+          areMultipleMonths: Boolean,
+
+
+          displayedEvents: {
             type: Array
           },
-          areMultipleMonths: {
-            type: Boolean
+
+          allEvents: {
+            type: Array
           }
 
-          /*
-           * all the labels that are provided in the data
-           * (matches to filter options displayed)
-           */
-//          displayLabelList: {
-//            type: Array
-//          },
-
-          /*
-           * the subset of displayLabelList which has been selected by the user
-           */
-//          selectedLabelList: {
-//            type: Array
-//          },
-
-//          areMultipleLabels: {
-//            type: Boolean
-//          }
 
         },
+/*
+        observers: [
+         'filterChangeCampus(selectedCampusList.selected)',
+         'filterChangeMonth(selectedMonthList.selected)'
+        ],
+
+        filterChangeCampus: function (_selected) {
+         this.set(selectedCampusList.selected) = _selected;
+        },
+        filterChangeMonth: function (_selected) {
+         this.set(selectedMonthList.selected) = _selected;
+        },
+*/
 
         ready: function() {
           this.$.trainingApi.get();
@@ -144,16 +138,19 @@
         _setupData: function(e) {
           var events = e.detail;
           var campuses = [];
-          var months = []
-//          var labels = [];
+          var months = [];
 
           var that = this;
 
           // extract all the filter collections
           events.forEach(function(event){
+            event.startDateFormatted = "";
+            event.filterDate = "";
             // setup the formatted date for display
-            event.formattedDate = moment(event.start).format('ddd D MMM YYYY');
-            event.filterDate = moment(event.start).format('MMM YYYY');
+            if (event.start) {
+              event.startDateFormatted = moment(event.start).format('ddd D MMM YYYY');
+              event.filterDate = moment(event.start).format('MMM YYYY');
+            }
 
 
             if (event.categories && event.categories.campus) {
@@ -164,38 +161,17 @@
               });
             }
 
-            if (months!== undefined && months.indexOf(event.filterDate) < 0) {
-              months.push(months);
+            if (months!== undefined && event.filterDate != "" && months.indexOf(event.filterDate) < 0) {
+              months.push(event.filterDate);
             }
 
-            // build the list of event labels to display in the filter
-            // store all label fields, but check against matching ids
-/*
-            if (event.labels && event.labels) {
-              var _known;
-              event.labels.forEach(function(eventlabel){
-                _known = false;
-                labels.forEach(function(pushedlabel) {
-                  if (pushedlabel.id == eventlabel.id) {
-                    _known = true;
-                  }
-                });
-                if (!_known) {
-                  eventlabel.formattedName = that._formatLabelForDisplay(eventlabel.name);
-                  labels.push(eventlabel);
-                }
-
-              });
-            }
-*/
           });
 
           // store the possible list of campuses
-          this.campusList = campuses;
-          this.areMultipleCampuses = (this.campusList !== undefined && this.campusList.length > 1);
+          this.displayCampusList = campuses;
+          this.areMultipleCampuses = (this.displayCampusList !== undefined && this.displayCampusList.length > 1);
 
           // initially select all campus options
-          that.selectedCampusList = [];
           campuses.forEach(function (aCampus) {
             var newCampus = {};
             newCampus.name = aCampus;
@@ -206,101 +182,106 @@
           this.displayMonthList = months;
           this.areMultipleMonths = (this.displayMonthList !== undefined && this.displayMonthList.length > 1);
           // initially select all months
-          this.selectedMonthList = [];
           months.forEach(function (aMonth) {
             var newMonth = {};
             newMonth.display = aMonth;
             newMonth.selected = true;
-            that.selectedCampusList.push(newMonth);
+            that.selectedMonthList.push(newMonth);
           });
-
-          // store the possible list of labels
-//          this.displayLabelList = labels;
-//          this.areMultipleLabels = (this.displayLabelList !== undefined && this.displayLabelList.length > 1);
-
-          // initially select all label options
-//          this.selectedLabelList = labels;
-//          this.selectedLabelList.forEach(function (aLabel) {
-//            aLabel.selected = true;
-//          });
 
           // filters are 'select all' initially
           this.displayedEvents = events;
+
+          this.allEvents = events;
         },
+
+        /*
+         * resets all the filters to their default position
+         */
+        resetFilters: function() {
+          var that = this;
+          this.selectedCampusList.forEach(function(campus) {
+//            c.set("c.selected", true);
+            campus.selected = true;
+            that.set("campus.selected", true);
+          });
+          this.selectedMonthList.forEach(function(m) {
+            m.selected = true;
+//            m.set("selected", true);
+          });
+
+          // todo text field
+
+//          this.$.campustemplate.render();
+
+          this.refilterData();
+        },
+
+        /*
+         * if the campus of the event matches one of the campuses selected in the filter, return true
+         * otherwise, return false
+         * we are assuming there is only ever one entry in event.categories.campus
+         */
+        _eventIsOnASelectedCampus: function(_event) {
+          if (!(_event.categories && _event.categories.campus)) { return false; }
+
+          eventCampus = _event.categories.campus;
+
+          var _displayable = false;
+          if (this.selectedCampusList !== undefined && 0 < this.selectedCampusList.length) {
+            this.selectedCampusList.forEach(function (campusFilter) {
+              if (eventCampus == campusFilter.name && campusFilter.selected) {
+                _displayable = true;
+              }
+            });
+          }
+          return _displayable;
+        },
+
+        /*
+         * returns true if the event's start date is currently ticked in the filter
+         */
+        _eventIsInASelectedMonth: function(event) {
+          var _displayable = false;
+          if (this.selectedMonthList !== undefined && 0 < this.selectedMonthList.length) {
+            this.selectedMonthList.forEach(function(monthFilter) {
+              if (event.filterDate && event.filterDate == monthFilter.display
+                      && monthFilter.selected) {
+                _displayable = true;
+              }
+            });
+          }
+          return _displayable;
+        },
+
+
 
         /*
          * the filter selection has been changed - refilter the data for display
          */
-        refilter: function() {
-
-//          this.displayedEvents = event;
-        },
-
-        /*
-         * a campus id is passed in
-         * if it matches one of the campuses selected in the filter, return true
-         * otherwise, return false
-         * we are assuming there is only ever one entry in event.categories.campus
-         */
-        _eventIsOnASelectedCampus: function(aCampus) {
-console.log("in _eventIsOnASelectedCampus and checking: aCampusID = "+aCampus);
-          var _known = false;
-console.log(this.selectedCampusList);
-          if (this.selectedCampusList !== undefined && 0 < this.selectedCampusList.length) {
-            this.selectedCampusList.forEach(function (selectedCampus) {
-console.log("aCampusID = "+aCampus+" vs selectedCampus = "+selectedCampus);
-              if (aCampus == selectedCampus) {
-                _known = true;
-              }
-            });
-          }
-console.log("known");
-          return _known;
-        },
-
-        /*
-         * an events label array is passed in
-         * if one of its entries matches a selected item in the filter, return true
-         * otherwise return false
-         */
-        _eventHasASelectedLabel: function(labelList) {
+        refilterData: function() {
           var that = this;
-          var _known = false;
-          if (this.selectedLabelList !== undefined && 0 < this.selectedLabelList.length) {
-            labelList.forEach(function (eventlabel) {
-              that.selectedLabelList.forEach(function (selectedlabel) {
-                if (eventlabel.id == selectedlabel.id) {
-                  _known = true;
-                }
-              })
-            });
-          }
-          return _known;
+          var processedEvents = [];
+
+          // clear the display data
+          this.displayedEvents = [];
+
+          // for each event, check if the filters allow display
+          this.allEvents.forEach(function(e) {
+            if (that._eventIsOnASelectedCampus(e)
+                && that._eventIsInASelectedMonth(e)
+            // && text filter check TODO
+            ) {
+              processedEvents.push(e);
+
+            }
+
+          });
+          this.displayedEvents = processedEvents;
+
         },
 
-      _processData: function(e) {
 
-        var processedEvents = [];
-
-        // filter the data against the selected filters
-        events.forEach(function(_event){
-          if (
-                  _event.categories.campus !== undefined && that._eventIsOnASelectedCampus(_event.categories.campus)
-//                  &&
-//                  that._eventHasASelectedLabel(_event.labels)
-// todo
-//              &&
-//                    text match
-          ) {
-            that.push("processedEvents", _event);
-          };
-console.log("======");
-        });
-
-        this.displayedEvents = processedEvents;
-console.log(this.displayedEvents);
-
-      },
 
         _formatLabelForDisplay: function(aName) {
           var _labeldisplay = aName;
@@ -309,14 +290,6 @@ console.log(this.displayedEvents);
             _labeldisplay = aName.substr(_positionDot + 1);
           }
           return _labeldisplay;
-        },
-
-        /*
-         * called by Clear Filters
-         */
-        clearFilters: function() {
-
-// TODO
         }
 
 
