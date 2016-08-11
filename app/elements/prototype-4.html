@@ -9,42 +9,76 @@
     span {
       padding: 0 8px;
     }
+
+    paper-card {
+      padding: 1em;
+      margin-bottom: 1em;
+    }
+
+
   </style>
 
   <template>
-    <uqlibrary-api-training id="trainingApi" on-uqlibrary-api-training="_processData"></uqlibrary-api-training>
+    <uqlibrary-api-training id="trainingApi" on-uqlibrary-api-training="_setupData"></uqlibrary-api-training>
 
-    <div>
-      <template is="dom-if" hidden$="{{!areMultipleCampuses}}">
-        <template is="dom-repeat" items="{{campusList}}" as="campus">
-          <paper-checkbox checked>{{campus}}</paper-checkbox>
+    <paper-card elevation="1" id="filter">
+      <div id="selectCampus">
+        <template is="dom-if" if="[[areMultipleCampuses]]">
+          <p>Choose a campus:</p>
+          <template is="dom-repeat" items="{{selectedCampusList}}" as="campus">
+            <paper-checkbox checked="{{campus.selected}}" on-change="refilter">{{campus.name}}</paper-checkbox>
+          </template>
         </template>
-      </template>
-    </div>
-
-    <!--
-    <div>
-      <template is="dom-if" hidden$="{{!areMultipleLabels}}">
-        <template is="dom-repeat" items="{{labelList}}" as="label">
-          <paper-checkbox checked>{{label}}</paper-checkbox>
+        <template is="dom-if" if="[[!areMultipleCampuses]]">
+          <p>Training events currently only at: {{campusList}}</p>
         </template>
-+
-      </template>
-    </div>
- -->
+      </div>
 
-    <template is="dom-repeat" items="{{category.events}}" as="trainingEvent">
-      <paper-item>
-        <span> [[trainingEvent.formattedDate]] </span>
-        <span><a href="#">[[trainingEvent.name]] ([[ trainingEvent.categories.campus ]])</a></span>
-      </paper-item>
-    </template>
+      <div id="selectMonth">
+        <template is="dom-if" if="[[areMultipleMonths]]">
+          <p>Choose a month:</p>
+          <template is="dom-repeat" items="{{selectedMonthList}}" as="month">
+            <paper-checkbox checked="{{month.selected}}" on-change="refilter">{{month.display}}</paper-checkbox>
+          </template>
+        </template>
+        <template is="dom-if" if="[[!areMultipleCampuses]]">
+          <p>Training events currently only at: {{campusList}}</p>
+        </template>
+      </div>
 
+      <!--
+            <div id="selectLabels">
+              <template is="dom-if" if="[[areMultipleLabels]]">
+                <p>Choose a label:</p>
+                <template is="dom-repeat" items="{{displayLabelList}}" as="label">
+                  <paper-checkbox checked="{{label.selected}}" on-change="refilter">{{label.formattedName}}</paper-checkbox>
+                </template>
+              </template>
+            </div>
+       -->
+      <span>text filter tbd</span>
+
+      <paper-button  on-tap="refreshData">Clear filters</paper-button>
+
+    </paper-card>
+
+    <paper-card elevation="1">
+        <template is="dom-repeat" items="{{displayedEvents}}" as="displayedEvent">
+          <paper-item>
+            <span> [[displayedEvent.formattedDate]] </span>
+            <span>[[displayedEvent.name]] ([[ displayedEvent.categories.campus ]])</span>
+            <span> [[displayedEvent.categories.campus]] </span>
+
+            <paper-button  on-tap="xxx">Expand</paper-button>
+          </paper-item>
+        </template>
+
+    </paper-card>
 
   </template>
 
   <script>
-    (function () {
+    (function() {
       Polymer({
         is: 'prototype-4',
 
@@ -54,86 +88,239 @@
             type: Array
           },
 
+          /*
+           * all the campuses that are provided in the data
+           * (matches to filter options displayed)
+           */
           campusList: {
             type: Array
           },
 
-          labelList: {
+          selectedCampusList: {
             type: Array
+          },
+          areMultipleCampuses: {
+            type: Boolean
+          },
+
+          displayMonthList: {
+            type: Array
+          },
+          selectedMonthList: {
+            type: Array
+          },
+          areMultipleMonths: {
+            type: Boolean
           }
+
+          /*
+           * all the labels that are provided in the data
+           * (matches to filter options displayed)
+           */
+//          displayLabelList: {
+//            type: Array
+//          },
+
+          /*
+           * the subset of displayLabelList which has been selected by the user
+           */
+//          selectedLabelList: {
+//            type: Array
+//          },
+
+//          areMultipleLabels: {
+//            type: Boolean
+//          }
 
         },
 
-        ready: function () {
+        ready: function() {
           this.$.trainingApi.get();
         },
 
-        _processData: function (e) {
-
+        /*
+         * setup the data on first load
+         */
+        _setupData: function(e) {
           var events = e.detail;
           var campuses = [];
-          var labels = [];
-          var processedEvents = [];
+          var months = []
+//          var labels = [];
 
-          events.forEach(function (event) {
+          var that = this;
 
-            //set up all categories
-            if (event.labels) {
-              event.labels.forEach(function (category) {
-                if (!processedEvents[category.id]) {
-                  category.events = [];
-                  category.displayName = category.name.replace(/.*\./, '');
+          // extract all the filter collections
+          events.forEach(function(event){
+            // setup the formatted date for display
+            event.formattedDate = moment(event.start).format('ddd D MMM YYYY');
+            event.filterDate = moment(event.start).format('MMM YYYY');
 
-                  processedEvents[category.id] = category;
-                }
 
-                if (!category.events)
-                  category = processedEvents[category.id];
-
-                //create display string for start date
-                var startDate = new Date(event.start);
-                event.formattedDate = startDate.toDateString();
-
-                //add this event to the category
-                category.events.push(event);
-
-              });
-            }
-
-            //setup all campuses
             if (event.categories && event.categories.campus) {
-              event.categories.campus.forEach(function (campus) {
+              event.categories.campus.forEach(function(campus){
                 if (campuses.indexOf(campus) < 0) {
                   campuses.push(campus);
                 }
               });
             }
 
-            //setup all labels
-            if (event.labels) {
-              event.labels.forEach(function (labelItem) {
-                if (labels.indexOf(labelItem.name) < 0) {
-                  labels.push(labelItem.name);
-                }
-              });
+            if (months!== undefined && months.indexOf(event.filterDate) < 0) {
+              months.push(months);
             }
 
+            // build the list of event labels to display in the filter
+            // store all label fields, but check against matching ids
+/*
+            if (event.labels && event.labels) {
+              var _known;
+              event.labels.forEach(function(eventlabel){
+                _known = false;
+                labels.forEach(function(pushedlabel) {
+                  if (pushedlabel.id == eventlabel.id) {
+                    _known = true;
+                  }
+                });
+                if (!_known) {
+                  eventlabel.formattedName = that._formatLabelForDisplay(eventlabel.name);
+                  labels.push(eventlabel);
+                }
+
+              });
+            }
+*/
           });
 
-          this.trainingEvents = processedEvents;
+          // store the possible list of campuses
           this.campusList = campuses;
-          this.labelList = labels;
+          this.areMultipleCampuses = (this.campusList !== undefined && this.campusList.length > 1);
+
+          // initially select all campus options
+          that.selectedCampusList = [];
+          campuses.forEach(function (aCampus) {
+            var newCampus = {};
+            newCampus.name = aCampus;
+            newCampus.selected = true;
+            that.selectedCampusList.push(newCampus);
+          });
+
+          this.displayMonthList = months;
+          this.areMultipleMonths = (this.displayMonthList !== undefined && this.displayMonthList.length > 1);
+          // initially select all months
+          this.selectedMonthList = [];
+          months.forEach(function (aMonth) {
+            var newMonth = {};
+            newMonth.display = aMonth;
+            newMonth.selected = true;
+            that.selectedCampusList.push(newMonth);
+          });
+
+          // store the possible list of labels
+//          this.displayLabelList = labels;
+//          this.areMultipleLabels = (this.displayLabelList !== undefined && this.displayLabelList.length > 1);
+
+          // initially select all label options
+//          this.selectedLabelList = labels;
+//          this.selectedLabelList.forEach(function (aLabel) {
+//            aLabel.selected = true;
+//          });
+
+          // filters are 'select all' initially
+          this.displayedEvents = events;
         },
 
-        areMultipleCampuses: function () {
-          return this.campusList.length > 1;
+        /*
+         * the filter selection has been changed - refilter the data for display
+         */
+        refilter: function() {
+
+//          this.displayedEvents = event;
         },
 
-        areMultipleLabels: function () {
-          return this.labelList.length > 1;
+        /*
+         * a campus id is passed in
+         * if it matches one of the campuses selected in the filter, return true
+         * otherwise, return false
+         * we are assuming there is only ever one entry in event.categories.campus
+         */
+        _eventIsOnASelectedCampus: function(aCampus) {
+console.log("in _eventIsOnASelectedCampus and checking: aCampusID = "+aCampus);
+          var _known = false;
+console.log(this.selectedCampusList);
+          if (this.selectedCampusList !== undefined && 0 < this.selectedCampusList.length) {
+            this.selectedCampusList.forEach(function (selectedCampus) {
+console.log("aCampusID = "+aCampus+" vs selectedCampus = "+selectedCampus);
+              if (aCampus == selectedCampus) {
+                _known = true;
+              }
+            });
+          }
+console.log("known");
+          return _known;
+        },
+
+        /*
+         * an events label array is passed in
+         * if one of its entries matches a selected item in the filter, return true
+         * otherwise return false
+         */
+        _eventHasASelectedLabel: function(labelList) {
+          var that = this;
+          var _known = false;
+          if (this.selectedLabelList !== undefined && 0 < this.selectedLabelList.length) {
+            labelList.forEach(function (eventlabel) {
+              that.selectedLabelList.forEach(function (selectedlabel) {
+                if (eventlabel.id == selectedlabel.id) {
+                  _known = true;
+                }
+              })
+            });
+          }
+          return _known;
+        },
+
+      _processData: function(e) {
+
+        var processedEvents = [];
+
+        // filter the data against the selected filters
+        events.forEach(function(_event){
+          if (
+                  _event.categories.campus !== undefined && that._eventIsOnASelectedCampus(_event.categories.campus)
+//                  &&
+//                  that._eventHasASelectedLabel(_event.labels)
+// todo
+//              &&
+//                    text match
+          ) {
+            that.push("processedEvents", _event);
+          };
+console.log("======");
+        });
+
+        this.displayedEvents = processedEvents;
+console.log(this.displayedEvents);
+
+      },
+
+        _formatLabelForDisplay: function(aName) {
+          var _labeldisplay = aName;
+          var _positionDot = aName.lastIndexOf(".");
+          if (-1 !== _positionDot) {
+            _labeldisplay = aName.substr(_positionDot + 1);
+          }
+          return _labeldisplay;
+        },
+
+        /*
+         * called by Clear Filters
+         */
+        clearFilters: function() {
+
+// TODO
         }
 
-      });
+
+        });
     })();
   </script>
 
