@@ -72,7 +72,7 @@
         </template>
       </span>
 
-      <span id="textFilter">
+      <span id="textFilterHolder">
         <paper-input id="textFilter" placeholder="Restrict result by text" value="{{textFilter}}"></paper-input>
       </span>
 
@@ -83,16 +83,27 @@
 
     <paper-card elevation="1">
       <template is="dom-repeat" items="{{displayedEvents}}" as="e">
-        <paper-item>
-          <span> [[e.startDateFormatted]] </span>
-          <span> [[e.name]] </span>
-          <span> ([[ e.categories.campus ]])</span>
-          <paper-icon-button on-tap="setClassForItem" icon="more-horiz"></paper-icon-button>
-        </paper-item>
+        <div on-tap="_toggleCollapse">
+          <paper-item>
+            <span> [[e.startDateFormatted]] </span>
+            <span> [[e.name]] </span>
+            <span> ([[ e.categories.campus ]])</span>
+            <paper-icon-button icon="more-horiz"></paper-icon-button>
+<!--
+          <paper-icon-button toggles="{{expandTheBlock(e)}}" icon="more-horiz"></paper-icon-button>
+          info-outline
+          reorder
+          star-border
+          icons:visibility
+ -->
+          </paper-item>
 
-        <paper-item class$="[[getClassForItem(item, selected)]]">
-          <span> [[e.summary]] </span>
-        </paper-item>
+          <iron-collapse hidden$="[[e.expandBlock]]">
+            <div>
+            [[e.summary]]
+            </div>
+          </iron-collapse>
+        </div>
       </template>
 
     </paper-card>
@@ -161,26 +172,11 @@
           this.$.trainingApi.get();
         },
 
-        expandTheBlock: function(ev, index) {
-console.log("in expandTheBlock for "+ev.model.e.name);
-          console.log(ev.model.index);
-//          ev.model.e.expandBlock = !ev.model.e.expandBlock;
-//          ev.model.e.set("expandBlock", !ev.model.e.expandBlock);
-//          this.set("ev.model.e.expandBlock", !ev.model.e.expandBlock);
-          this.set("allEvents." + ev.model.index + ".expandBlock", true);
-//          return ev.model.e.expandBlock;
-        },
-
-        setClassForItem: function() {
-
-        },
-
-        getClassForItem: function(item, _selected) {
-console.log("in getClassForItem - input (selected) = "+_selected);
-//          var _val = _selected ? 'block expanded' : 'block';
-//console.log(_val)
-//          return _val;
-          return _selected ? 'block expanded' : 'block';
+        /*
+         * collapses and opens the details of the training event
+         */
+        _toggleDetailDisplay: function(ev) {
+            this.set("displayedEvents." + ev.model.index + ".expandBlock", !ev.model.e.expandBlock);
         },
 
         /*
@@ -198,8 +194,7 @@ console.log("in getClassForItem - input (selected) = "+_selected);
             event.startDateFormatted = "";
             event.filterDate = "";
 
-console.log("initiallising expandBlock for "+event.name+" to false");
-            event.expandBlock = false;
+            event.expandBlock = true;
 
             // setup the formatted date for display
             if (event.start) {
@@ -247,26 +242,13 @@ console.log("initiallising expandBlock for "+event.name+" to false");
           // filters are 'select all' initially
           this.displayedEvents = events;
 
+          // hack - coulnt get it to load collpased
+          this.displayedEvents.forEach(function(e) {
+            e._toggleDetailDisplay();
+          });
+
           this.allEvents = events;
         },
-        /*
-         // various attempts
-         resetCampus: function(campus, index, _selected=true) {
-         var _theCampus = {};
-         _theCampus = this.selectedCampusList[index];
-         this.$.selectedCampusList[index].selected = true;
-         },
-
-         resetCampus1: function(oldValue, newValue, index) {
-         this.notifySplices("selectedCampusList", [
-         {
-         index: index,
-         removed: [oldValue],
-         addedCount: 1,
-         object: newValue
-         }]);
-         },
-         */
 
         /*
          * resets all the filters to their default position
