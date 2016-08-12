@@ -21,13 +21,14 @@
     }
 
     /* control hide-show */
+/*
     .block {
       display: none;
     }
     .block.expanded  {
       display: block;
     }
-
+*/
     @media all and (min-width: 700px) {
       /* if we have a wide enough screen, keep the checkboxes with the label */
       #selectCampus,
@@ -82,23 +83,24 @@
 
 
     <paper-card elevation="1">
-      <template is="dom-repeat" items="{{displayedEvents}}" as="displayedEvent">
+      <template is="dom-repeat" items="{{displayedEvents}}" as="e">
         <paper-item>
-          <span> [[displayedEvent.startDateFormatted]] </span>
-          <span> [[displayedEvent.name]] </span>
-          <span> ([[ displayedEvent.categories.campus ]])</span>
-          <!--
-                    <paper-icon-button toggles="{{expandTheBlock(displayedEvent)}}" icon="more-horiz"></paper-icon-button>
-          <!--
-                    info-outline
-                    reorder
-                    star-border
-                    icons:visibility
-
-          <div class$="block [[getClassForItem(displayedEvent.expandBlock)]]">
-            <span> [[displayedEvent.summary]] </span>
-          </div>
+          <span> [[e.startDateFormatted]] </span>
+          <span> [[e.name]] </span>
+          <span> ([[ e.categories.campus ]])</span>
+          <paper-icon-button on-tap="expandTheBlock" icon="more-horiz"></paper-icon-button>
+<!--
+          <paper-icon-button toggles="{{expandTheBlock(e)}}" icon="more-horiz"></paper-icon-button>
+          info-outline
+          reorder
+          star-border
+          icons:visibility
  -->
+
+        </paper-item>
+
+        <paper-item hidden$="{{!e.expandBlock}}">
+          <span> [[e.summary]] </span>
         </paper-item>
       </template>
 
@@ -159,36 +161,30 @@
 
           allEvents: {
             type: Array
-          },
+          }
 
 
         },
-        /*
-         observers: [
-         'filterChangeCampus(selectedCampusList.selected)',
-         'filterChangeMonth(selectedMonthList.selected)'
-         ],
-
-         filterChangeCampus: function (_selected) {
-         this.set(selectedCampusList.selected) = _selected;
-         },
-         filterChangeMonth: function (_selected) {
-         this.set(selectedMonthList.selected) = _selected;
-         },
-         */
 
         ready: function () {
           this.$.trainingApi.get();
         },
 
-        expandTheBlock: function(e) {
-          e.expandBlock = !e.expandBlock;
+        expandTheBlock: function(ev, index) {
+console.log("in expandTheBlock for "+ev.model.e.name);
+          console.log(ev.model.index);
+//          ev.model.e.expandBlock = !ev.model.e.expandBlock;
+//          ev.model.e.set("expandBlock", !ev.model.e.expandBlock);
+//          this.set("ev.model.e.expandBlock", !ev.model.e.expandBlock);
+          this.set("allEvents." + ev.model.index + ".expandBlock", true);
+//          return ev.model.e.expandBlock;
         },
 
         getClassForItem: function(_selected) {
-console.log("in getClassForItem - selected = "+_selected);
-
-          return _selected ? 'block expanded' : 'block';
+console.log("in getClassForItem - input (selected) = "+_selected);
+          var _val = _selected ? 'block expanded' : 'block';
+console.log(_val)
+          return _val;
         },
 
         /*
