@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <script src="../scripts/md5.js"></script>
 
 <dom-module id="prototype-4">
@@ -15,6 +16,31 @@
       margin-bottom: 1em;
     }
 
+    #textFilter {
+      width: 15em;
+    }
+
+    /* control hide-show */
+    .block {
+      display: none;
+    }
+    .block.expanded  {
+      display: block;
+    }
+
+    @media all and (min-width: 700px) {
+      /* if we have a wide enough screen, keep the checkboxes with the label */
+      #selectCampus,
+      #selectMonth {
+        white-space: nowrap;
+      }
+    }
+    @media all and (max-width: 700px) {
+      #selectCampus,
+      #selectMonth {
+        display: block;
+      }
+    }
 
   </style>
 
@@ -22,7 +48,7 @@
     <uqlibrary-api-training id="trainingApi" on-uqlibrary-api-training="_setupData"></uqlibrary-api-training>
 
     <paper-card elevation="1" id="filter">
-      <div id="selectCampus">
+      <span id="selectCampus">
         <template is="dom-if" if="[[areMultipleCampuses]]">
           <span>Choose a campus:</span>
           <template id="campustemplate" is="dom-repeat" items="{{selectedCampusList}}" as="campus">
@@ -32,9 +58,9 @@
         <template is="dom-if" if="[[!areMultipleCampuses]]">
           <p>Training events currently only at: {{campusList}}</p>
         </template>
-      </div>
+      </span>
 
-      <div id="selectMonth">
+      <span id="selectMonth">
         <template is="dom-if" if="[[areMultipleMonths]]">
           <span>Choose a month:</span>
           <template is="dom-repeat" items="{{selectedMonthList}}" as="month">
@@ -44,33 +70,44 @@
         <template is="dom-if" if="[[!areMultipleCampuses]]">
           <p>Training events currently only at: {{campusList}}</p>
         </template>
-      </div>
+      </span>
 
-      <div>text filter tbd</div>
+      <span id="textFilter">
+        <paper-input id="textFilter" placeholder="Restrict result by text" value="{{textFilter}}"></paper-input>
+      </span>
 
-      <paper-button  on-tap="resetFilters">Reset filters</paper-button>
+      <paper-button on-tap="resetFilters">Reset filters</paper-button>
 
     </paper-card>
 
 
-
     <paper-card elevation="1">
-        <template is="dom-repeat" items="{{displayedEvents}}" as="displayedEvent">
-          <paper-item>
-            <span> [[displayedEvent.startDateFormatted]] </span>
-            <span> [[displayedEvent.name]] </span>
-            <span> ([[ displayedEvent.categories.campus ]])</span>
+      <template is="dom-repeat" items="{{displayedEvents}}" as="displayedEvent">
+        <paper-item>
+          <span> [[displayedEvent.startDateFormatted]] </span>
+          <span> [[displayedEvent.name]] </span>
+          <span> ([[ displayedEvent.categories.campus ]])</span>
+          <!--
+                    <paper-icon-button toggles="{{expandTheBlock(displayedEvent)}}" icon="more-horiz"></paper-icon-button>
+          <!--
+                    info-outline
+                    reorder
+                    star-border
+                    icons:visibility
 
-            <paper-button on-tap="xxx">Expand</paper-button>
-          </paper-item>
-        </template>
+          <div class$="block [[getClassForItem(displayedEvent.expandBlock)]]">
+            <span> [[displayedEvent.summary]] </span>
+          </div>
+ -->
+        </paper-item>
+      </template>
 
     </paper-card>
 
   </template>
 
   <script>
-    (function() {
+    (function () {
       Polymer({
         is: 'prototype-4',
 
@@ -103,6 +140,18 @@
           },
           areMultipleMonths: Boolean,
 
+          textFilter: {
+            type: String,
+            observer: "refilterData"
+          },
+
+          _ironAllyTarget: {
+            type: Object,
+            value: function () {
+              return this.$.textFilter;
+            }
+          },
+
 
           displayedEvents: {
             type: Array
@@ -110,32 +159,42 @@
 
           allEvents: {
             type: Array
-          }
+          },
 
 
         },
-/*
-        observers: [
+        /*
+         observers: [
          'filterChangeCampus(selectedCampusList.selected)',
          'filterChangeMonth(selectedMonthList.selected)'
-        ],
+         ],
 
-        filterChangeCampus: function (_selected) {
+         filterChangeCampus: function (_selected) {
          this.set(selectedCampusList.selected) = _selected;
-        },
-        filterChangeMonth: function (_selected) {
+         },
+         filterChangeMonth: function (_selected) {
          this.set(selectedMonthList.selected) = _selected;
-        },
-*/
+         },
+         */
 
-        ready: function() {
+        ready: function () {
           this.$.trainingApi.get();
+        },
+
+        expandTheBlock: function(e) {
+          e.expandBlock = !e.expandBlock;
+        },
+
+        getClassForItem: function(_selected) {
+console.log("in getClassForItem - selected = "+_selected);
+
+          return _selected ? 'block expanded' : 'block';
         },
 
         /*
          * setup the data on first load
          */
-        _setupData: function(e) {
+        _setupData: function (e) {
           var events = e.detail;
           var campuses = [];
           var months = [];
@@ -143,9 +202,13 @@
           var that = this;
 
           // extract all the filter collections
-          events.forEach(function(event){
+          events.forEach(function (event) {
             event.startDateFormatted = "";
             event.filterDate = "";
+
+console.log("initiallising expandBlock for "+event.name+" to false");
+            event.expandBlock = false;
+
             // setup the formatted date for display
             if (event.start) {
               event.startDateFormatted = moment(event.start).format('ddd D MMM YYYY');
@@ -154,14 +217,14 @@
 
 
             if (event.categories && event.categories.campus) {
-              event.categories.campus.forEach(function(campus){
+              event.categories.campus.forEach(function (campus) {
                 if (campuses.indexOf(campus) < 0) {
                   campuses.push(campus);
                 }
               });
             }
 
-            if (months!== undefined && event.filterDate != "" && months.indexOf(event.filterDate) < 0) {
+            if (months !== undefined && event.filterDate != "" && months.indexOf(event.filterDate) < 0) {
               months.push(event.filterDate);
             }
 
@@ -194,25 +257,40 @@
 
           this.allEvents = events;
         },
+        /*
+         // various attempts
+         resetCampus: function(campus, index, _selected=true) {
+         var _theCampus = {};
+         _theCampus = this.selectedCampusList[index];
+         this.$.selectedCampusList[index].selected = true;
+         },
+
+         resetCampus1: function(oldValue, newValue, index) {
+         this.notifySplices("selectedCampusList", [
+         {
+         index: index,
+         removed: [oldValue],
+         addedCount: 1,
+         object: newValue
+         }]);
+         },
+         */
 
         /*
          * resets all the filters to their default position
+         * and redisplaysthe curr
          */
-        resetFilters: function() {
+        resetFilters: function () {
           var that = this;
-          this.selectedCampusList.forEach(function(campus) {
-//            c.set("c.selected", true);
-            campus.selected = true;
-            that.set("campus.selected", true);
-          });
-          this.selectedMonthList.forEach(function(m) {
-            m.selected = true;
-//            m.set("selected", true);
+          this.selectedCampusList.forEach(function (c, index) {
+            that.set("selectedCampusList." + index + ".selected", true);
           });
 
-          // todo text field
+          this.selectedMonthList.forEach(function (m, index) {
+            that.set("selectedMonthList." + index + ".selected", true);
+          });
 
-//          this.$.campustemplate.render();
+          that.set("textFilter", "");
 
           this.refilterData();
         },
@@ -222,8 +300,10 @@
          * otherwise, return false
          * we are assuming there is only ever one entry in event.categories.campus
          */
-        _eventIsOnASelectedCampus: function(_event) {
-          if (!(_event.categories && _event.categories.campus)) { return false; }
+        _eventIsOnAFilteredCampus: function (_event) {
+          if (!(_event.categories && _event.categories.campus)) {
+            return false;
+          }
 
           eventCampus = _event.categories.campus;
 
@@ -241,10 +321,10 @@
         /*
          * returns true if the event's start date is currently ticked in the filter
          */
-        _eventIsInASelectedMonth: function(event) {
+        _eventIsInAFilteredMonth: function (event) {
           var _displayable = false;
           if (this.selectedMonthList !== undefined && 0 < this.selectedMonthList.length) {
-            this.selectedMonthList.forEach(function(monthFilter) {
+            this.selectedMonthList.forEach(function (monthFilter) {
               if (event.filterDate && event.filterDate == monthFilter.display
                       && monthFilter.selected) {
                 _displayable = true;
@@ -254,12 +334,32 @@
           return _displayable;
         },
 
+        _eventHasText: function (event) {
+          // if they have not entered any text then we dont include this in the filter
+          if (this.textFilter === undefined || this.textFilter == "") {
+            return true;
+          }
+
+          var _displayable = false;
+
+          // case insensitive search
+          if (-1 !== event.name.toLowerCase().indexOf(this.textFilter.toLowerCase())) {
+            _displayable = true;
+          }
+          return _displayable;
+        },
+
 
 
         /*
          * the filter selection has been changed - refilter the data for display
          */
-        refilterData: function() {
+        refilterData: function () {
+          // we dont refilter before the data is set
+          if (this.allEvents == undefined) {
+            return;
+          }
+
           var that = this;
           var processedEvents = [];
 
@@ -267,23 +367,20 @@
           this.displayedEvents = [];
 
           // for each event, check if the filters allow display
-          this.allEvents.forEach(function(e) {
-            if (that._eventIsOnASelectedCampus(e)
-                && that._eventIsInASelectedMonth(e)
-            // && text filter check TODO
+          this.allEvents.forEach(function (e) {
+            if (that._eventIsOnAFilteredCampus(e)
+                    && that._eventIsInAFilteredMonth(e)
+                    && that._eventHasText(e)
             ) {
               processedEvents.push(e);
-
             }
-
           });
           this.displayedEvents = processedEvents;
 
         },
 
 
-
-        _formatLabelForDisplay: function(aName) {
+        _formatLabelForDisplay: function (aName) {
           var _labeldisplay = aName;
           var _positionDot = aName.lastIndexOf(".");
           if (-1 !== _positionDot) {
@@ -293,7 +390,7 @@
         }
 
 
-        });
+      });
     })();
   </script>
 
