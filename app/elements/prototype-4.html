@@ -20,12 +20,8 @@
       width: 15em;
     }
 
-    /* control hide-show */
-    .block {
-      display: hidden;
-    }
-    .block.expanded  {
-      display: flex;
+    .eventDetails {
+      margin-left: 2em;
     }
 
     @media all and (min-width: 700px) {
@@ -83,26 +79,32 @@
 
     <paper-card elevation="1">
       <template is="dom-repeat" items="{{displayedEvents}}" as="e">
-        <div on-tap="_toggleCollapse">
+        <div on-tap="_toggleDetailDisplay">
           <paper-item>
             <span> [[e.startDateFormatted]] </span>
             <span> [[e.name]] </span>
             <span> ([[ e.categories.campus ]])</span>
             <paper-icon-button icon="more-horiz"></paper-icon-button>
-<!--
-          <paper-icon-button toggles="{{expandTheBlock(e)}}" icon="more-horiz"></paper-icon-button>
-          info-outline
-          reorder
-          star-border
-          icons:visibility
- -->
           </paper-item>
 
-          <iron-collapse hidden$="[[e.expandBlock]]">
-            <div>
-            [[e.summary]]
+          <!-- TODO what paper element should this block be? -->
+          <div class="eventDetails" hidden$="[[e.expandBlock]]">
+            <div>[[e.summary]]</div>
+            <p>Venue: [[e.venue]]</p>
+
+            <div hidden$="[[!e.areBookingsOpen]]">
+              <p hidden$="[[e.canPublishPlaces">Places available: [[e.bookingSettings.placesRemaining]] of
+                [[e.bookingSettings.bookingLimit]]</p>
+              <p>Bookings Close: [[e.dateBookingsClose_formatted]]</p>
             </div>
-          </iron-collapse>
+            <div class="book">
+              <a href="">
+                <paper-button class="button-secondary">Log in and book</paper-button>
+              </a>
+            </div>
+
+
+          </div>
         </div>
       </template>
 
@@ -125,50 +127,68 @@
             type: Array,
             value: []
           },
+          /*
+           * the campuses that are currently selected in the filter
+           */
           selectedCampusList: {
             type: Array,
             value: [],
             notify: true
           },
+          /*
+           * true if more than one campus can be chosen from
+           * used to hide the campuses filter block when there is only one campus
+           */
           areMultipleCampuses: Boolean,
 
-
+          /*
+           * all the months in the data set
+           * used to display the months that can be filtered
+           */
           displayMonthList: {
             type: Array,
             value: []
           },
+          /*
+           * the months that are currently selected in the filter
+           */
           selectedMonthList: {
             type: Array,
             value: [],
             notify: true
           },
+          /*
+           * true if more than one month can be chosen from
+           * used to hide the months filter block when there is only one month
+           */
           areMultipleMonths: Boolean,
 
+          /*
+           * the text field where the user can filter data
+           * case insensitive
+           */
           textFilter: {
             type: String,
             observer: "refilterData"
           },
 
-          _ironAllyTarget: {
-            type: Object,
-            value: function () {
-              return this.$.textFilter;
-            }
-          },
-
-
-          displayedEvents: {
-            type: Array
-          },
-
+          /*
+           * complete set of events, taken from the supplied data
+           */
           allEvents: {
             type: Array
-          }
+          },
 
-
+          /*
+           * the events that match the selected filters
+           */
+           displayedEvents: {
+           type: Array
+           }
         },
 
         ready: function () {
+          /* load the data (from uqlibrary_api) */
           this.$.trainingApi.get();
         },
 
@@ -188,31 +208,66 @@
           var months = [];
 
           var that = this;
+          var _now = new Date();
 
           // extract all the filter collections
-          events.forEach(function (event) {
-            event.startDateFormatted = "";
-            event.filterDate = "";
+          events.forEach(function (_event) {
+            _event.startDateFormatted = "";
+            _event.filterDate = "";
 
-            event.expandBlock = true;
+            _event.expandBlock = true;
 
-            // setup the formatted date for display
-            if (event.start) {
-              event.startDateFormatted = moment(event.start).format('ddd D MMM YYYY');
-              event.filterDate = moment(event.start).format('MMM YYYY');
+            _event.dateBookingsClose_formatted = "";
+            if (_event.bookingSettings !== undefined
+                    && _event.bookingSettings !== null
+                    && _event.bookingSettings.bookingsClose !== undefined) {
+              _event.dateBookingsClose_formatted = moment(_event.bookingSettings.bookingsClose).format("ddd D MMM h:mma");
             }
 
+            _event.dateBookingsClose_formatted = "";
+            if (_event.bookingSettings !== undefined
+                    && _event.bookingSettings !== null
+                    && _event.bookingSettings.bookingsClose !== undefined) {
+              _event.dateBookingsClose_formatted = moment(_event.bookingSettings.bookingsClose).format("ddd D MMM h:mma");
+            }
 
-            if (event.categories && event.categories.campus) {
-              event.categories.campus.forEach(function (campus) {
+            _event.areBookingsOpen = false;
+            _event.canPublishPlaces = false;
+            if (_event.bookingSettings !== undefined
+                    && _event.bookingSettings !== null) {
+
+              // can we show the bookings block?
+              if (_event.bookingSettings.bookingsOpen !== undefined) {
+                var _dateBookingsOpen = new Date(_event.bookingSettings.bookingsOpen);
+                if (_dateBookingsOpen <= _now) {
+                  _event.areBookingsOpen = true;
+                }
+              }
+
+              // can we show the number of places available?
+              if (_event.bookingSettings.bookingLimit !== undefined && _event.bookingSettings.bookingLimit >0
+                      && _event.bookingSettings.placesRemaining !== undefined && _event.bookingSettings.placesRemaining >0)
+                _event.canPublishPlaces = true;
+            }
+
+            // setup the formatted date for display
+            if (_event.start) {
+              _event.startDateFormatted = moment(_event.start).format('ddd D MMM YYYY');
+              _event.filterDate = moment(_event.start).format('MMM YYYY');
+            }
+
+            // get the list of available cmapuses
+            if (_event.categories && _event.categories.campus) {
+              _event.categories.campus.forEach(function (campus) {
                 if (campuses.indexOf(campus) < 0) {
                   campuses.push(campus);
                 }
               });
             }
 
-            if (months !== undefined && event.filterDate != "" && months.indexOf(event.filterDate) < 0) {
-              months.push(event.filterDate);
+            // get the list of available months (in which triaining will be offered)
+            if (months !== undefined && _event.filterDate != "" && months.indexOf(_event.filterDate) < 0) {
+              months.push(_event.filterDate);
             }
 
           });
@@ -242,17 +297,12 @@
           // filters are 'select all' initially
           this.displayedEvents = events;
 
-          // hack - coulnt get it to load collpased
-          this.displayedEvents.forEach(function(e) {
-            e._toggleDetailDisplay();
-          });
-
           this.allEvents = events;
         },
 
         /*
          * resets all the filters to their default position
-         * and redisplaysthe curr
+         * and redisplays the full data set
          */
         resetFilters: function () {
           var that = this;
@@ -308,6 +358,10 @@
           return _displayable;
         },
 
+        /*
+         * filters by the supplied text string
+         * ignore if blank
+         */
         _eventHasText: function (event) {
           // if they have not entered any text then we dont include this in the filter
           if (this.textFilter === undefined || this.textFilter == "") {
@@ -351,18 +405,7 @@
           });
           this.displayedEvents = processedEvents;
 
-        },
-
-
-        _formatLabelForDisplay: function (aName) {
-          var _labeldisplay = aName;
-          var _positionDot = aName.lastIndexOf(".");
-          if (-1 !== _positionDot) {
-            _labeldisplay = aName.substr(_positionDot + 1);
-          }
-          return _labeldisplay;
         }
-
 
       });
     })();
