@@ -21,14 +21,13 @@
     }
 
     /* control hide-show */
-/*
     .block {
-      display: none;
+      display: hidden;
     }
     .block.expanded  {
-      display: block;
+      display: flex;
     }
-*/
+
     @media all and (min-width: 700px) {
       /* if we have a wide enough screen, keep the checkboxes with the label */
       #selectCampus,
@@ -88,18 +87,10 @@
           <span> [[e.startDateFormatted]] </span>
           <span> [[e.name]] </span>
           <span> ([[ e.categories.campus ]])</span>
-          <paper-icon-button on-tap="expandTheBlock" icon="more-horiz"></paper-icon-button>
-<!--
-          <paper-icon-button toggles="{{expandTheBlock(e)}}" icon="more-horiz"></paper-icon-button>
-          info-outline
-          reorder
-          star-border
-          icons:visibility
- -->
-
+          <paper-icon-button on-tap="setClassForItem" icon="more-horiz"></paper-icon-button>
         </paper-item>
 
-        <paper-item hidden$="{{!e.expandBlock}}">
+        <paper-item class$="[[getClassForItem(item, selected)]]">
           <span> [[e.summary]] </span>
         </paper-item>
       </template>
@@ -180,11 +171,16 @@ console.log("in expandTheBlock for "+ev.model.e.name);
 //          return ev.model.e.expandBlock;
         },
 
-        getClassForItem: function(_selected) {
+        setClassForItem: function() {
+
+        },
+
+        getClassForItem: function(item, _selected) {
 console.log("in getClassForItem - input (selected) = "+_selected);
-          var _val = _selected ? 'block expanded' : 'block';
-console.log(_val)
-          return _val;
+//          var _val = _selected ? 'block expanded' : 'block';
+//console.log(_val)
+//          return _val;
+          return _selected ? 'block expanded' : 'block';
         },
 
         /*
