@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="training-filter.html">
 <script src="../scripts/md5.js"></script>
 
 <dom-module id="prototype-4">
@@ -16,75 +17,28 @@
       margin-bottom: 1em;
     }
 
-    #textFilter {
-      width: 15em;
-    }
-
     .eventDetails {
       margin-left: 2em;
     }
 
-    @media all and (min-width: 700px) {
-      /* if we have a wide enough screen, keep the checkboxes with the label */
-      #selectCampus,
-      #selectMonth {
-        white-space: nowrap;
-      }
-    }
-    @media all and (max-width: 700px) {
-      #selectCampus,
-      #selectMonth {
-        display: block;
-      }
-    }
 
   </style>
 
   <template>
-    <uqlibrary-api-training id="trainingApi" on-uqlibrary-api-training="_setupData"></uqlibrary-api-training>
 
     <paper-card elevation="1" id="filter">
-      <span id="selectCampus">
-        <template is="dom-if" if="[[areMultipleCampuses]]">
-          <span>Choose a campus:</span>
-          <template id="campustemplate" is="dom-repeat" items="{{selectedCampusList}}" as="campus">
-            <paper-checkbox checked="{{campus.selected}}" on-change="refilterData">{{campus.name}}</paper-checkbox>
-          </template>
-        </template>
-        <template is="dom-if" if="[[!areMultipleCampuses]]">
-          <p>Training events currently only at: {{campusList}}</p>
-        </template>
-      </span>
-
-      <span id="selectMonth">
-        <template is="dom-if" if="[[areMultipleMonths]]">
-          <span>Choose a month:</span>
-          <template is="dom-repeat" items="{{selectedMonthList}}" as="month">
-            <paper-checkbox checked="{{month.selected}}" on-change="refilterData">{{month.display}}</paper-checkbox>
-          </template>
-        </template>
-        <template is="dom-if" if="[[!areMultipleCampuses]]">
-          <p>Training events currently only at: {{campusList}}</p>
-        </template>
-      </span>
-
-      <span id="textFilterHolder">
-        <paper-input id="textFilter" placeholder="Restrict result by text" value="{{textFilter}}"></paper-input>
-      </span>
-
-      <paper-button on-tap="resetFilters">Reset filters</paper-button>
-
+      <training-filter id="trainingFilter" on-training-filter="_setupData"></training-filter>
     </paper-card>
 
-
     <paper-card elevation="1">
-      <template is="dom-repeat" items="{{displayedEvents}}" as="e">
+      <template is="dom-repeat" items="{{displayableEvents}}" as="e">
         <div on-tap="_toggleDetailDisplay">
+
           <paper-item>
             <span> [[e.startDateFormatted]] </span>
             <span> [[e.name]] </span>
             <span> ([[ e.categories.campus ]])</span>
-            <paper-icon-button icon="more-horiz"></paper-icon-button>
+            <paper-icon-button icon="expand-more"></paper-icon-button>
           </paper-item>
 
           <!-- TODO what paper element should this block be? -->
@@ -109,7 +63,6 @@
       </template>
 
     </paper-card>
-
   </template>
 
   <script>
@@ -120,83 +73,19 @@
         properties: {
 
           /*
-           * all the campuses that are provided in the data
-           * (matches to filter options displayed)
-           */
-          displayCampusList: {
-            type: Array,
-            value: []
-          },
-          /*
-           * the campuses that are currently selected in the filter
-           */
-          selectedCampusList: {
-            type: Array,
-            value: [],
-            notify: true
-          },
-          /*
-           * true if more than one campus can be chosen from
-           * used to hide the campuses filter block when there is only one campus
-           */
-          areMultipleCampuses: Boolean,
-
-          /*
-           * all the months in the data set
-           * used to display the months that can be filtered
-           */
-          displayMonthList: {
-            type: Array,
-            value: []
-          },
-          /*
-           * the months that are currently selected in the filter
-           */
-          selectedMonthList: {
-            type: Array,
-            value: [],
-            notify: true
-          },
-          /*
-           * true if more than one month can be chosen from
-           * used to hide the months filter block when there is only one month
-           */
-          areMultipleMonths: Boolean,
-
-          /*
-           * the text field where the user can filter data
-           * case insensitive
-           */
-          textFilter: {
-            type: String,
-            observer: "refilterData"
-          },
-
-          /*
-           * complete set of events, taken from the supplied data
-           */
-          allEvents: {
-            type: Array
-          },
-
-          /*
            * the events that match the selected filters
            */
-           displayedEvents: {
-           type: Array
-           }
+          displayableEvents: Array
         },
 
         ready: function () {
-          /* load the data (from uqlibrary_api) */
-          this.$.trainingApi.get();
         },
 
         /*
          * collapses and opens the details of the training event
          */
         _toggleDetailDisplay: function(ev) {
-            this.set("displayedEvents." + ev.model.index + ".expandBlock", !ev.model.e.expandBlock);
+            this.set("displayableEvents." + ev.model.index + ".expandBlock", !ev.model.e.expandBlock);
         },
 
         /*
@@ -204,16 +93,12 @@
          */
         _setupData: function (e) {
           var events = e.detail;
-          var campuses = [];
-          var months = [];
 
-          var that = this;
           var _now = new Date();
 
-          // extract all the filter collections
+          // setup the display data for each item
           events.forEach(function (_event) {
             _event.startDateFormatted = "";
-            _event.filterDate = "";
 
             _event.expandBlock = true;
 
@@ -253,158 +138,12 @@
             // setup the formatted date for display
             if (_event.start) {
               _event.startDateFormatted = moment(_event.start).format('ddd D MMM YYYY');
-              _event.filterDate = moment(_event.start).format('MMM YYYY');
             }
 
-            // get the list of available cmapuses
-            if (_event.categories && _event.categories.campus) {
-              _event.categories.campus.forEach(function (campus) {
-                if (campuses.indexOf(campus) < 0) {
-                  campuses.push(campus);
-                }
-              });
-            }
-
-            // get the list of available months (in which triaining will be offered)
-            if (months !== undefined && _event.filterDate != "" && months.indexOf(_event.filterDate) < 0) {
-              months.push(_event.filterDate);
-            }
-
-          });
-
-          // store the possible list of campuses
-          this.displayCampusList = campuses;
-          this.areMultipleCampuses = (this.displayCampusList !== undefined && this.displayCampusList.length > 1);
-
-          // initially select all campus options
-          campuses.forEach(function (aCampus) {
-            var newCampus = {};
-            newCampus.name = aCampus;
-            newCampus.selected = true;
-            that.selectedCampusList.push(newCampus);
-          });
-
-          this.displayMonthList = months;
-          this.areMultipleMonths = (this.displayMonthList !== undefined && this.displayMonthList.length > 1);
-          // initially select all months
-          months.forEach(function (aMonth) {
-            var newMonth = {};
-            newMonth.display = aMonth;
-            newMonth.selected = true;
-            that.selectedMonthList.push(newMonth);
           });
 
           // filters are 'select all' initially
-          this.displayedEvents = events;
-
-          this.allEvents = events;
-        },
-
-        /*
-         * resets all the filters to their default position
-         * and redisplays the full data set
-         */
-        resetFilters: function () {
-          var that = this;
-          this.selectedCampusList.forEach(function (c, index) {
-            that.set("selectedCampusList." + index + ".selected", true);
-          });
-
-          this.selectedMonthList.forEach(function (m, index) {
-            that.set("selectedMonthList." + index + ".selected", true);
-          });
-
-          that.set("textFilter", "");
-
-          this.refilterData();
-        },
-
-        /*
-         * if the campus of the event matches one of the campuses selected in the filter, return true
-         * otherwise, return false
-         * we are assuming there is only ever one entry in event.categories.campus
-         */
-        _eventIsOnAFilteredCampus: function (_event) {
-          if (!(_event.categories && _event.categories.campus)) {
-            return false;
-          }
-
-          eventCampus = _event.categories.campus;
-
-          var _displayable = false;
-          if (this.selectedCampusList !== undefined && 0 < this.selectedCampusList.length) {
-            this.selectedCampusList.forEach(function (campusFilter) {
-              if (eventCampus == campusFilter.name && campusFilter.selected) {
-                _displayable = true;
-              }
-            });
-          }
-          return _displayable;
-        },
-
-        /*
-         * returns true if the event's start date is currently ticked in the filter
-         */
-        _eventIsInAFilteredMonth: function (event) {
-          var _displayable = false;
-          if (this.selectedMonthList !== undefined && 0 < this.selectedMonthList.length) {
-            this.selectedMonthList.forEach(function (monthFilter) {
-              if (event.filterDate && event.filterDate == monthFilter.display
-                      && monthFilter.selected) {
-                _displayable = true;
-              }
-            });
-          }
-          return _displayable;
-        },
-
-        /*
-         * filters by the supplied text string
-         * ignore if blank
-         */
-        _eventHasText: function (event) {
-          // if they have not entered any text then we dont include this in the filter
-          if (this.textFilter === undefined || this.textFilter == "") {
-            return true;
-          }
-
-          var _displayable = false;
-
-          // case insensitive search
-          if (-1 !== event.name.toLowerCase().indexOf(this.textFilter.toLowerCase())) {
-            _displayable = true;
-          }
-          return _displayable;
-        },
-
-
-
-        /*
-         * the filter selection has been changed - refilter the data for display
-         */
-        refilterData: function () {
-          // we dont refilter before the data is set
-          if (this.allEvents == undefined) {
-            return;
-          }
-
-          var that = this;
-          var processedEvents = [];
-
-          // clear the display data
-          this.displayedEvents = [];
-
-          // for each event, check if the filters allow display
-          this.allEvents.forEach(function (e) {
-            if (that._eventIsOnAFilteredCampus(e)
-                    && that._eventIsInAFilteredMonth(e)
-                    && that._eventHasText(e)
-            ) {
-              processedEvents.push(e);
-            }
-          });
-          this.displayedEvents = processedEvents;
-
+          this.displayableEvents = events;
         }
 
       });
