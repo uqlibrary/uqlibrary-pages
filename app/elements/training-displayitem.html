@@ -21,10 +21,10 @@
 
   <template>
 
-    <div on-tap="_toggleDetailDisplay">
+    <div on-tap="_openEvent">
 
       <paper-item>
-        <span> [[e.startDateFormatted]] </span>
+        <span>Component: [[e.startDateFormatted]] </span>
         <span> [[e.name]] </span>
         <span> ([[ e.categories.campus ]])</span>
         <paper-icon-button icon="expand-less" hidden$="[[e.expandBlock]]"></paper-icon-button>
@@ -71,11 +71,10 @@
           }
         },
 
-        ready: function (_event) {
+        ready: function () {
         },
 
         _formatData: function (_event) {
-console.log(_event);
           var _now = new Date();
 
           _event.startDateFormatted = "";
@@ -123,17 +122,21 @@ console.log(_event);
           this.e = _event;
         },
 
+
+
         /*
          * collapses and opens the details of the training event
          */
 //        that.set("selectedCampusList." + index + ".selected", true);
-        _toggleDetailDisplay: function(ev, index) {
-console.log("=====");
-console.log(ev);
-console.log(index);
-          var _id = "e." + index + ".expandBlock";
-console.log(_id);
-          var _newvalue = !ev.model.e.expandBlock;
+        _openEvent: function(ev, index) {
+console.log("=====\ncomponent");
+console.log(this.e);
+//console.log(ev);
+//console.log(index);
+//console.log(this.$.expandBlock);
+//          var _id = "ev." + index + ".expandBlock";
+          var _id = "this.e.expandBlock";
+          var _newvalue = !this.e.expandBlock;
           this.set(_id, _newvalue);
         }
 

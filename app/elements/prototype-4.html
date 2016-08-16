@@ -28,13 +28,13 @@
 
     <paper-card elevation="1">
       <template is="dom-repeat" items="{{displayableEvents}}" as="e">
-<!--
+
         <training-displayitem data="[[e]]"></training-displayitem>
- -->
+
         <div on-tap="_toggleDetailDisplay">
 
           <paper-item>
-            <span> [[e.startDateFormatted]] </span>
+            <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Inline: [[e.startDateFormatted]] </span>
             <span> [[e.name]] </span>
             <span> ([[ e.categories.campus ]])</span>
             <paper-icon-button icon="expand-less" hidden$="[[e.expandBlock]]"></paper-icon-button>
@@ -59,6 +59,7 @@
 
 
           </div>
+          <hr>
         </div>
 
       </template>
@@ -73,7 +74,7 @@
 
         properties: {
           /*
-           * the events that match the selected filters
+           * the events that match the selected filters, returned from the filter component
            */
           displayableEvents: Array
         },
@@ -81,15 +82,19 @@
         ready: function () {
         },
 
+
+
+
         /*
          * collapses and opens the details of the training event
          */
         _toggleDetailDisplay: function(ev) {
-console.log(ev);
           var _id = "displayableEvents." + ev.model.index + ".expandBlock";
           var _newvalue = !ev.model.e.expandBlock;
           this.set(_id, _newvalue);
         },
+
+
 
         /*
          * setup the data on first load
