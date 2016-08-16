@@ -38,7 +38,8 @@
             <span> [[e.startDateFormatted]] </span>
             <span> [[e.name]] </span>
             <span> ([[ e.categories.campus ]])</span>
-            <paper-icon-button icon="expand-more"></paper-icon-button>
+            <paper-icon-button icon="expand-less" hidden$="[[e.expandBlock]]"></paper-icon-button>
+            <paper-icon-button icon="expand-more" hidden$="[[!e.expandBlock]]"></paper-icon-button>
           </paper-item>
 
           <!-- TODO what paper element should this block be? -->
