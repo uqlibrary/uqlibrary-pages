@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="training-filter.html">
+<link rel="import" href="training-displayitem.html">
 <script src="../scripts/md5.js"></script>
 
 <dom-module id="prototype-4">
@@ -17,11 +18,6 @@
       margin-bottom: 1em;
     }
 
-    .eventDetails {
-      margin-left: 2em;
-    }
-
-
   </style>
 
   <template>
@@ -32,6 +28,9 @@
 
     <paper-card elevation="1">
       <template is="dom-repeat" items="{{displayableEvents}}" as="e">
+<!--
+        <training-displayitem data="[[e]]"></training-displayitem>
+ -->
         <div on-tap="_toggleDetailDisplay">
 
           <paper-item>
@@ -61,6 +60,7 @@
 
           </div>
         </div>
+
       </template>
 
     </paper-card>
@@ -72,7 +72,6 @@
         is: 'prototype-4',
 
         properties: {
-
           /*
            * the events that match the selected filters
            */
@@ -86,7 +85,10 @@
          * collapses and opens the details of the training event
          */
         _toggleDetailDisplay: function(ev) {
-            this.set("displayableEvents." + ev.model.index + ".expandBlock", !ev.model.e.expandBlock);
+console.log(ev);
+          var _id = "displayableEvents." + ev.model.index + ".expandBlock";
+          var _newvalue = !ev.model.e.expandBlock;
+          this.set(_id, _newvalue);
         },
 
         /*
