@@ -39,14 +39,13 @@
             type: Array
           },
 
-          displayCampusList: {
+          campusList: {
             type: Array
           }
 
         },
 
         ready: function() {
-console.log("by-category in ready");
           this.$.trainingApi.get();
         },
 
@@ -91,7 +90,7 @@ console.log("by-category in ready");
 
           });
 
-          this.displayedEvents = processedEvents;
+          this.trainingEvents = processedEvents;
           this.campusList = campuses;
         }
 
