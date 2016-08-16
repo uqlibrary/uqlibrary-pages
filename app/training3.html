@@ -85,21 +85,9 @@
 
 <body>
 <span id="browser-sync-binding"></span>
-<uqlibrary-alerts ga-app-name='Alerts'></uqlibrary-alerts>
-<uqlibrary-ga id="home-ga" app-name="training4"></uqlibrary-ga>
-
-<uq-minimal-header show-search-button="true"
-                   show-menu-button="true"
-                   show-login-button="true"
-                   show-apps-button="true"></uq-minimal-header>
-<uql-menu></uql-menu>
 
 <div id="content">
 
-  <!-- Preloader/Unsupported browser message -->
-  <!-- preloader will be inserted by gulp task, do not remove -->
-  #preloader#
-  <!-- End of Preloader/Unsupported browser message -->
 
   <template is="dom-bind" id="uqlUserUpgrade" unresolved>
     <div id="layout">
@@ -114,13 +102,6 @@
   </template>
 </div>
 
-<uql-connect-footer></uql-connect-footer>
-<uq-minimal-footer></uq-minimal-footer>
-
-
-<!-- build:js scripts/app.js -->
-<script src="scripts/app.js"></script>
-<!-- endbuild-->
 
 <script>
   document.cookie="UQLMockData=enabled";
