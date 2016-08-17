@@ -6,6 +6,8 @@
   <link rel="import" href="../bower_components/paper-card/paper-card.html">
   <link rel="import" href="../bower_components/paper-button/paper-button.html">
   <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+  <link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+  <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
   <script src="../scripts/md5.js"></script>
 
   <style is="custom-style" include="common-styles">
@@ -16,36 +18,66 @@
     paper-card {
       margin-bottom: 16px;
     }
+
+    .filter {
+      margin: 8px 16px;
+    }
   </style>
 
   <template>
     <uqlibrary-api-training id="trainingApi" on-uqlibrary-api-training="_processData"></uqlibrary-api-training>
 
-    <paper-card heading="Filter by campus">
-      <div class="card-content">
-    <template is="dom-repeat" items="{{campusList}}" as="campus">
-      <div>
-        <paper-checkbox checked>{{campus}}</paper-checkbox>
+    <paper-card>
+      <div class="header style-scope paper-card layout horizontal">
+        <div class="title-text style-scope paper-card flex">Filter events</div>
+        <paper-icon-button class="no-flex" style="margin: 10px" icon="icons:arrow-drop-down" on-click="toggle"></paper-icon-button>
       </div>
-      </template>
-      </div>
-    </paper-card>
 
-    <paper-card heading="Filter by month">
-        <div class="card-content">
-          <div>
-          <paper-checkbox checked>Aug 2016</paper-checkbox>
+      <iron-collapse id="collapse">
+        <div class="card-content layout horizontal wrap">
+
+          <div class="filter flex-3">
+            <h4>Filter by keyword</h4>
+            <div class="layout horizontal center-justified">
+              <paper-input label="Keyword" class="flex-11"></paper-input>
+              <paper-button class="flex-1">Search</paper-button>
+            </div>
           </div>
-          <div>
-          <paper-checkbox checked>Sep 2016</paper-checkbox>
+
+          <div class="filter flex-3">
+            <h4>Filter by campus</h4>
+            <template is="dom-repeat" items="{{campusList}}" as="campus">
+              <div>
+                <paper-checkbox checked>{{campus}}</paper-checkbox>
+              </div>
+            </template>
           </div>
-          <div>
-          <paper-checkbox checked>Oct 2016</paper-checkbox>
+
+          <div class="filter flex-3">
+            <h4>Filter by month</h4>
+
+            <div>
+              <paper-checkbox checked>Aug 2016</paper-checkbox>
+            </div>
+            <div>
+              <paper-checkbox checked>Sep 2016</paper-checkbox>
+            </div>
+            <div>
+              <paper-checkbox checked>Oct 2016</paper-checkbox>
+            </div>
+            <div>
+              <paper-checkbox checked>Oct 2016</paper-checkbox>
+            </div>
           </div>
+
         </div>
+        <div class="card-actions layout horizontal end-justified">
+          <paper-button>clear filters</paper-button>
+        </div>
+      </iron-collapse>
     </paper-card>
 
-      <template is="dom-repeat" items="{{trainingEvents}}" as="category">
+    <template is="dom-repeat" items="{{trainingEvents}}" as="category">
 
       <paper-card heading="{{category.displayName}}">
         <div class="card-content">
@@ -81,6 +113,9 @@
 
         },
 
+        toggle: function() {
+          this.$.collapse.toggle();
+        },
         ready: function() {
           this.$.trainingApi.get();
         },
