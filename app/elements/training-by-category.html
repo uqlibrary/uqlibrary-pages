@@ -8,6 +8,7 @@
   <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
   <link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
   <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+  <link rel="import" href="../bower_components/uqlibrary-training/elements/uqlibrary-training-details.html">
   <script src="../scripts/md5.js"></script>
 
   <style is="custom-style" include="common-styles">
@@ -83,9 +84,23 @@
         <div class="card-content">
 
           <template is="dom-repeat" items="{{category.events}}" as="trainingEvent">
-            <paper-item>
+            <paper-item data-id$="[[trainingEvent.entityId]]" on-click="toggle">
               <span> [[trainingEvent.formattedDate]] </span>
-              <span><a href="#">[[trainingEvent.name]] ([[ trainingEvent.categories.campus ]])</a></span></paper-item>
+              <span>
+                <a href="#" data-id$="[[trainingEvent.entityId]]">[[trainingEvent.name]] ([[ trainingEvent.categories.campus ]])</a></span>
+            </paper-item>
+            <iron-collapse id$="collapse[[trainingEvent.entityId]]">
+              <paper-card>
+                <uqlibrary-training-details event="[[trainingEvent]]"></uqlibrary-training-details>
+                <div class="card-content">
+                  Non-uq users, please, submit expression of interest form to attend the event <paper-button>Submit EOI</paper-button></div>
+
+                <div class="card-actions layout horizontal end-justified">
+                  <paper-button class="button-colored-accent">Login and book</paper-button>
+                </div>
+
+              </paper-card>
+            </iron-collapse>
           </template>
 
         </div>
@@ -113,8 +128,9 @@
 
         },
 
-        toggle: function() {
-          this.$.collapse.toggle();
+        toggle: function(e) {
+          var toggleContent = this.querySelector('#collapse' + e.target.getAttribute('data-id'));
+          toggleContent.toggle();
         },
         ready: function() {
           this.$.trainingApi.get();
