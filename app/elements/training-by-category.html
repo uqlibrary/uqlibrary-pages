@@ -3,26 +3,62 @@
   <link rel="import" href="elements.html">
   <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
   <link rel="import" href="../bower_components/paper-input/paper-input.html">
+  <link rel="import" href="../bower_components/paper-card/paper-card.html">
   <link rel="import" href="../bower_components/paper-button/paper-button.html">
+  <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
   <script src="../scripts/md5.js"></script>
 
   <style is="custom-style" include="common-styles">
     span {
       padding: 0 8px;
     }
+
+    paper-card {
+      margin-bottom: 16px;
+    }
   </style>
 
   <template>
     <uqlibrary-api-training id="trainingApi" on-uqlibrary-api-training="_processData"></uqlibrary-api-training>
-    <template is="dom-repeat" items="{{trainingEvents}}" as="category">
 
-      <h4>[[category.displayName]]</h4>
-
-      <template is="dom-repeat" items="{{category.events}}" as="trainingEvent">
-        <paper-item>
-          <span> [[trainingEvent.formattedDate]] </span>
-          <span><a href="#">[[trainingEvent.name]] ([[ trainingEvent.categories.campus ]])</a></span></paper-item>
+    <paper-card heading="Filter by campus">
+      <div class="card-content">
+    <template is="dom-repeat" items="{{campusList}}" as="campus">
+      <div>
+        <paper-checkbox checked>{{campus}}</paper-checkbox>
+      </div>
       </template>
+      </div>
+    </paper-card>
+
+    <paper-card heading="Filter by month">
+        <div class="card-content">
+          <div>
+          <paper-checkbox checked>Aug 2016</paper-checkbox>
+          </div>
+          <div>
+          <paper-checkbox checked>Sep 2016</paper-checkbox>
+          </div>
+          <div>
+          <paper-checkbox checked>Oct 2016</paper-checkbox>
+          </div>
+        </div>
+    </paper-card>
+
+      <template is="dom-repeat" items="{{trainingEvents}}" as="category">
+
+      <paper-card heading="{{category.displayName}}">
+        <div class="card-content">
+
+          <template is="dom-repeat" items="{{category.events}}" as="trainingEvent">
+            <paper-item>
+              <span> [[trainingEvent.formattedDate]] </span>
+              <span><a href="#">[[trainingEvent.name]] ([[ trainingEvent.categories.campus ]])</a></span></paper-item>
+          </template>
+
+        </div>
+      </paper-card>
+
     </template>
 
 
@@ -53,21 +89,28 @@
           var events = e.detail;
           var campuses = [];
           var processedEvents = [];
+          var categories = [];
+
 
           events.forEach(function(event){
-
             //set up all categories
             if (event.labels) {
               event.labels.forEach(function(category){
-                if (!processedEvents[category.id]) {
+
+                var catIndex = categories.indexOf(category.id);
+
+                if (catIndex < 0) {
                   category.events = [];
                   category.displayName = category.name.replace(/.*\./ , '');
+                  processedEvents.push(category);
 
-                  processedEvents[category.id] = category;
+                  categories.push(category.id);
+                  catIndex = categories.length - 1;
                 }
 
-                if (!category.events)
-                  category = processedEvents[category.id];
+                if (!category.events) {
+                  category = processedEvents[catIndex];
+                }
 
                 //create display string for start date
                 var startDate = new Date(event.start);
@@ -75,7 +118,6 @@
 
                 //add this event to the category
                 category.events.push(event);
-
               });
             }
 
