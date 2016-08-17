@@ -88,13 +88,6 @@
             _event.dateBookingsClose_formatted = moment(_event.bookingSettings.bookingsClose).format("ddd D MMM h:mma");
           }
 
-          _event.dateBookingsClose_formatted = "";
-          if (_event.bookingSettings !== undefined
-                  && _event.bookingSettings !== null
-                  && _event.bookingSettings.bookingsClose !== undefined) {
-            _event.dateBookingsClose_formatted = moment(_event.bookingSettings.bookingsClose).format("ddd D MMM h:mma");
-          }
-
           _event.areBookingsOpen = false;
           _event.canPublishPlaces = false;
           if (_event.bookingSettings !== undefined

@@ -83,7 +83,8 @@
            */
           labelsList: {
             type: Array,
-            value: []
+            value: [],
+            notify: true
           }
         },
 
@@ -127,13 +128,6 @@
                 _event.dateBookingsClose_formatted = moment(_event.bookingSettings.bookingsClose).format("ddd D MMM h:mma");
               }
 
-              _event.dateBookingsClose_formatted = "";
-              if (_event.bookingSettings !== undefined
-                      && _event.bookingSettings !== null
-                      && _event.bookingSettings.bookingsClose !== undefined) {
-                _event.dateBookingsClose_formatted = moment(_event.bookingSettings.bookingsClose).format("ddd D MMM h:mma");
-              }
-
               _event.areBookingsOpen = false;
               _event.canPublishPlaces = false;
               if (_event.bookingSettings !== undefined
@@ -149,8 +143,10 @@
 
                 // can we show the number of places available?
                 if (_event.bookingSettings.bookingLimit !== undefined && _event.bookingSettings.bookingLimit > 0
-                        && _event.bookingSettings.placesRemaining !== undefined && _event.bookingSettings.placesRemaining > 0)
+                        && _event.bookingSettings.placesRemaining !== undefined
+                        && _event.bookingSettings.placesRemaining > 0) {
                   _event.canPublishPlaces = true;
+                }
               }
 
               // setup the formatted date for display
@@ -161,8 +157,8 @@
             });
 
             // filters are 'select all' initially
-            that.labelsList[label.id] = label;
           });
+          this.labelsList = list;
 console.log(this.labelsList);
         }
       });
