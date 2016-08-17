@@ -164,23 +164,48 @@
          * setup the data on first load
          */
         _setupTrainingData: function (e) {
-          var _allEvents = e.detail;
+          var events = e.detail;
           var _campuses = [];
           var _months = [];
+          var processedEvents = [];
 
           var that = this;
 
-          // extract all the filter collections
-          _allEvents.forEach(function (_event) {
-            _event.filterDate = "";
+          events.forEach(function(event){
+
+            event.filterDate = "";
             // setup the formatted date for display
-            if (_event.start) {
-              _event.filterDate = moment(_event.start).format('MMM YYYY');
+            if (event.start) {
+              event.filterDate = moment(event.start).format('MMM YYYY');
             }
 
-            // get the list of available cmapuses
-            if (_event.categories && _event.categories.campus) {
-              _event.categories.campus.forEach(function (campus) {
+            //set up all categories
+            if (event.labels) {
+              event.labels.forEach(function(label){
+                if (!processedEvents[label.id]) {
+                  label.events = [];
+                  label.displayName = label.name.replace(/.*\./ , '');
+
+                  processedEvents[label.id] = label;
+                }
+
+                if (!label.events)
+                  label = processedEvents[label.id];
+
+                //create display string for start date
+                var startDate = new Date(event.start);
+                event.formattedDate = startDate.toDateString();
+
+                //add this event to the array of labels
+                label.events.push(event);
+
+              });
+            }
+
+
+            //setup all campuses
+            if (event.categories && event.categories.campus) {
+              event.categories.campus.forEach(function(campus){
                 if (_campuses.indexOf(campus) < 0) {
                   _campuses.push(campus);
                 }
@@ -188,17 +213,19 @@
             }
 
             // get the list of available months (in which triaining will be offered)
-            if (typeof (_months) === 'object' && _event.filterDate != "" && _months.indexOf(_event.filterDate) < 0) {
-              _months.push(_event.filterDate);
+            if (typeof (_months) === 'object' && event.filterDate != "" && _months.indexOf(event.filterDate) < 0) {
+              _months.push(event.filterDate);
             }
 
           });
+
+          this.campusList = _campuses;
 
           // store the possible list of campuses
           this.displayCampusList = _campuses;
           this.areMultipleCampuses = (this.displayCampusList !== undefined && this.displayCampusList.length > 1);
 
-          // initially select all campus options
+          // load the campus filter
           _campuses.forEach(function (aCampus) {
             var newCampus = {};
             newCampus.name = aCampus;
@@ -208,20 +235,18 @@
 
           this.displayMonthList = _months;
           this.areMultipleMonths = (this.displayMonthList !== undefined && this.displayMonthList.length > 1);
-          // initially select all months
+          // load the month display filter
           _months.forEach(function (aMonth) {
             var newMonth = {};
             newMonth.display = aMonth;
             newMonth.selected = true;
             that.selectedMonthList.push(newMonth);
           });
-
-          // filters are 'select all' initially
-          this.displayableEvents = _allEvents;
-
-          this.allEvents = _allEvents;
+          this.displayableEvents = processedEvents; // do we need to set this here? refilter overrides it?
+          this.allEvents = processedEvents;
           this.refilterData();
         },
+
 
         /*
          * resets all the filters to their default position
@@ -314,20 +339,38 @@
           var that = this;
           var processedEvents = [];
 
+          var output = [];
+
           // clear the display data
           this.displayableEvents = [];
 
           // for each event, check if the filters allow display
-          this.allEvents.forEach(function (e) {
-            if (that._eventIsOnAFilteredCampus(e)
-                    && that._eventIsInAFilteredMonth(e)
-                    && that._eventHasText(e)
-            ) {
-              processedEvents.push(e);
-            }
+          this.allEvents.forEach(function (label) {
+            label.events.forEach(function (e) {
+              if (that._eventIsOnAFilteredCampus(e)
+                      && that._eventIsInAFilteredMonth(e)
+                      && that._eventHasText(e)
+              ) {
+                if (!processedEvents[label.id]) {
+                  label.events = [];
+//                  label.displayName = label.name.replace(/.*\./ , '');
+
+                  processedEvents[label.id] = label;
+                }
+
+                if (!label.events)
+                  label = processedEvents[label.id];
+
+                //create display string for start date
+                var startDate = new Date(event.start);
+                event.formattedDate = startDate.toDateString();
+
+                //add this event to the array of labels
+                label.events.push(e);
+              }
+            });
           });
           this.displayableEvents = processedEvents;
-
           this.fire('training-filter', this.displayableEvents);
         }
 

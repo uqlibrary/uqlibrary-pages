@@ -26,46 +26,50 @@
       <training-filter id="trainingFilter" on-training-filter="_setupData"></training-filter>
     </paper-card>
 
-    <paper-card elevation="1">
-      <template is="dom-repeat" items="{{displayableEvents}}" as="e">
+    <template is="dom-repeat" items="[[labelsList]]" as="labelEntry">
+      <paper-card elevation="1">
 
-        <training-displayitem data="[[e]]"></training-displayitem>
+        <h2>[[labelEntry.displayName]]</h2>
+<!--
+        <template is="dom-repeat" items="[[labelEntry.events]]" as="e">
+          <training-displayitem data="[[e]]"></training-displayitem>
 
-        <!-- test duplication -->
-        <div on-tap="_toggleDetailDisplay">
+          <!-- test duplication -!->
+          <div on-tap="_toggleDetailDisplay">
 
-          <paper-item>
-            <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Inline: [[e.startDateFormatted]] </span>
-            <span> [[e.name]] </span>
-            <span> ([[ e.categories.campus ]])</span>
-            <paper-icon-button icon="expand-less" hidden$="[[e.expandBlock]]"></paper-icon-button>
-            <paper-icon-button icon="expand-more" hidden$="[[!e.expandBlock]]"></paper-icon-button>
-          </paper-item>
+            <paper-item>
+              <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Inline: [[e.startDateFormatted]] </span>
+              <span> [[e.name]] </span>
+              <span> ([[ e.categories.campus ]])</span>
+              <paper-icon-button icon="expand-less" hidden$="[[e.expandBlock]]"></paper-icon-button>
+              <paper-icon-button icon="expand-more" hidden$="[[!e.expandBlock]]"></paper-icon-button>
+            </paper-item>
 
-          <!-- TODO what paper element should this block be? -->
-          <div class="eventDetails" hidden$="[[e.expandBlock]]">
-            <div>[[e.summary]]</div>
-            <p>Venue: [[e.venue]]</p>
+            <!-!- TODO what paper element should this block be? -!->
+            <div class="eventDetails" hidden$="[[e.expandBlock]]">
+              <div>[[e.summary]]</div>
+              <p>Venue: [[e.venue]]</p>
 
-            <div hidden$="[[!e.areBookingsOpen]]">
-              <p hidden$="[[e.canPublishPlaces">Places available: [[e.bookingSettings.placesRemaining]] of
-                [[e.bookingSettings.bookingLimit]]</p>
-              <p>Bookings Close: [[e.dateBookingsClose_formatted]]</p>
+              <div hidden$="[[!e.areBookingsOpen]]">
+                <p hidden$="[[e.canPublishPlaces">Places available: [[e.bookingSettings.placesRemaining]] of
+                  [[e.bookingSettings.bookingLimit]]</p>
+                <p>Bookings Close: [[e.dateBookingsClose_formatted]]</p>
+              </div>
+              <div class="book">
+                <a href="">
+                  <paper-button class="button-secondary">Log in and book</paper-button>
+                </a>
+              </div>
+
+
             </div>
-            <div class="book">
-              <a href="">
-                <paper-button class="button-secondary">Log in and book</paper-button>
-              </a>
-            </div>
-
-
+            <hr>
           </div>
-          <hr>
-        </div>
+        </template>
+-->
+      </paper-card>
+    </template>
 
-      </template>
-
-    </paper-card>
   </template>
 
   <script>
@@ -77,7 +81,11 @@
           /*
            * the events that match the selected filters, returned from the filter component
            */
-          displayableEvents: Array
+          labelsList: {
+            type: Array,
+            value: [],
+            notify: true
+          }
         },
 
         ready: function () {
@@ -90,7 +98,7 @@
          * collapses and opens the details of the training event
          */
         _toggleDetailDisplay: function(ev) {
-          var _id = "displayableEvents." + ev.model.index + ".expandBlock";
+          var _id = "labelsList." + ev.model.index + ".expandBlock";
           var _newvalue = !ev.model.e.expandBlock;
           this.set(_id, _newvalue);
         },
@@ -101,60 +109,58 @@
          * setup the data on first load
          */
         _setupData: function (e) {
-          var events = e.detail;
+          var list = e.detail;
 
           var _now = new Date();
+          var that = this;
 
           // setup the display data for each item
-          events.forEach(function (_event) {
-            _event.startDateFormatted = "";
+          list.forEach(function (label) {
+            label.events.forEach(function (_event) {
+              _event.startDateFormatted = "";
 
-            _event.expandBlock = true;
+              _event.expandBlock = true;
 
-            _event.dateBookingsClose_formatted = "";
-            if (_event.bookingSettings !== undefined
-                    && _event.bookingSettings !== null
-                    && _event.bookingSettings.bookingsClose !== undefined) {
-              _event.dateBookingsClose_formatted = moment(_event.bookingSettings.bookingsClose).format("ddd D MMM h:mma");
-            }
+              _event.dateBookingsClose_formatted = "";
+              if (_event.bookingSettings !== undefined
+                      && _event.bookingSettings !== null
+                      && _event.bookingSettings.bookingsClose !== undefined) {
+                _event.dateBookingsClose_formatted = moment(_event.bookingSettings.bookingsClose).format("ddd D MMM h:mma");
+              }
 
-            _event.dateBookingsClose_formatted = "";
-            if (_event.bookingSettings !== undefined
-                    && _event.bookingSettings !== null
-                    && _event.bookingSettings.bookingsClose !== undefined) {
-              _event.dateBookingsClose_formatted = moment(_event.bookingSettings.bookingsClose).format("ddd D MMM h:mma");
-            }
+              _event.areBookingsOpen = false;
+              _event.canPublishPlaces = false;
+              if (_event.bookingSettings !== undefined
+                      && _event.bookingSettings !== null) {
 
-            _event.areBookingsOpen = false;
-            _event.canPublishPlaces = false;
-            if (_event.bookingSettings !== undefined
-                    && _event.bookingSettings !== null) {
+                // can we show the bookings block?
+                if (_event.bookingSettings.bookingsOpen !== undefined) {
+                  var _dateBookingsOpen = new Date(_event.bookingSettings.bookingsOpen);
+                  if (_dateBookingsOpen <= _now) {
+                    _event.areBookingsOpen = true;
+                  }
+                }
 
-              // can we show the bookings block?
-              if (_event.bookingSettings.bookingsOpen !== undefined) {
-                var _dateBookingsOpen = new Date(_event.bookingSettings.bookingsOpen);
-                if (_dateBookingsOpen <= _now) {
-                  _event.areBookingsOpen = true;
+                // can we show the number of places available?
+                if (_event.bookingSettings.bookingLimit !== undefined && _event.bookingSettings.bookingLimit > 0
+                        && _event.bookingSettings.placesRemaining !== undefined
+                        && _event.bookingSettings.placesRemaining > 0) {
+                  _event.canPublishPlaces = true;
                 }
               }
 
-              // can we show the number of places available?
-              if (_event.bookingSettings.bookingLimit !== undefined && _event.bookingSettings.bookingLimit >0
-                      && _event.bookingSettings.placesRemaining !== undefined && _event.bookingSettings.placesRemaining >0)
-                _event.canPublishPlaces = true;
-            }
+              // setup the formatted date for display
+              if (_event.start) {
+                _event.startDateFormatted = moment(_event.start).format('ddd D MMM YYYY');
+              }
 
-            // setup the formatted date for display
-            if (_event.start) {
-              _event.startDateFormatted = moment(_event.start).format('ddd D MMM YYYY');
-            }
+            });
 
+            // filters are 'select all' initially
           });
-
-          // filters are 'select all' initially
-          this.displayableEvents = events;
+          this.labelsList = list;
+console.log(this.labelsList);
         }
-
       });
     })();
   </script>
