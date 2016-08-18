@@ -34,6 +34,24 @@
       margin: 8px 16px;
     }
 
+    .event-date {
+      min-width: 120px;
+      cursor: default;
+    }
+    .event-link {
+      cursor: pointer;
+      padding-left: 20px;
+    }
+
+    .card-active {
+      background: #e1e1e1;
+    }
+
+    /deep/ .content-icon.paper-icon-item
+   {
+      min-width: 40px;
+      width: 40px;
+   }
     /deep/ .header.uqlibrary-training-details
     {
       display: none;
@@ -55,7 +73,7 @@
         <paper-icon-button class="no-flex" style="margin: 10px" icon="icons:arrow-drop-down"></paper-icon-button>
       </div>
 
-      <iron-collapse id="collapse">
+      <iron-collapse id="collapseFilter">
         <div class="card-content layout horizontal wrap">
 
           <div class="filter flex-3">
@@ -107,12 +125,13 @@
             <a name="event[[trainingEvent.entityId]]"></a>
 
             <paper-item on-click="toggle">
-              <div style="min-width: 120px;">[[trainingEvent.formattedDate]]</div>
-              <div class="flex" style="padding-left: 20px;"><a>[[trainingEvent.name]] ([[ trainingEvent.categories.campus ]])</a></div>
+              <div class="event-date">[[trainingEvent.formattedDate]]</div>
+              <div class="event-link flex"><a>[[trainingEvent.name]] ([[ trainingEvent.categories.campus ]])</a></div>
               <paper-ripple></paper-ripple>
             </paper-item>
 
             <iron-collapse id$="collapse[[trainingEvent.entityId]]">
+              <div class="card-active">
               <div class="card-content">
 
               <paper-card>
@@ -129,6 +148,7 @@
                 </div>
 
               </paper-card>
+              </div>
               </div>
             </iron-collapse>
 
@@ -159,14 +179,23 @@
         },
 
         toggle: function(event) {
-          console.log('toggle');
-          var toggleId = '#collapse';
+          var toggleId = 'collapseFilter';
 
           if (event.model && event.model.trainingEvent) {
-            toggleId += event.model.trainingEvent.entityId;
+            toggleId = 'collapse' + event.model.trainingEvent.entityId;
           }
 
-          this.querySelector(toggleId).toggle();
+          //close all other toggles
+          this.querySelectorAll('.iron-collapse-opened').forEach(function(item) {
+            console.log(item.id);
+
+            //do not toggle current item or filter
+            if (item.id.indexOf(toggleId) < 0 && item.id != 'collapseFilter')
+              item.toggle();
+          });
+
+
+          this.querySelector('#' + toggleId).toggle();
         },
 
         sendEmail: function(e) {
