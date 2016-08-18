@@ -12,6 +12,8 @@ if (!browserData.supported) {
 (function(document) {
   'use strict';
 
+  var ga;
+
   // imports are loaded and elements have been registered
   window.addEventListener('WebComponentsReady', function(e) {
 
@@ -30,7 +32,7 @@ if (!browserData.supported) {
     });
 
     // GA events
-    var ga = document.querySelector('#home-ga');
+    ga = document.querySelector('#home-ga');
     // record page view
     ga.addPageView('');
   });
@@ -59,7 +61,9 @@ if (!browserData.supported) {
       // Add GA events to the sidebar tabs
       var uqlSidebar = document.querySelector('#sidebar-tabs');
       uqlSidebar.addEventListener('iron-select', function (e) {
-        ga.addEvent('Navigation', 'Sidebar tab ' + e.detail.item.innerText.toLowerCase());
+        if(ga) {
+          ga.addEvent('Navigation', 'Sidebar tab ' + e.detail.item.innerText.toLowerCase());
+        }
       });
     });
   }
