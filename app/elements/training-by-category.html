@@ -65,6 +65,7 @@
   </style>
 
   <template>
+    <uqlibrary-api-account id="accountApi" on-uqlibrary-api-account-loaded="userAccountLoaded"></uqlibrary-api-account>
     <uqlibrary-api-training id="trainingApi" on-uqlibrary-api-training="_processData"></uqlibrary-api-training>
 
     <paper-card>
@@ -88,7 +89,7 @@
             <h4>Filter by campus</h4>
             <template is="dom-repeat" items="{{campusList}}" as="campus">
               <div>
-                <paper-checkbox checked>{{campus}}</paper-checkbox>
+                <paper-checkbox checked="{{campus.checked}}" on-change="filterEvents">{{campus.name}}</paper-checkbox>
               </div>
             </template>
           </div>
@@ -96,18 +97,11 @@
           <div class="filter flex-3">
             <h4>Filter by month</h4>
 
-            <div>
-              <paper-checkbox checked>Aug 2016</paper-checkbox>
-            </div>
-            <div>
-              <paper-checkbox checked>Sep 2016</paper-checkbox>
-            </div>
-            <div>
-              <paper-checkbox checked>Oct 2016</paper-checkbox>
-            </div>
-            <div>
-              <paper-checkbox checked>Nov 2016</paper-checkbox>
-            </div>
+            <template is="dom-repeat" items="{{monthList}}" as="month">
+              <div>
+                <paper-checkbox checked="{{month.checked}}" on-change="filterEvents">{{month.name}}</paper-checkbox>
+              </div>
+            </template>
           </div>
 
         </div>
@@ -117,27 +111,25 @@
       </iron-collapse>
     </paper-card>
 
-    <template is="dom-repeat" items="{{trainingEvents}}" as="category">
+    <template is="dom-repeat" items="{{trainingEventsByCategory}}" as="category">
 
       <paper-card heading="{{category.displayName}}">
 
           <template is="dom-repeat" items="{{category.events}}" as="trainingEvent">
-            <a name="event[[trainingEvent.entityId]]"></a>
-
             <paper-item on-click="toggle">
               <div class="event-date">[[trainingEvent.formattedDate]]</div>
               <div class="event-link flex"><a>[[trainingEvent.name]] ([[ trainingEvent.categories.campus ]])</a></div>
               <paper-ripple></paper-ripple>
             </paper-item>
 
-            <iron-collapse id$="collapse[[trainingEvent.entityId]]">
+            <iron-collapse id$="collapse[[trainingEvent.entityId]]" opened="{{showEvent(trainingEvent.entityId)}}">
               <div class="card-active">
               <div class="card-content">
 
               <paper-card>
                 <uqlibrary-training-details event="[[trainingEvent]]"></uqlibrary-training-details>
                 <div class="card-content">
-                  [Proper text required: ] Non-uq users should <a href="#" on-click="sendEmail">submit expression of interest</a> to attend the event, or send email to training_events@library.uq.edu.au with event details and your name.</div>
+                  [Proper text required: ] Non-uq users should <a id$="event[[trainingEvent.entityId]]" href="#" on-click="sendEmail">submit expression of interest</a> to attend the event, or send email to training_events@library.uq.edu.au with event details and your name.</div>
 
                 <div class="card-actions layout horizontal end-justified">
                   <paper-button class="button-colored-accent">
@@ -158,7 +150,6 @@
 
     </template>
 
-
   </template>
 
   <script>
@@ -169,16 +160,101 @@
         properties: {
 
           trainingEvents: {
-            type: Array
+            type: Array,
+            value: function() {
+              return undefined;
+            }
+          },
+
+          trainingEventsByCategory: {
+            type: Array,
+            value: function() {
+              return undefined;
+            }
           },
 
           campusList: {
-            type: Array
+            type: Array,
+            value: function() {
+              return [];
+            }
+          },
+
+          monthList: {
+            type: Array,
+            value: function() {
+              return [];
+            }
+          },
+
+          filterByCampus: {
+            type: Array,
+            value: function() { return []; }
+          },
+
+          filterByMonth: {
+            type: Array,
+            value: function() { return []; }
+          },
+
+          searchKeyword: {
+            type: String
+          },
+
+          eventId: {
+            type: Number,
+            value: function() {
+              if (window.location.search.indexOf('eventId=') > 0) {
+                var query = window.location.search.substring(1);
+                var vars = query.split("&");
+                for (var i = 0; i < vars.length; i++) {
+                  var pair = vars[i].split("=");
+                  if (pair[0] === 'eventId') {
+                    return Number(pair[1]);
+                  }
+                }
+              }
+
+              return undefined;
+            }
+          },
+
+          /**
+           * Holds the user account
+           */
+          userAccount: {
+            type: Object,
+            value: function() {
+              return undefined;
+            },
+            notify: true
+          }
+        },
+
+        observers: [
+          'registerAfterLogin(eventId, userAccount, trainingEvents)'
+        ],
+
+        filterEvents: function() {
+          // todo: filter events by month/keyword/campus
+        },
+
+        registerAfterLogin: function(eventId, account, events) {
+          var trainingEvent;
+
+          for(var index = 0; index < events.length; index++) {
+            if (events[index].entityId === eventId) {
+              trainingEvent = events[index];
+              break;
+            }
           }
 
+          if (trainingEvent)
+            this.sendEmail(trainingEvent);
         },
 
         toggle: function(event) {
+
           var toggleId = 'collapseFilter';
 
           if (event.model && event.model.trainingEvent) {
@@ -186,53 +262,85 @@
           }
 
           //close all other toggles
-          this.querySelectorAll('.iron-collapse-opened').forEach(function(item) {
-            console.log(item.id);
-
+          var openedItems = this.querySelectorAll('.iron-collapse-opened');
+          for(var index = 0; index < openedItems.length; index++) {
+            var item = openedItems[index];
             //do not toggle current item or filter
             if (item.id.indexOf(toggleId) < 0 && item.id != 'collapseFilter')
               item.toggle();
-          });
-
+          }
 
           this.querySelector('#' + toggleId).toggle();
         },
 
         sendEmail: function(e) {
-          console.log(e.model.trainingEvent);
 
-          var trainingEvent = e.model.trainingEvent;
+          var trainingEvent = e.model ? e.model.trainingEvent : e;
 
-          var mailText = 'mailto:training_events@library.uq.edu.au?';
-          mailText += '&subject=Expression of interest for event';
-          mailText += '&body=Hi, \nI\'d like to participate in the following training event: \n\n';
-          mailText += 'Event Id: ' + trainingEvent.entityId + '\n';
-          mailText += 'Event Title: ' + trainingEvent.name + '\n';
-          mailText += 'Event Date: ' + trainingEvent.formattedDate + ' (' + trainingEvent.start + ')' + '\n';
-          mailText += 'Username: emjsmith' + '\n';
-          mailText += 'Name: John Smith' + '\n';
-          mailText += 'Phone: 0413000000' + '\n';
-          mailText += 'Email: user@external.com' + '\n';
-          mailText += '\n\nThank you' + '\n';
+          if (this.userAccount.hasSession) {
+            //user is logged in, create email template
+            var mailText = 'mailto:training_events@library.uq.edu.au?';
+            mailText += '&subject=Expression of interest for event';
+            mailText += '&body=Hi, \nI\'d like to participate in the following training event: \n\n';
+            mailText += 'Event Id: ' + trainingEvent.entityId + '\n';
+            mailText += 'Event Title: ' + trainingEvent.name + '\n';
+            mailText += 'Event Date: ' + trainingEvent.formattedDate + ' (' + trainingEvent.start + ')' + '\n';
+            mailText += 'Username: ' + this.userAccount.id + '\n';
+            mailText += 'Name: ' + this.userAccount.name + '\n';
+            mailText += 'Email: ' + this.userAccount.mail + '\n';
+            mailText += '\n\nThank you' + '\n';
 
-          window.location = encodeURI(mailText);
+            window.location = encodeURI(mailText);
+
+          } else {
+            //user is not logged in, redirect to login page
+            var href = window.location.href;
+            if (href.indexOf('?') > 0)
+              href = href.substr(0, href.indexOf('?'));
+            this.$.accountApi.login(href + '?eventId=' + trainingEvent.entityId + '#' + trainingEvent.entityId);
+          }
+
+        },
+
+        showEvent: function(id) {
+          return this.eventId === id ? 'opened' : '';
         },
 
         ready: function() {
           this.$.trainingApi.get();
+          this.$.accountApi.get();
+        },
+
+        /**
+         * Called when the account was loaded
+         * @param e
+         * @private
+         */
+        userAccountLoaded: function (e) {
+          if (e.detail.hasSession) {
+            this.userAccount = e.detail;
+          }
         },
 
         _processData: function(e) {
           var events = e.detail;
-          var campuses = [];
+
           var processedEvents = [];
           var categories = [];
 
+          var campuses = [];
+          var campusesIndex = [];
 
-          events.forEach(function(event){
+          var months = [];
+          var monthsIndex = [];
+
+          for(var eventIndex = 0; eventIndex < events.length; eventIndex++){
+            var event = events[eventIndex];
+
             //set up all categories
             if (event.labels) {
-              event.labels.forEach(function(category){
+              for(var labelIndex = 0; labelIndex < event.labels.length; labelIndex++) {
+                var category = event.labels[labelIndex];
 
                 var catIndex = categories.indexOf(category.id);
 
@@ -255,22 +363,40 @@
 
                 //add this event to the category
                 category.events.push(event);
-              });
+              }
             }
 
             //setup all campuses
             if (event.categories && event.categories.campus) {
-              event.categories.campus.forEach(function(campus){
-                if (campuses.indexOf(campus) < 0) {
-                  campuses.push(campus);
+              for(var index=0; index < event.categories.campus.length; index++) {
+                var campus = event.categories.campus[index];
+
+                if (campusesIndex.indexOf(campus) < 0) {
+                  campusesIndex.push(campus);
+                  campuses.push({
+                    'checked' : 'checked',
+                    'name' : campus
+                  });
                 }
-              });
+              }
             }
 
-          });
+            //setup all event months
+            var monthName = moment(event.start).format('MMM YYYY');
+            if (monthsIndex.indexOf(monthName) < 0) {
+              monthsIndex.push(monthName);
+              months.push({
+                      'checked' : 'checked',
+                      'name' : monthName
+                    });
+            }
 
-          this.trainingEvents = processedEvents;
+          }
+
+          this.trainingEventsByCategory = processedEvents;
+          this.trainingEvents = events;
           this.campusList = campuses;
+          this.monthList = months;
         }
 
       });
