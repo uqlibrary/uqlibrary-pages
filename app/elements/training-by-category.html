@@ -277,7 +277,7 @@
 
           var trainingEvent = e.model ? e.model.trainingEvent : e;
 
-          if (this.userAccount.hasSession) {
+          if (this.userAccount && this.userAccount.hasSession) {
             //user is logged in, create email template
             var mailText = 'mailto:training_events@library.uq.edu.au?';
             mailText += '&subject=Expression of interest for event';
