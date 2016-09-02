@@ -127,18 +127,8 @@
               <div class="card-content">
 
               <paper-card>
-                <uqlibrary-training-details event="[[trainingEvent]]"></uqlibrary-training-details>
-                <div class="card-content">
-                  [Proper text required: ] Non-uq users should <a id$="event[[trainingEvent.entityId]]" href="#" on-click="sendEmail">submit expression of interest</a> to attend the event, or send email to training_events@library.uq.edu.au with event details and your name.</div>
-
-                <div class="card-actions layout horizontal end-justified">
-                  <paper-button class="button-colored-accent">
-                    <a href="https://careerhub.uq.edu.au/students/events/detail/[[trainingEvent.entityId]]">
-                    Login and book
-                  </a>
-                  </paper-button>
-                </div>
-
+                <uqlibrary-training-details event="[[trainingEvent]]" show-login-button="true">
+                </uqlibrary-training-details>
               </paper-card>
               </div>
               </div>
