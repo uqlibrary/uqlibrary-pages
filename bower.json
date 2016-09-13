@@ -6,7 +6,7 @@
     "neon-elements": "PolymerElements/neon-elements#^1.0.0",
     "paper-elements": "PolymerElements/paper-elements#^1.0.1",
     "polymer": "Polymer/polymer#^1.2.0",
-    "uqlibrary-styles": "uqlibrary/uqlibrary-styles#v1.0.9",
+    "uqlibrary-styles": "uqlibrary/uqlibrary-styles#v1.1.0",
     "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components#production",
     "uqlibrary-hours": "uqlibrary/uqlibrary-hours#hours",
     "uqlibrary-computers": "uqlibrary/uqlibrary-computers#v1.1.8",
@@ -23,7 +23,7 @@
   },
   "ignore": [],
   "resolutions": {
-    "uqlibrary-styles": "v1.0.9",
+    "uqlibrary-styles": "v1.1.0",
     "uqlibrary-ga": "v1.0.5",
     "uqlibrary-api": "hours"
   }
