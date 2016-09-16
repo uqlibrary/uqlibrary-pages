@@ -61,7 +61,8 @@ if (!browserData.supported) {
       uqlSidebar.addEventListener('iron-select', function (e) {
         document.querySelector('#home-ga').addEvent('Navigation', 'Sidebar tab ' + e.detail.item.innerText.toLowerCase());
         if (e.detail.item.innerText.toLowerCase() === 'training') {
-          Polymer.dom(document).querySelector("uqlibrary-training").reset();
+          //TODO: reset uqlibrary-training on home page to display list not details
+          // Polymer.dom(document).querySelector("uqlibrary-training").reset();
         }
       });
 
@@ -70,7 +71,7 @@ if (!browserData.supported) {
       trainingElement.addEventListener('show-list', function () {
         uqlFrontPage.trainingButton = {
           label: 'MORE TRAINING EVENTS',
-          href: 'training2.html'
+          href: 'training-events.html'
           // href: 'https://web.library.uq.edu.au/library-services/training'
         };
       });

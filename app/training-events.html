@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <meta name="generator" content="UQ Library">
 
-  <title>Training Events Prototype | UQ Library</title>
+  <title>Library users upgrade | UQ Library</title>
 
   <!-- Place favicon.ico in the `app/` directory -->
 
@@ -77,60 +77,43 @@
     .card-actions {
       text-align: right;
     }
-
-    #maintraining paper-card {
-      margin: 1em;
-      padding: 1em;
-    }
-
-    #content {
-      min-height: auto;
-    }
-
-
   </style>
 </head>
 
 <body>
-<span id="browser-sync-binding"></span>
-<uqlibrary-alerts ga-app-name='Alerts'></uqlibrary-alerts>
-<uqlibrary-ga id="home-ga" app-name="training1"></uqlibrary-ga>
+  <span id="browser-sync-binding"></span>
+  <uqlibrary-alerts ga-app-name='Alerts'></uqlibrary-alerts>
+  <uqlibrary-ga id="home-ga" app-name="UserUpgrade"></uqlibrary-ga>
 
-<uq-minimal-header show-search-button="true"
-                   show-menu-button="true"
-                   show-login-button="true"
-                   show-apps-button="true"></uq-minimal-header>
-<uql-menu></uql-menu>
+  <uq-minimal-header show-search-button="true"
+                     show-menu-button="true"
+                     show-login-button="false"
+                     show-apps-button="false"></uq-minimal-header>
+  <uql-menu></uql-menu>
 
-<div id="content">
+  <div id="content">
 
-  <!-- Preloader/Unsupported browser message -->
-  <!-- preloader will be inserted by gulp task, do not remove -->
-  #preloader#
-  <!-- End of Preloader/Unsupported browser message -->
+    <!-- Preloader/Unsupported browser message -->
+    <!-- preloader will be inserted by gulp task, do not remove -->
+    #preloader#
+    <!-- End of Preloader/Unsupported browser message -->
 
-
-
-  <template is="dom-bind" id="uqlUserUpgrade" unresolved>
-    <div id="layout">
-      <div id="maintraining">
-        <paper-card heading="Library training">
-          <div class="card-content">
-            <uqlibrary-training-list2></uqlibrary-training-list2>
-          </div>
-        </paper-card>
+    <template is="dom-bind" id="uqlUserUpgrade" unresolved>
+      <div id="layout">
+        <div id="paymentReceipt">
+          <uqlibrary-training event-filter-id="" max-event-count="100" ga-app-name="UQL Drupal Training" compact-view="false"></uqlibrary-training>
+        </div>
       </div>
-    </div>
-  </template>
-</div>
+    </template>
+  </div>
 
-<uql-connect-footer></uql-connect-footer>
-<uq-minimal-footer></uq-minimal-footer>
+  <uql-connect-footer></uql-connect-footer>
+  <uq-minimal-footer></uq-minimal-footer>
 
 
-<!-- build:js scripts/app.js -->
-<script src="scripts/app.js"></script>
-<!-- endbuild-->
+  <!-- build:js scripts/app.js -->
+  <script src="scripts/app.js"></script>
+  <!-- endbuild-->
 
 </body>
 

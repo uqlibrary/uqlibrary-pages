@@ -47,21 +47,6 @@
       background: #e1e1e1;
     }
 
-    /deep/ .content-icon.paper-icon-item
-   {
-      min-width: 40px;
-      width: 40px;
-   }
-    /deep/ .header.uqlibrary-training-details
-    {
-      display: none;
-    }
-
-    /deep/ .subhead.uqlibrary-training-details
-   {
-       font-size: 2em;
-   }
-
   </style>
 
   <template>
@@ -353,6 +338,9 @@
 
                 //add this event to the category
                 category.events.push(event);
+
+
+
               }
             }
 
@@ -384,6 +372,7 @@
           }
 
           this.trainingEventsByCategory = processedEvents;
+
           this.trainingEvents = events;
           this.campusList = campuses;
           this.monthList = months;
