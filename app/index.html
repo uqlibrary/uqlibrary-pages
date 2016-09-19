@@ -79,6 +79,13 @@
       text-align: right;
     }
 
+    @media all and (max-width: 400px) {
+      .card-actions paper-button {
+        @apply(--layout-vertical);
+        margin: 8px 0;
+      }
+    }
+
   </style>
 </head>
 
@@ -135,12 +142,21 @@
                 <uqlibrary-hours compact-view="true">
                 </uqlibrary-hours>
               </div>
+
               <div class="card-actions">
+
+                <paper-button class="button-colored-secondary" tabindex="-1">
+                  <a href="https://web.library.uq.edu.au/locations-hours/opening-hours">
+                    Weekly hours
+                  </a>
+                </paper-button>
+
                 <paper-button class="button-colored-accent" tabindex="-1">
                   <a href="https://www.library.uq.edu.au/fbs/ctrlpnl.php?">
                     Book a room
                   </a>
                 </paper-button>
+
               </div>
             </div>
             <div>

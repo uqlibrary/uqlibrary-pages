@@ -19,7 +19,7 @@ This project contains pages for UQ Library website:
 - gulp, a Node.js-based build tool
 - bower, a Node.js-based package manager used to install front-end packages (like Polymer)
 
-With Node.js installed, run the following one liner from the root of your Polymer Starter Kit download:
+With Node.js installed, run the following one liner from the root of your project:
 
 ```sh
 npm install -g gulp bower && npm install && bower install
