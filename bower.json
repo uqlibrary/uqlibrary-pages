@@ -25,6 +25,7 @@
   "resolutions": {
     "uqlibrary-styles": "v1.1.0",
     "uqlibrary-ga": "v1.0.5",
-    "uqlibrary-api": "v1.3.2"
+    "uqlibrary-api": "v1.3.2",
+    "uqlibrary-training": "careerhub"
   }
 }
