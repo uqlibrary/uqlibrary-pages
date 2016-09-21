@@ -78,7 +78,7 @@ if (!browserData.supported) {
       trainingElement.addEventListener('show-list', function () {
         uqlFrontPage.trainingButton = {
           label: 'MORE TRAINING EVENTS',
-          href: 'https://web.library.uq.edu.au/library-services/training'
+          href: 'https://web.library.uq.edu.au/library-services/training/view-training-calendar-and-book'
         };
       });
 
