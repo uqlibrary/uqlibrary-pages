@@ -1,6 +1,6 @@
 <!doctype html>
 
-<html manifest="/pages/index.appcache">
+<html lang="en" manifest="/pages/index.appcache">
 
 <head>
   <meta charset="utf-8">
@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <meta name="generator" content="UQ Library">
 
-  <title>Home Page | UQ Library</title>
+  <title>Library users upgrade | UQ Library</title>
 
   <!-- Place favicon.ico in the `app/` directory -->
 
@@ -70,7 +70,6 @@
 
   <!-- For shared styles, shared-styles.html import in elements.html -->
   <style is="custom-style" include="common-styles">
-
     body {
       background-color: var(--body-color);
     }
@@ -78,17 +77,18 @@
     .card-actions {
       text-align: right;
     }
-
   </style>
 </head>
 
 <body>
   <span id="browser-sync-binding"></span>
   <uqlibrary-alerts ga-app-name='Alerts'></uqlibrary-alerts>
-  <uqlibrary-ga id="home-ga" app-name="Homepage"></uqlibrary-ga>
+  <uqlibrary-ga id="home-ga" app-name="UserUpgrade"></uqlibrary-ga>
 
   <uq-minimal-header show-search-button="true"
-                     show-menu-button="true"></uq-minimal-header>
+                     show-menu-button="true"
+                     show-login-button="false"
+                     show-apps-button="false"></uq-minimal-header>
   <uql-menu></uql-menu>
 
   <div id="content">
@@ -98,82 +98,12 @@
     #preloader#
     <!-- End of Preloader/Unsupported browser message -->
 
-    <template is="dom-bind" id="uqlFrontPage" unresolved>
-    <div id="layout">
-      <div id="main">
-        <div id="search">
-          <paper-card heading="UQ Library Search">
-          <div class="card-content">
-            <uqlibrary-search ga-app-name="Homepage search"></uqlibrary-search>
-          </div>
-          <div class="card-actions">
-            <template is="dom-repeat" items="[[selectedSearchSource.helpLinks]]">
-              <paper-button class="button-secondary" tabindex="-1"><a href$="[[item.url]]">[[item.title]]</a></paper-button>
-            </template>
-          </div>
-        </paper-card>
-        </div>
-        <div id="spotlight">
-          <paper-card>
-            <div class="card-content">
-                <uqlibrary-spotlights></uqlibrary-spotlights>
-            </div>
-          </paper-card>
+    <template is="dom-bind" id="uqlUserUpgrade" unresolved>
+      <div id="layout">
+        <div id="paymentReceipt">
+          <uqlibrary-training event-filter-id="" max-event-count="100" ga-app-name="UQL Drupal Training" compact-view="false"></uqlibrary-training>
         </div>
       </div>
-      <div id="sidebar">
-        <paper-card>
-          <paper-tabs id="sidebar-tabs" selected="{{selectedSidebarTab}}">
-            <paper-tab>HOURS</paper-tab>
-            <paper-tab>COMPUTERS</paper-tab>
-            <paper-tab>TRAINING</paper-tab>
-          </paper-tabs>
-
-          <iron-pages selected="{{selectedSidebarTab}}">
-            <div>
-              <div class="card-content">
-                <uqlibrary-hours compact-view="true">
-                </uqlibrary-hours>
-              </div>
-              <div class="card-actions">
-
-                <paper-button class="button-colored-secondary hoursButton" tabindex="-1">
-                  <a href="https://web.library.uq.edu.au/locations-hours/opening-hours">
-                    Weekly hours
-                  </a>
-                </paper-button>
-
-                <paper-button class="button-colored-accent hoursButton" tabindex="-1">
-                  <a href="https://www.library.uq.edu.au/fbs/ctrlpnl.php?">
-                    Book a room
-                  </a>
-                </paper-button>
-
-              </div>
-            </div>
-            <div>
-              <div class="card-content">
-                <uqlibrary-computers compact-view="true">
-                </uqlibrary-computers>
-              </div>
-            </div>
-            <div>
-              <div class="card-content training-container">
-                <uqlibrary-training compact-view="true">
-                </uqlibrary-training>
-              </div>
-              <div class="card-actions">
-                <paper-button class="button-colored-accent">
-                  <a id="training" href$="[[trainingButton.href]]">
-                    [[trainingButton.label]]
-                  </a>
-                </paper-button>
-              </div>
-            </div>
-          </iron-pages>
-        </paper-card>
-      </div>
-    </div>
     </template>
   </div>
 
@@ -184,10 +114,6 @@
   <!-- build:js scripts/app.js -->
   <script src="scripts/app.js"></script>
   <!-- endbuild-->
-
-  <script>
-    document.cookie="UQLMockData=enabled";
-  </script>
 
 </body>
 

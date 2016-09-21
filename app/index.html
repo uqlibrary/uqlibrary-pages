@@ -167,13 +167,13 @@
             </div>
             <div>
               <div class="card-content training-container">
-                <uqlibrary-training>
+                <uqlibrary-training compact-view="true" max-event-count="6" ga-app-name="Home Page Training" event-filter-id="">
                 </uqlibrary-training>
               </div>
               <div class="card-actions">
                 <paper-button class="button-colored-accent">
-                  <a href="https://www.library.uq.edu.au/training/index.phtml">
-                    View all training events
+                  <a id="training" href$="[[trainingButton.href]]">
+                    [[trainingButton.label]]
                   </a>
                 </paper-button>
               </div>
