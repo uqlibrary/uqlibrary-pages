@@ -1,7 +1,7 @@
 module.exports = {
   'load uqlibrary index page in mobile sizing' : function (client) {
     client
-      .url('http://dev-app.library.uq.edu.au:5001')
+      .url('http://localhost:5001')
       .resizeWindow(600, 800)
       .waitForElementVisible('uql-menu-button', 10000)
       .assert.elementPresent('uql-menu-button', 'uql-menu-button present in mobile view')
