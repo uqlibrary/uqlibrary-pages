@@ -3,7 +3,7 @@ module.exports = {
     client
       .url('http://localhost:5001')
       .resizeWindow(600, 800)
-      .waitForElementVisible('uql-menu-button', 10000)
+      .waitForElementVisible('uql-search-button', 10000)
       .assert.elementPresent('uql-menu-button', 'uql-menu-button present in mobile view')
       .assert.elementPresent('uq-minimal-header', 'uq header component is present')
       .assert.hidden('uq-minimal-header uql-global-links', 'header uq global links component is hidden in mobile view')
