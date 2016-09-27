@@ -1,10 +1,8 @@
 module.exports = {
-  before : function (browser) {
-    browser.resizeWindow(600, 800);
-  },
   'load uqlibrary index page in mobile sizing' : function (client) {
     client
       .url('http://dev-app.library.uq.edu.au:5001')
+      .resizeWindow(600, 800)
       .waitForElementVisible('uql-menu-button', 10000)
       .assert.elementPresent('uql-menu-button', 'in mobile view')
       .assert.elementPresent('uq-minimal-header', 'uq header component is present')

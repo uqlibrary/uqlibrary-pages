@@ -1,10 +1,8 @@
 module.exports = {
-  before : function (browser) {
-    browser.resizeWindow(1280, 800);
-  },
   'load uqlibrary index page' : function (client) {
     client
         .url('http://dev-app.library.uq.edu.au:5001')
+        .resizeWindow(1280, 800)
         .waitForElementVisible('uql-global-links', 10000)
         .assert.elementPresent('uq-minimal-header', 'uq header component is present')
         .assert.elementPresent('uq-minimal-header uql-global-links', 'uq global links component is present')
