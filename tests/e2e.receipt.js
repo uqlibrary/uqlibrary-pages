@@ -1,5 +1,8 @@
 module.exports = {
-  
+
+  before : function (browser) {
+    browser.resizeWindow(1280, 800);
+  },
   'load uqlibrary payment receipt - standard header/menu/footer' : function (client) {
     client
         .url('http://dev-app.library.uq.edu.au:5001/payment-receipt.html?Success=1&AmountPaid=1099&Receipt=ABC123')
@@ -9,13 +12,6 @@ module.exports = {
         .assert.elementPresent('uql-menu', 'uq menu component is present')
         .assert.elementPresent('uql-connect-footer', 'uq connect footer component is present')
         .assert.elementPresent('uq-minimal-footer', 'uq footer component is present')
-        .end();
-  },
-
-  'uqlibrary payment receipt - should display receipt' : function (client) {
-    client
-        .url('http://dev-app.library.uq.edu.au:5001/payment-receipt.html?Success=1&AmountPaid=1099&Receipt=ABC123')
-        .waitForElementVisible('uql-global-links', 10000)
         .assert.elementPresent('uqlibrary-receipt', 'receipt component is present')
         .assert.containsText('#paymentReceipt .title-text', 'Payment receipt');
       client.end();
