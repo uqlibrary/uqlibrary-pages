@@ -1,7 +1,7 @@
 module.exports = {
   'load uqlibrary index page' : function (client) {
     client
-        .url('http://dev-app.library.uq.edu.au:5001')
+        .url('http://localhost:5001')
         .resizeWindow(1280, 800)
         .waitForElementVisible('uql-menu', 10000)
         .assert.elementPresent('uq-minimal-header', 'uq header component is present')
