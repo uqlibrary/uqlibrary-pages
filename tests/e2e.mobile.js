@@ -11,7 +11,7 @@ module.exports = {
       .assert.elementPresent('uql-connect-footer', 'uq connect footer component is present')
       .assert.elementPresent('uq-minimal-footer', 'uq footer component is present')
       .assert.elementPresent('paper-tabs', 'paper-tabs component is present')
-      .saveScreenshot('screenshots/mobile.png')
+      .saveScreenshot('screenshots/e2emobile.png')
       .end();
   }
 };
