@@ -21,7 +21,6 @@
       "selenium_port"  : 4444,
       "selenium_host"  : "localhost",
       "silent": true,
-      "screenResolution": "1280x960",
       "screenshots" : {
         "enabled" : false,
         "path" : ""
@@ -29,16 +28,14 @@
       "desiredCapabilities": {
         "browserName": "firefox",
         "javascriptEnabled": true,
-        "acceptSslCerts": true,
-        "screenResolution": "1280x960"
+        "acceptSslCerts": true
       }
     },
     "chrome": {
       "desiredCapabilities": {
         "browserName": "chrome",
         "javascriptEnabled": true,
-        "acceptSslCerts": true,
-        "screenResolution": "1280x960"
+        "acceptSslCerts": true
       }
     }
   }
