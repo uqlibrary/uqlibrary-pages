@@ -23,21 +23,24 @@
       "desiredCapabilities": {
         "browserName": "chrome",
         "platform": "Windows 10",
-        "version": "48"
+        "version": "48",
+        "screenResolution": "1280x960"
       }
     },
     "ie11" : {
       "desiredCapabilities": {
         "browserName": "internet explorer",
         "platform": "Windows 10",
-        "version": "11.0"
+        "version": "11.0",
+        "screenResolution": "1280x960"
       }
     },
     "chrome": {
       "desiredCapabilities": {
         "browserName": "chrome",
         "javascriptEnabled": true,
-        "acceptSslCerts": true
+        "acceptSslCerts": true,
+        "screenResolution": "1280x960"
       }
     }
   }
