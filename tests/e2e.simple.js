@@ -1,8 +1,8 @@
 module.exports = {
-  'load sinple page' : function (client) {
+  'load simple page' : function (client) {
     client
       .url('http://localhost:5001')
-      .resizeWindow(1280, 800)
+      .pause(5000)
       .waitForElementVisible('body', 10000)
       .end();
   }
