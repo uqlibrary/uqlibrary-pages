@@ -26,7 +26,6 @@ case "$branch" in
   esac
   ;;
 *)
-echo "testing removed for dev - REPLACE FOR PROD!!!"
   case "$PIPE_NUM" in
   "1")
   # "Unit testing" on codeship

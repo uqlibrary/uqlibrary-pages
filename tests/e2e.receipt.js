@@ -16,7 +16,7 @@ module.exports = {
     client
       .url('http://localhost:5001/payment-receipt.html?Success=1&AmountPaid=1099&Receipt=ABC123')
       .resizeWindow(1280, 800)
-      .waitForElementVisible('uql-global-links', 10000)
+      .waitForElementVisible('uql-search-button', 10000)
       .assert.elementPresent('uqlibrary-receipt', 'receipt component is present')
       .assert.containsText('#paymentReceipt .title-text', 'Payment receipt');
     client.end();
