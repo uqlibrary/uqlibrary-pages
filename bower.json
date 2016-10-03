@@ -16,7 +16,7 @@
     "uqlibrary-browser-supported": "uqlibrary/uqlibrary-browser-supported#v1.0.5",
     "uqlibrary-receipt": "uqlibrary/uqlibrary-receipt#v1.0.5",
     "uqlibrary-ga": "uqlibrary/uqlibrary-ga#v1.0.5",
-    "uqlibrary-api": "uqlibrary/uqlibrary-api#auth"
+    "uqlibrary-api": "uqlibrary/uqlibrary-api#v1.3.4"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
@@ -25,7 +25,7 @@
   "resolutions": {
     "uqlibrary-styles": "v1.1.0",
     "uqlibrary-ga": "v1.0.5",
-    "uqlibrary-api": "auth",
+    "uqlibrary-api": "v1.3.4",
     "uqlibrary-alerts": "v1.0.2",
     "uqlibrary-callout": "v1.0.5",
     "uqlibrary-iron-dropdown": "^1.2.2",
