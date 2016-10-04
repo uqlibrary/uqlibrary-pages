@@ -61,10 +61,36 @@ if (!browserData.supported) {
       // Add GA events to the sidebar tabs
       var uqlSidebar = document.querySelector('#sidebar-tabs');
       uqlSidebar.addEventListener('iron-select', function (e) {
-        if(ga) {
-          ga.addEvent('Navigation', 'Sidebar tab ' + e.detail.item.innerText.toLowerCase());
+
+        document.querySelector('#home-ga').addEvent('Navigation', 'Sidebar tab ' + e.detail.item.innerText.toLowerCase());
+        if (e.detail.item.innerText.toLowerCase() === 'training') {
+          //TODO: reset uqlibrary-training on home page to display list not details
+          // Polymer.dom(document).querySelector("uqlibrary-training").reset();
+
+          if (ga) {
+            ga.addEvent('Navigation', 'Sidebar tab ' + e.detail.item.innerText.toLowerCase());
+          }
         }
       });
+
+      // Training setup
+      var trainingElement = document.querySelector('uqlibrary-training');
+      trainingElement.addEventListener('show-list', function () {
+        uqlFrontPage.trainingButton = {
+          label: 'MORE TRAINING EVENTS',
+          href: 'https://web.library.uq.edu.au/library-services/training/view-training-calendar-and-book'
+        };
+      });
+
+      trainingElement.addEventListener('event-clicked', function (e) {
+        uqlFrontPage.trainingButton = {
+          label: 'LOG IN AND BOOK',
+          href: e.detail.link
+        };
+      });
+
+      // Fire off the show-list event to kick things off
+      trainingElement.dispatchEvent(new Event('show-list'));
     });
   }
 

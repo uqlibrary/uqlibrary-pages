@@ -76,7 +76,8 @@ Include following placeholder and gulp task 'inject-browser-update' to include s
 
 ## Testing
 
-There are two testing procedures for uqlibrary-pages: components testing and integration end to end testing
+There are two testing procedures for uqlibrary-pages: components testing and integration end to end testing.
+
 Run `bin/test-setup.sh` to update settings for remote nightwatch.js testing and for wct unit testing
   
 ### Components testing
