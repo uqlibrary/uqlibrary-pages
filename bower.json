@@ -32,7 +32,6 @@
     "uqlibrary-iron-dropdown": "^1.2.2",
     "uqlibrary-browser-supported": "v1.0.5",
     "uqlibrary-autosuggest-input": "v1.1.0",
-    "uqlibrary-search": "v1.2.5",
-    "uqlibrary-training": "v1.0.3"
+    "uqlibrary-search": "v1.2.5"
   }
 }
