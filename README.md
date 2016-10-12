@@ -136,7 +136,16 @@ SauceLabs are not running for master branch.
   ./nightwatch.js
   ./nightwatch.js --env ie11  
 ```
+#### Functionality testing
 
+Sometimes you will need to test functionality end to end - a change from uqlibrary-pages will be utilising a change on uqlapp backend, which you will need to test in the browser.
+
+[test.library.uq.edu.au](http://test.library.uq.edu.au/) is the place to test this.
+
+* Changes for uqlapp should be merged into branch `testing`
+* update uqlibrary-pages bower.json to point appropriate componets to the feature branch (this will almost certainly include uqlibrary-api)
+* update uqlibrary-api/uqlibrary-api.html baseApiUrl to use domain `app-testing.library.uq.edu.au`
+* Ask a sys admin to  change the current "haproxy backend config" for test.library.uq.edu.au to point to the pages branch on assets, eg, for a branch called `xyz`, ask a sys admin to point `test.library.uq.edu.au` to `http://assets.library.uq.edu.au/xyz/pages/index.html`. (Remember to get them to change it back before you delete the branch on completion!)
 
 ## Application Theming & Styling
 
