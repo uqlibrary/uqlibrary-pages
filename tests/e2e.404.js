@@ -20,7 +20,7 @@ module.exports = {
       .pause(10000) // allow saucelabs to get the page loaded
       .waitForElementVisible('uql-search-button', 5000)
       .assert.containsText('#notFoundPage .title-text', 'Page not found')
-      .assert.containsText('#notFoundPage .card-content p:nth-child(1)', 'The request page could not be found.')
+      .assert.containsText('#notFoundPage .card-content p:nth-child(1)', 'The requested page could not be found.')
       .assert.containsText('#notFoundPage .card-content p:nth-child(2)', 'Sorry about that, but here’s what you can do next:')
       .assert.containsText('#notFoundPage .card-content .body1 li:nth-child(1)', 'Try re-typing the address, checking for spelling, capitalisation and/or punctuation.')
       .assert.containsText('#notFoundPage .card-content .body1 li:nth-child(2)', 'Start again at the Library home page')
