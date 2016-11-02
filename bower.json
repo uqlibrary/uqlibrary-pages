@@ -17,7 +17,7 @@
     "uqlibrary-receipt": "uqlibrary/uqlibrary-receipt#v1.0.5",
     "uqlibrary-ga": "uqlibrary/uqlibrary-ga#v1.0.5",
     "uqlibrary-api": "uqlibrary/uqlibrary-api#v1.3.5",
-    "uqlibrary-training": "uqlibrary/uqlibrary-training#v1.0.5"
+    "uqlibrary-training": "uqlibrary/uqlibrary-training#v1.0.6"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
@@ -27,6 +27,7 @@
     "uqlibrary-styles": "v1.1.0",
     "uqlibrary-ga": "v1.0.5",
     "uqlibrary-api": "v1.3.5",
-    "uqlibrary-search": "v1.2.5"
+    "uqlibrary-search": "v1.2.5",
+    "uqlibrary-training": "v1.0.6"
   }
 }
