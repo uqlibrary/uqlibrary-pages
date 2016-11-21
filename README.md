@@ -6,11 +6,13 @@
 
 This project contains pages for UQ Library website: 
 
-> UQ Library Home page [demo](http://assets.library.uq.edu.au/master/pages/index.html)
+* UQ Library Home page - [demo](http://assets.library.uq.edu.au/master/pages/index.html)
+* ACDBA - [demo](http://assets.library.uq.edu.au/master/pages/acdba.html)
+* Library FAQ - [demo](http://assets.library.uq.edu.au/master/pages/rightnow-faq.html)
 
- (Swap out alternate branch names for 'master' in this url to test other branches).
+(Swap out alternate branch names for 'master' in this url to test other branches).
  
- Please, read [polymer development style guide](http://polymerelements.github.io/style-guide/) before development. 
+Instruction: Follow [polymer development style guide](http://polymerelements.github.io/style-guide/) for development. 
 
 ### Quick-start 
 

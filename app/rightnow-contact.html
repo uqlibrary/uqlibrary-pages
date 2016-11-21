@@ -1,0 +1,263 @@
+<!doctype html>
+
+<html lang="en" manifest="/pages/index.appcache">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="generator" content="UQ Library">
+
+  <title>Contact Form | UQ Library</title>
+
+  <!-- Place favicon.ico in the `app/` directory -->
+
+  <!-- Chrome for Android theme color -->
+  <meta name="theme-color" content="#49075E">
+
+  <!-- Web Application Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Tile color for Win8 -->
+  <meta name="msapplication-TileColor" content="##49075E">
+  <meta name="msapplication-navbutton-color" content="#49075E">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="UQ Library">
+  <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="UQ Library">
+  <link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="images/touch/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="images/touch/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="images/touch/apple-touch-icon-152x152.png">
+
+  <!-- Tile icon for Win8 (144x144) -->
+  <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+  <meta name="msapplication-square150x150logo" content="images/touch/apple-touch-icon-152x152.png">
+
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild-->
+
+  <!-- force IMS login for on-campus users -->
+  <script src="//www.library.uq.edu.au/js/ims.js"></script>
+
+  <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <!-- endbuild -->
+
+  <!-- build:js bower_components/uqlibrary-browser-supported/uqlibrary-browser-supported.js -->
+  <script src="bower_components/uqlibrary-browser-supported/uqlibrary-browser-supported.js"></script>
+  <!-- endbuild -->
+
+  <script>
+    //display browser update message for unsupported browsers,
+    //will be inserted by gulp task, do not remove
+    //bower_components/uqlibrary-browser-supported/browser-update.js
+  </script>
+
+  <!-- Because this project uses vulcanize this should be your only html import
+       in this file. All other imports should go in elements.html -->
+  <link rel="import" href="elements/elements.html">
+
+  <!-- For shared styles, shared-styles.html import in elements.html -->
+  <style is="custom-style" include="common-styles">
+    body {
+      background-color: var(--body-color);
+    }
+
+    #layout {
+      width: 90%;
+    }
+
+    #contactDiv {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);
+      margin: 10px auto 20px auto;
+      padding: 0 14px;
+      padding: 0 1rem;
+      width: 90%;
+    }
+
+    h1 {
+      font-size: 14px;
+      font-size: 1rem;
+      margin: 0;
+      line-height: normal;
+      color: #333;
+      border-radius: 2px 2px 0 0!important;
+      padding: 10px 10px 10px 0;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 28px;
+      margin-bottom: 2rem;
+    }
+
+    form {
+      margin: auto;
+    }
+    fieldset {
+      min-width: 0;
+      padding: 0;
+      margin: 0 0 10px 0;
+      border: 0;
+    }
+
+    div.form-group {
+      margin-bottom: 15px;
+    }
+
+    legend {
+      display: block;
+      width: 100%;
+      padding: 0;
+      margin-bottom: 20px;
+      font-size: 21px;
+      line-height: inherit;
+      color: #333;
+      border: 0;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+    }
+    input.formcontrol {
+      height: 20px;
+    }
+    input.formcontrol, textarea.formcontrol {
+      width: 90%;
+      border-radius: 2px;
+      padding: 6px 12px;
+      font-size: 14px;
+      line-height: 1.42857143;
+      color: #555;
+      background-color: #fff;
+      background-image: none;
+      border: 1px solid #ccc;
+      margin-bottom: 0.5rem;
+    }
+
+    .rn_FormSubmit input {
+      background-color: #007e9e;
+      background-image: none;
+      border: none;
+      border-radius: 2px;
+      color: #fff;
+      padding: 1rem;
+      margin-bottom: 14px;
+      margin-bottom: 1rem;
+    }
+
+    .rn_ScreenReaderOnly {
+      position: absolute !important;
+      top: -9999px !important;
+      left: -9999px !important;
+
+    }
+
+  </style>
+</head>
+
+<body>
+<span id="browser-sync-binding"></span>
+<uqlibrary-alerts ga-app-name='Alerts'></uqlibrary-alerts>
+<uqlibrary-ga id="home-ga" app-name="faq"></uqlibrary-ga>
+
+<uq-minimal-header show-search-button="true"
+                   show-menu-button="true"
+                   show-login-button="true"
+                   show-apps-button="true"></uq-minimal-header>
+<uql-menu></uql-menu>
+
+<div id="content">
+
+  <!-- Preloader/Unsupported browser message -->
+  <!-- preloader will be inserted by gulp task, do not remove -->
+  #preloader#
+  <!-- End of Preloader/Unsupported browser message -->
+
+  <template is="dom-bind" id="acdbaApp" unresolved>
+    <div id="layout">
+      <p>Note: This form submits to test Rightnow.</p>
+      <div id="contactDiv">
+        <h1>Submit your enquiry</h1>
+
+        <form id="rn_QuestionSubmit" method="post" action="//uqapplications--tst1.custhelp.com/ci/ajaxRequest/sendForm">
+
+          <fieldset>
+            <legend>Your question</legend>
+            <div id="rn_TextInput_14" class="rn_TextInput rn_Input form-group">
+              <label for="rn_TextInput_14_Incident.Subject" id="rn_TextInput_14_Label" class="rn_Label">
+                Question            <span class="rn_Required"> *</span><span class="rn_ScreenReaderOnly"> Required</span>
+              </label>
+              <input type="text" id="rn_TextInput_14_Incident.Subject" name="Incident.Subject" class="rn_Text formcontrol" maxlength='240' required  />
+            </div>
+            <div id="rn_TextInput_16" class="rn_TextInput rn_Input form-group">
+              <label for="rn_TextInput_16_Incident.Threads" id="rn_TextInput_16_Label" class="rn_Label">
+                More Detail/Explanation            <span class="rn_Required"> *</span><span class="rn_ScreenReaderOnly"> Required</span>
+              </label>
+              <textarea id="rn_TextInput_16_Incident.Threads" class="rn_TextArea formcontrol" rows="7" cols="60" name="Incident.Threads" required></textarea>
+            </div>
+            <div id="rn_FileAttachmentUpload_17" class="rn_FileAttachmentUpload rn_Input">
+              <label for="rn_FileAttachmentUpload_17_FileInput" id="rn_FileAttachmentUpload_17_Label">Attach Documents        </label>
+              <input name="file" id="rn_FileAttachmentUpload_17_FileInput" type="file"/>
+              <span id="rn_FileAttachmentUpload_17_StatusMessage"></span>
+            </div>
+
+          </fieldset>
+
+          <fieldset>
+            <legend>Your details</legend>
+            <div id="rn_TextInput_8" class="rn_TextInput rn_Input form-group">
+              <label for="rn_TextInput_8_Contact.Emails.PRIMARY.Address" id="rn_TextInput_8_Label" class="rn_Label">
+                Email Address
+                <span class="rn_Required"> *</span><span class="rn_ScreenReaderOnly"> Required</span>
+              </label>
+              <input type="email" id="rn_TextInput_8_Contact.Emails.PRIMARY.Address" name="Contact.Emails.PRIMARY.Address" class="rn_Email formcontrol" maxlength='80' required  />
+            </div>
+            <div id="rn_TextInput_10" class="rn_TextInput rn_Input form-group">
+              <label for="rn_TextInput_10_Contact.Name.First" id="rn_TextInput_10_Label" class="rn_Label">
+                First name</label>
+              <input type="text" id="rn_TextInput_10_Contact.Name.First" name="Contact.Name.First" class="rn_Text formcontrol" maxlength='80'  />
+            </div>
+            <div id="rn_TextInput_12" class="rn_TextInput rn_Input form-group">
+              <label for="rn_TextInput_12_Contact.Name.Last" id="rn_TextInput_12_Label" class="rn_Label">
+                Last name</label>
+              <input type="text" id="rn_TextInput_12_Contact.Name.Last" name="Contact.Name.Last" class="rn_Text formcontrol" maxlength='80'  />
+            </div>
+          </fieldset>
+
+          <div id="rn_FormSubmit_18" class="rn_FormSubmit btn">
+            <input type="submit" id="rn_FormSubmit_18_Button" value="Submit"/>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </template>
+</div>
+
+
+
+
+<uql-connect-footer></uql-connect-footer>
+<uq-minimal-footer></uq-minimal-footer>
+
+<!-- build:js scripts/app.js -->
+<script src="scripts/app.js"></script>
+<!-- endbuild-->
+
+</body>
+
+</html>
