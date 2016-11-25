@@ -188,7 +188,8 @@
 <uql-connect-footer></uql-connect-footer>
 <uq-minimal-footer></uq-minimal-footer>
 
-<script type="text/javascript" src="//uqapplications--tst1.widget.custhelp.com/euf/rightnow/RightNow.Client.js"></script>
+<script type="text/javascript" src="//uqcurrent--tst1.widget.custhelp.com/euf/rightnow/RightNow.Client.js"></script>
+
 <script type="text/javascript">
   RightNow.Client.Controller.addComponent(
           {
@@ -196,7 +197,9 @@
             p: "45",
             instance_id: "skw_0",
             module: "KnowledgeSyndication",
-            type: 3
+            type: 3,
+            description: false,
+            persist_prodcat: true
           },
           "//uqapplications--tst1.widget.custhelp.com/ci/ws/get"
   );
