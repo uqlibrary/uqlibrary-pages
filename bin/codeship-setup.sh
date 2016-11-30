@@ -5,9 +5,15 @@ set -e
 
 echo "Install prerequisites gulp/bower/packages"
 
-echo "Set Java version to Java8"
-jdk_switcher use oraclejdk8
-java -version
+echo "Check Java version is set to Java8"
+version=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}')
+echo version "$version"
+if [[ "$version" < "1.8" ]]; then
+  echo "Java version is too old, min Java8 is required"
+fi
+
+# can't run jdk_switcher in script
+# jdk_switcher use oraclejdk8
 
 echo "Install dependencies"
 npm install -g gulp bower
