@@ -12,26 +12,23 @@
     "uqlibrary-computers": "uqlibrary/uqlibrary-computers#v1.1.8",
     "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights#v1.0.6",
     "uqlibrary-alerts": "uqlibrary/uqlibrary-alerts#v1.0.2",
-    "uqlibrary-search": "uqlibrary/uqlibrary-search#v1.2.5",
+    "uqlibrary-search": "uqlibrary/uqlibrary-search#v1.2.6",
     "uqlibrary-browser-supported": "uqlibrary/uqlibrary-browser-supported#v1.0.5",
     "uqlibrary-receipt": "uqlibrary/uqlibrary-receipt#v1.0.5",
-    "uqlibrary-ga": "uqlibrary/uqlibrary-ga#v1.0.5",
+    "uqlibrary-ga": "uqlibrary/uqlibrary-ga#v1.0.6",
     "uqlibrary-api": "uqlibrary/uqlibrary-api#v1.3.5",
-    "uqlibrary-training": "uqlibrary/uqlibrary-training#v1.0.5"
+    "uqlibrary-training": "uqlibrary/uqlibrary-training#v1.0.6"
   },
   "devDependencies": {
-    "web-component-tester": "^4.0.0"
+    "web-component-tester": "^4.3.5"
   },
   "ignore": [],
   "resolutions": {
     "uqlibrary-styles": "v1.1.0",
-    "uqlibrary-ga": "v1.0.5",
+    "uqlibrary-ga": "v1.0.6",
     "uqlibrary-api": "v1.3.5",
-    "uqlibrary-alerts": "v1.0.2",
-    "uqlibrary-callout": "v1.0.5",
-    "uqlibrary-iron-dropdown": "^1.2.2",
-    "uqlibrary-browser-supported": "v1.0.5",
-    "uqlibrary-autosuggest-input": "v1.1.0",
-    "uqlibrary-search": "v1.2.5"
+    "uqlibrary-search": "v1.2.6",
+    "uqlibrary-training": "v1.0.6",
+    "uqlibrary-autosuggest-input": "v1.1.1"
   }
 }
