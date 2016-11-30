@@ -39,7 +39,7 @@
     "nightwatch": "^0.9.9",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.0.2",
-    "sauce-connect-launcher": "^0.14.0",
+    "sauce-connect-launcher": "^1.1.1",
     "vulcanize": ">= 1.4.2",
     "web-component-tester": "^4.3.5",
     "yargs": "~3.30.0"
