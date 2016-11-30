@@ -3,13 +3,7 @@
 # start debugging/tracing commands, -e - exit if command returns error (non-zero status)
 set -e
 
-echo "Install prerequisites gulp/bower/packages"
-
-npm install -g gulp bower
-
-npm install
-bower install
-
+# start debugging/tracing commands, -e - exit if command returns error (non-zero status)
 echo "Deploying branch: ${CI_BRANCH}"
 
 branch=${CI_BRANCH}
