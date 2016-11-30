@@ -23,6 +23,13 @@ case "$branch" in
     ./nightwatch.js
     ./nightwatch.js --env chrome
   ;;
+  "3")
+    # "Test Commands" on codeship
+      cd bin/saucelabs
+
+      echo "test chrome on windows (default)"
+      ./nightwatch.js
+  ;;
   esac
   ;;
 *)
