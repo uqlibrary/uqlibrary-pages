@@ -11,6 +11,11 @@ src=$(git rev-parse --show-toplevel)
 base=$(basename ${src})
 dest="${base/uqlibrary-/}"
 
+echo "Install dependencies"
+npm install -g gulp bower
+npm install
+bower install
+
 pwd
 cd ../${base}
 pwd

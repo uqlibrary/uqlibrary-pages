@@ -3,8 +3,6 @@
 # start debugging/tracing commands, -e - exit if command returns error (non-zero status)
 set -e
 
-echo "Install prerequisites gulp/bower/packages"
-
 echo "Check Java version is set to Java8"
 # can't run jdk_switcher in script
 # jdk_switcher use oraclejdk8
