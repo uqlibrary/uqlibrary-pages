@@ -2,7 +2,7 @@
 
 [ ![Codeship Status for uqlibrary/uqlibrary-pages](https://codeship.com/projects/c9f3c4c0-ac6d-0133-af8d-1e5da553331a/status?branch=master)](https://codeship.com/projects/131650)
 [![Dependency Status](https://david-dm.org/uqlibrary/uqlibrary-pages.svg)](https://david-dm.org/uqlibrary/uqlibrary-pages)
-[![Dev Dependency Status](https://david-dm.org/uqlibrary/uqlibrary-pages/dev-status.svg)](https://david-dm.org/uqlibrary/uqlibrary-pages?type=dev)
+[![Dev Dependency Status](https://david-dm.org/uqlibrary/uqlibrary-pages/dev-status.svg)](https://david-dm.org/uqlibrary/uqlibrary-pages)
 
 This project contains pages for UQ Library website: 
 

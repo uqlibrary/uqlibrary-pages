@@ -14,7 +14,16 @@ var ret = {
     },
     sauce: {
       browsers: [
-        'OSX 10.10/safari@8.0'
+        // {
+        //   browserName: 'MicrosoftEdge',
+        //   platform: 'Windows 10',
+        //   version: '14.14393'
+        // },
+        {
+          browserName: 'safari',
+          platform: 'OS X 10.11',
+          version: '10.0'
+        }
       ]
     }
   }
