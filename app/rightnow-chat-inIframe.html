@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AskUs</title>
+</head>
+<body>
+
+
+<div id="rightNowChatLinkContainer">
+  <div id="RightNowChatLink">
+    <div id="rightNowChatLinkInfo">
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="https://uqcurrent--tst1.widget.custhelp.com/euf/rightnow/RightNow.Client.js"></script>
+<script type="text/javascript">
+  RightNow.Client.Controller.addComponent(
+    {
+      chat_login_page: "/app/chat/chat_launch_its",
+      container_element_id: "rightNowChatLinkContainer",
+      info_element_id: "rightNowChatLinkInfo",
+      label_available_immediately_template: "Agents are available with no wait time. (this can be changed)",
+      label_available_with_wait_template: "Agents are available in {TIME} ({NUM_MINUTES} {MINUTES} and {NUM_SECONDS} {SECONDS}). (this can be changed)",
+      label_default: "Chat directly with a member of our support team. (this can be changed)",
+      label_unavailable_busy_template: "All agents are busy. (this can be changed)",
+      label_unavailable_hours: "We're sorry, chat is currently unavailable. (this can be changed)",
+      link_element_id: "RightNowChatLink",
+      p: "45",
+      instance_id: "sccl_0",
+      module: "ConditionalChatLink",
+      type: 7
+    },
+    "https://uqcurrent--tst1.widget.custhelp.com/ci/ws/get"
+  );
+</script>
+
+
+
+</body>
+</html>
