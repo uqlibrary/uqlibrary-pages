@@ -7,7 +7,7 @@
     "paper-elements": "PolymerElements/paper-elements#^1.0.1",
     "polymer": "Polymer/polymer#^1.2.0",
     "uqlibrary-styles": "uqlibrary/uqlibrary-styles#v1.1.0",
-    "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components#rightnow",
+    "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components#production",
     "uqlibrary-hours": "uqlibrary/uqlibrary-hours#v1.2.0",
     "uqlibrary-computers": "uqlibrary/uqlibrary-computers#v1.1.8",
     "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights#v1.0.6",
@@ -16,7 +16,7 @@
     "uqlibrary-browser-supported": "uqlibrary/uqlibrary-browser-supported#v1.0.5",
     "uqlibrary-receipt": "uqlibrary/uqlibrary-receipt#v1.0.5",
     "uqlibrary-ga": "uqlibrary/uqlibrary-ga#v1.0.6",
-    "uqlibrary-api": "uqlibrary/uqlibrary-api#rightnow",
+    "uqlibrary-api": "uqlibrary/uqlibrary-api#v1.3.7",
     "uqlibrary-training": "uqlibrary/uqlibrary-training#v1.0.6"
   },
   "devDependencies": {
@@ -26,6 +26,6 @@
   "resolutions": {
     "uqlibrary-styles": "v1.1.0",
     "uqlibrary-ga": "v1.0.6",
-    "uqlibrary-api": "rightnow"
+    "uqlibrary-api": "v1.3.7"
   }
 }
