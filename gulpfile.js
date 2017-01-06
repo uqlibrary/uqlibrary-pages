@@ -174,6 +174,9 @@ gulp.task('vulcanize', ['clean_bower'], function() {
   var menuJson=fs.readFileSync("app/bower_components/uqlibrary-reusable-components/resources/uql-menu.json", "utf8");
   var regEx = new RegExp("menuJsonFileData;", "g");
 
+  var contactsJson=fs.readFileSync("app/bower_components/uqlibrary-api/data/contacts.json", "utf8");
+  var contactsRegEx = new RegExp("contactsJsonFileData;", "g");
+
   return gulp.src('app/elements/elements.html')
     .pipe($.vulcanize({
       stripComments: true,
@@ -185,6 +188,7 @@ gulp.task('vulcanize', ['clean_bower'], function() {
       onlySplit: false
     }))
     .pipe($.if('*.js',replace({patterns: [{ match: regEx, replacement: menuJson + ';'}], usePrefix: false}))) //replace menu-json with value from resources/uql-menu.json
+    .pipe($.if('*.js',replace({patterns: [{ match: contactsRegEx, replacement: contactsJson + ';'}], usePrefix: false}))) //replace contacts.json with value from uqlibrary-api
     .pipe($.if('*.js',$.uglify({preserveComments: 'some'}))) // Minify js output
     .pipe($.if('*.html', $.minifyHtml({quotes: true, empty: true, spare: true}))) // Minify html output
     .pipe(gulp.dest(dist('elements')))
