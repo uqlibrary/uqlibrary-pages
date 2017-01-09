@@ -46,12 +46,17 @@ var styleTask = function(stylesPath, srcs) {
   return gulp.src(srcs.map(function(src) {
       return path.join('app', stylesPath, src);
     }))
-    .pipe($.changed(stylesPath, {extension: '.scss'}))
-    .pipe($.sass({ style: 'expanded' }))
+    //Concatenate all SASS files into 1 compiled CSS file
+    .pipe($.sass({style: 'expanded'}))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
-    .pipe(gulp.dest('.tmp/' + stylesPath))
+    //Save a copy next to the original SASS file
+    .pipe(gulp.dest('app/' + stylesPath),{overwrite:true})
+    //Save it to a temp dir
+    .pipe(gulp.dest('.tmp/' + stylesPath),{overwrite:true})
+    //Minify the CSS
     .pipe($.minifyCss())
-    .pipe(gulp.dest(dist(stylesPath)))
+    //Copy it to the distribution folder
+    .pipe(gulp.dest(dist(stylesPath),{overwrite:true}))
     .pipe($.size({title: stylesPath}));
 };
 
