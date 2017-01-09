@@ -46,12 +46,12 @@ var styleTask = function(stylesPath, srcs) {
   return gulp.src(srcs.map(function(src) {
       return path.join('app', stylesPath, src);
     }))
-    .pipe($.changed(stylesPath, {extension: '.scss'}))
-    .pipe($.sass({ style: 'expanded' }))
+    .pipe($.sass({style: 'expanded'}))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
-    .pipe(gulp.dest('.tmp/' + stylesPath))
+    .pipe(gulp.dest('app/' + stylesPath),{overwrite:true})
+    .pipe(gulp.dest('.tmp/' + stylesPath),{overwrite:true})
     .pipe($.minifyCss())
-    .pipe(gulp.dest(dist(stylesPath)))
+    .pipe(gulp.dest('dist/' + (stylesPath),{overwrite:true}))
     .pipe($.size({title: stylesPath}));
 };
 
