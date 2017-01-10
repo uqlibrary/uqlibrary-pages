@@ -8,7 +8,6 @@ This project contains pages for UQ Library website:
 
 * UQ Library Home page - [demo](http://assets.library.uq.edu.au/master/pages/index.html)
 * ACDBA - [demo](http://assets.library.uq.edu.au/master/pages/acdba.html)
-* Library FAQ - [demo](http://assets.library.uq.edu.au/master/pages/rightnow-faq.html)
 
 (Swap out alternate branch names for 'master' in this url to test other branches).
  
