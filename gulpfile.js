@@ -46,12 +46,17 @@ var styleTask = function(stylesPath, srcs) {
   return gulp.src(srcs.map(function(src) {
       return path.join('app', stylesPath, src);
     }))
-    .pipe($.changed(stylesPath, {extension: '.scss'}))
-    .pipe($.sass({ style: 'expanded' }))
+    //Concatenate all SASS files into 1 compiled CSS file
+    .pipe($.sass({style: 'expanded'}))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
-    .pipe(gulp.dest('.tmp/' + stylesPath))
+    //Save a copy next to the original SASS file
+    .pipe(gulp.dest('app/' + stylesPath),{overwrite:true})
+    //Save it to a temp dir
+    .pipe(gulp.dest('.tmp/' + stylesPath),{overwrite:true})
+    //Minify the CSS
     .pipe($.minifyCss())
-    .pipe(gulp.dest(dist(stylesPath)))
+    //Copy it to the distribution folder
+    .pipe(gulp.dest(dist(stylesPath),{overwrite:true}))
     .pipe($.size({title: stylesPath}));
 };
 
@@ -66,21 +71,21 @@ var imageOptimizeTask = function(src, dest) {
 };
 
 var optimizeHtmlTask = function(src, dest) {
-  var assets = $.useref.assets({
-    searchPath: ['.tmp', 'app']
-  });
 
   return gulp.src(src)
-    .pipe(assets)
+    .pipe($.useref())
+
     // Concatenate and minify JavaScript
     .pipe($.if('*.js', $.uglify({
       preserveComments: 'some'
     })))
+
     // Concatenate and minify styles
     // In case you are still using useref build blocks
     .pipe($.if('*.css', $.minifyCss()))
-    .pipe(assets.restore())
     .pipe($.useref())
+
+
     // Minify any HTML
     .pipe($.if('*.html', $.minifyHtml({
       quotes: true,
@@ -141,7 +146,12 @@ gulp.task('copy', function() {
     'app/bower_components/uqlibrary-api/mock/**/*'
   ]).pipe(gulp.dest(dist('bower_components/uqlibrary-api/mock')));
 
-  return merge(app, bower)
+  var data = gulp.src([
+    'app/bower_components/uqlibrary-api/data/contacts.json'
+  ]).pipe(gulp.dest(dist('bower_components/uqlibrary-api/data')));
+
+
+  return merge(app, bower, data)
       .pipe($.size({
         title: 'copy'
       }));
@@ -169,6 +179,9 @@ gulp.task('vulcanize', ['clean_bower'], function() {
   var menuJson=fs.readFileSync("app/bower_components/uqlibrary-reusable-components/resources/uql-menu.json", "utf8");
   var regEx = new RegExp("menuJsonFileData;", "g");
 
+  var contactsJson=fs.readFileSync("app/bower_components/uqlibrary-api/data/contacts.json", "utf8");
+  var contactsRegEx = new RegExp("contactsJsonFileData;", "g");
+
   return gulp.src('app/elements/elements.html')
     .pipe($.vulcanize({
       stripComments: true,
@@ -180,6 +193,7 @@ gulp.task('vulcanize', ['clean_bower'], function() {
       onlySplit: false
     }))
     .pipe($.if('*.js',replace({patterns: [{ match: regEx, replacement: menuJson + ';'}], usePrefix: false}))) //replace menu-json with value from resources/uql-menu.json
+    .pipe($.if('*.js',replace({patterns: [{ match: contactsRegEx, replacement: contactsJson + ';'}], usePrefix: false}))) //replace contacts.json with value from uqlibrary-api
     .pipe($.if('*.js',$.uglify({preserveComments: 'some'}))) // Minify js output
     .pipe($.if('*.html', $.minifyHtml({quotes: true, empty: true, spare: true}))) // Minify html output
     .pipe(gulp.dest(dist('elements')))

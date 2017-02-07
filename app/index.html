@@ -193,6 +193,13 @@
   <script src="scripts/app.js"></script>
   <!-- endbuild-->
 
+  <script>
+    //show preloader in case IMS is not available yet
+    if(document.getElementById('preloader-loading')) {
+      document.getElementById('preloader-loading').style.display = 'block';
+    }
+  </script>
+
 </body>
 
 </html>

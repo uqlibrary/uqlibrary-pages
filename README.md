@@ -6,11 +6,12 @@
 
 This project contains pages for UQ Library website: 
 
-> UQ Library Home page [demo](http://assets.library.uq.edu.au/master/pages/index.html)
+* UQ Library Home page - [demo](http://assets.library.uq.edu.au/master/pages/index.html)
+* ACDBA - [demo](http://assets.library.uq.edu.au/master/pages/acdba.html)
 
- (Swap out alternate branch names for 'master' in this url to test other branches).
+(Swap out alternate branch names for 'master' in this url to test other branches).
  
- Please, read [polymer development style guide](http://polymerelements.github.io/style-guide/) before development. 
+Instruction: Follow [polymer development style guide](http://polymerelements.github.io/style-guide/) for development. 
 
 ### Quick-start 
 
@@ -89,6 +90,20 @@ Run `bin/test-setup.sh` to update settings for remote nightwatch.js testing and 
 * from bower_components all custom uqlibrary-* tests suites are collected with in test-setup.sh into app/test/index.html
 * tests are launched with gulp test (gulp test:remote for testing on SauceLabs)
 
+When you run this command, you may get the error:
+
+"Missing Sauce credentials. Did you forget to set SAUCE_USERNAME and/or SAUCE_ACCESS_KEY?"
+
+To set these fields: 
+
+1. Visit the [Mylibrary Codeship Environment Variable page](https://codeship.com/projects/141087/configure_environment)
+2. Note the values for SAUCE_USERNAME and for SAUCE_ACCESS_KEY
+3. export these as local variables on your box, eq:
+
+    `$ export SAUCE_ACCESS_KEY='XXX'`
+
+then run the `wct` command again
+
 ### Integration testing
 
 Integration testing is performed using [Nightwatch.js](http://nightwatchjs.org/). Integration testing is performed before deployment on Codeship.
@@ -105,6 +120,8 @@ SauceLabs are not running for master branch.
 ```sh
   java -jar selenium-server-standalone-{VERSION}.jar
 ```
+
+or `brew install selenium-server-standalone` then `selenium-server -p 4444`
 
 * start server (will start server and project will be accessible at http://localhost:5001)
 
