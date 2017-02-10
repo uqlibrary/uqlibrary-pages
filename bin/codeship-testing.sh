@@ -38,19 +38,19 @@ case "$PIPE_NUM" in
 
   if [ ${CI_BRANCH} == "production" ]; then
     echo "test edge"
-    ./nightwatch.js --env edge
+    ./nightwatch.js --env edge --tag e2etest
 
     echo "test firefox on windows"
-    ./nightwatch.js --env firefox-on-windows
+    ./nightwatch.js --env firefox-on-windows --tag e2etest
 
     echo "test chrome on mac"
-    ./nightwatch.js --env chrome-on-mac
+    ./nightwatch.js --env chrome-on-mac --tag e2etest
 
     echo "test firefox on mac"
-    ./nightwatch.js --env firefox-on-mac
+    ./nightwatch.js --env firefox-on-mac --tag e2etest
 
     echo "test safari on mac"
-    ./nightwatch.js --env safari-on-mac
+    ./nightwatch.js --env safari-on-mac --tag e2etest
   fi
 ;;
 esac
