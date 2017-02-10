@@ -8,7 +8,7 @@ module.exports = {
         client
             .url(urlTest)
             .resizeWindow(1280, 1000)
-            .pause(10000) // allow saucelabs to get the page loaded
+            .pause(20000) // allow saucelabs to get the page loaded
             .waitForElementVisible('uql-search-button', 5000)
             .assert.containsText('#notFoundPage .title-text', 'Page not found')
             .assert.containsText('#notFoundPage .card-content p:nth-child(1)', 'The requested page could not be found.')
