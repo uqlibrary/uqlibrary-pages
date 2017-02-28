@@ -17,7 +17,8 @@
     "uqlibrary-receipt": "uqlibrary/uqlibrary-receipt#v1.0.5",
     "uqlibrary-ga": "uqlibrary/uqlibrary-ga#v1.0.7",
     "uqlibrary-api": "uqlibrary/uqlibrary-api#v1.4.2",
-    "uqlibrary-training": "uqlibrary/uqlibrary-training#v1.0.7"
+    "uqlibrary-training": "uqlibrary/uqlibrary-training#v1.0.7",
+    "uqlibrary-autosuggest-input": "uqlibrary/uqlibrary-autosuggest-input#v1.1.1"
   },
   "devDependencies": {
     "web-component-tester": "^5.0.0"
