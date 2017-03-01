@@ -109,13 +109,20 @@
     <div id="layout">
       <div id="main">
         <div id="search">
-          <paper-card heading="UQ Library Search">
-          <div class="card-content">
-            <uqlibrary-search ga-app-name="Homepage search"></uqlibrary-search>
-          </div>
+          <paper-card>
+            <paper-tabs selected="{{selectedSearchTab}}">
+              <paper-tab>UQ LIBRARY SEARCH</paper-tab>
+              <paper-tab>TRY THE NEW LOOK</paper-tab>
+            </paper-tabs>
+
+            <div class="card-content">
+
+              <uqlibrary-search ga-app-name="Homepage search" configuration="primo{{selectedSearchTab}}"></uqlibrary-search>
+
+            </div>
           <div class="card-actions">
             <template is="dom-repeat" items="[[selectedSearchSource.helpLinks]]">
-              <paper-button class="button-secondary" tabindex="-1"><a href$="[[item.url]]">[[item.title]]</a></paper-button>
+              <paper-button class="button-secondary" tabindex="-1" disabled="[[item.disabled]]"><a href$="[[item.url]]">[[item.title]]</a></paper-button>
             </template>
           </div>
         </paper-card>
