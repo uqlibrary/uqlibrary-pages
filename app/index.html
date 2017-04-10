@@ -5,13 +5,15 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="">
+  <meta name="description" content="Access UQ Library search, collections, databases, opening hours and study rooms. Get support for research, teaching, referencing and more.">
+  <meta name="keywords" content="University of Queensland, Library, Research, Databases, Collections">
+
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <meta name="generator" content="UQ Library">
 
-  <title>Home Page | UQ Library</title>
+  <title>Home – UQ Library – University of Queensland, Australia</title>
 
   <!-- Place favicon.ico in the `app/` directory -->
 
@@ -192,6 +194,13 @@
   <!-- build:js scripts/app.js -->
   <script src="scripts/app.js"></script>
   <!-- endbuild-->
+
+  <script>
+    //show preloader in case IMS is not available yet
+    if(document.getElementById('preloader-loading')) {
+      document.getElementById('preloader-loading').style.display = 'block';
+    }
+  </script>
 
 </body>
 
