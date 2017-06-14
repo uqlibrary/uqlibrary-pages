@@ -157,14 +157,24 @@ or `brew install selenium-server-standalone` then `selenium-server -p 4444`
 ```
 #### Functionality testing
 
-Sometimes you will need to test functionality end to end - a change from uqlibrary-pages will be utilising a change on uqlapp backend, which you will need to test in the browser.
+Sometimes you will need to test functionality end to end or demonstrate in the browser the effect of a backend change.
 
-[test.library.uq.edu.au](http://test.library.uq.edu.au/) is the place to test this.
+* in repo uqlapp 
+  * make changes in branch testing
+* for polymer repos, pick a branch name that is meaningful to the work you are doing, e.g. newFrogs . 
+* in the repo uqlibrary-api, 
+  * create a branch, as per the branch name above
+  * update file uqlibrary-api.html and change variable `baseApiUrl` to use domain `app-testing.library.uq.edu.au`
+  * push (there is no codeship build process for uqlibrary-api)
+* make any required changes to other polymer repos, in like named branches
+* in the repo uqlibrary-pages 
+  * create a branch, as per the branch name above
+  * create a deployment on codeship with the name matching the branch name
+  * update bower.json to point appropriate components to the feature branch (this will almost certainly include uqlibrary-api)
+  * push and wait for build to pass
+* http://assets.library.uq.edu.au/newFrogs/pages/index.html should now work!
+* If you require the final page to show on [test.library.uq.edu.au](http://test.library.uq.edu.au/) (e.g. the customer has asked for an easier url), ask a sys admin to change the current "haproxy backend config" for test.library.uq.edu.au to point to the pages branch on assets, eg, in this case, a branch called newFrogs,  (Remember to get them to change it back before you delete the branch on completion!)
 
-* Changes for uqlapp should be merged into branch `testing`
-* update uqlibrary-pages bower.json to point appropriate componets to the feature branch (this will almost certainly include uqlibrary-api)
-* update uqlibrary-api/uqlibrary-api.html baseApiUrl to use domain `app-testing.library.uq.edu.au`
-* Ask a sys admin to  change the current "haproxy backend config" for test.library.uq.edu.au to point to the pages branch on assets, eg, for a branch called `xyz`, ask a sys admin to point `test.library.uq.edu.au` to `http://assets.library.uq.edu.au/xyz/pages/index.html`. (Remember to get them to change it back before you delete the branch on completion!)
 
 ## Application Theming & Styling
 

@@ -49,6 +49,7 @@ if (!browserData.supported) {
 
       //set sidebar tab default
       uqlFrontPage.selectedSidebarTab = 0;
+      uqlFrontPage.selectedSearchTab = 0;
 
       //set search card help links
       var search = Polymer.dom(document).querySelector("uqlibrary-search");
@@ -56,6 +57,12 @@ if (!browserData.supported) {
 
       search.addEventListener('selected-source-changed', function (e) {
         uqlFrontPage.selectedSearchSource = search.selectedSource;
+      });
+
+      search.addEventListener('configuration-changed', function (e) {
+        if (search.configuration.replace('primo', '') !== uqlFrontPage.selectedSearchTab) {
+          uqlFrontPage.selectedSearchTab = search.configuration.replace('primo', '');
+        }
       });
 
       // Add GA events to the sidebar tabs
