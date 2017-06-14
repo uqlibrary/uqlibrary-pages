@@ -9,7 +9,6 @@ module.exports = {
             .url(urlTest)
             .resizeWindow(1280, 1000)
             .pause(20000) // allow saucelabs to get the page loaded
-            .assert.elementPresent('paper-tabs#search-tabs', 'paper-tabs component is present for search options')
             .assert.elementPresent('paper-tabs#sidebar-tabs', 'paper-tabs component is present for side bar')
             .assert.elementPresent('paper-tabs#sidebar-tabs', 'paper-tabs component is present for side bar')
             .assert.elementPresent('uqlibrary-search', 'search component is present')

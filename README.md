@@ -96,7 +96,7 @@ When you run this command, you may get the error:
 
 To set these fields: 
 
-1. Visit the [Mylibrary Codeship Environment Variable page](https://codeship.com/projects/141087/configure_environment)
+1. Visit the [Pages Codeship Environment Variable page](https://app.codeship.com/projects/131650/configure_environment)
 2. Note the values for SAUCE_USERNAME and for SAUCE_ACCESS_KEY
 3. export these as local variables on your box, eq:
 
