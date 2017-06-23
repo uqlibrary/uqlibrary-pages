@@ -88,7 +88,7 @@ Run `bin/test-setup.sh` to update settings for remote nightwatch.js testing and 
 * done with [Web Component Tester](https://github.com/Polymer/web-component-tester)
 * configuration is defined in wct.conf.js, it contains configuration for local testing (chrome/firefox) and for remote testing on SauceLabs (IE/Safari/etc)
 * from bower_components all custom uqlibrary-* tests suites are collected with in test-setup.sh into app/test/index.html
-* tests are launched with gulp test (gulp test:remote for testing on SauceLabs)
+* tests are launched with `gulp test` (gulp test:remote for testing on SauceLabs)
 
 When you run this command, you may get the error:
 
@@ -121,7 +121,7 @@ SauceLabs are not running for master branch.
   java -jar selenium-server-standalone-{VERSION}.jar
 ```
 
-or `brew install selenium-server-standalone` then `selenium-server -p 4444`
+or `brew install selenium-server-standalone` then `selenium-server -port 4444`
 
 * start server (will start server and project will be accessible at http://localhost:5001)
 
