@@ -65,7 +65,8 @@ gulp.task('rev', function () {
     '**/elements.html',
     '**/elements.js',
     '**/main.css',
-    '**/app.js'
+    '**/app.js',
+    '**/index.appcache'
   ];
 
   var filter = $.filter(fileFilter, {restore: true});
@@ -74,7 +75,7 @@ gulp.task('rev', function () {
       .pipe(rev())
       .pipe(revDelete())
       .pipe(filter.restore)
-      .pipe(revReplace())
+      .pipe(revReplace({replaceInExtensions: ['.appcache']}))
       .pipe(gulp.dest(dist()))
       .pipe(rev.manifest())
       .pipe(gulp.dest(dist()));
