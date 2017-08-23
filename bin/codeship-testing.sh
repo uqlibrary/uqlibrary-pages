@@ -11,45 +11,51 @@ fi
 case "$PIPE_NUM" in
 "1")
   # "Unit testing" on codeship
-  echo "local unit testing"
+  printf "\n --- LOCAL UNIT TESTING ---\n\n"
   gulp test
 
   if [ ${CI_BRANCH} == "production" ]; then
-    echo "remote unit testing"
+    printf "\n --- REMOTE UNIT TESTING (prod branch only) ---\n\n"
     gulp test:remote
   fi
 
 ;;
 "2")
   # "Nightwatch local" on codeship
-  echo "local integration testing"
-  echo "install selenium"
+  printf "\n --- Local Integration Testing ---\n"
+
+  printf "\n --- Install Selenium ---\n\n"
   curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/packages/selenium_server.sh | bash -s
   cd bin/local
+
+  printf "\n --- TEST FIREFOX (default) ---\n\n"
   ./nightwatch.js --tag e2etest
+
+  printf "\n --- TEST CHROME ---\n\n"
   ./nightwatch.js --env chrome --tag e2etest
 ;;
 "3")
   # "Nightwatch on saucelabs" on codeship
+  printf "\n --- Saucelabs Integration Testing ---\n\n"
   cd bin/saucelabs
 
-  echo "test chrome on windows (default)"
+  printf "\n --- TEST CHROME on WINDOWS (default) ---\n\n"
   ./nightwatch.js --tag e2etest
 
   if [ ${CI_BRANCH} == "production" ]; then
-    echo "test edge"
+    printf "\n --- TEST EDGE (prod branch only) ---\n\n"
     ./nightwatch.js --env edge --tag e2etest
 
-    echo "test firefox on windows"
+    printf "\n --- TEST FIREFOX on WINDOWS (prod branch only) ---\n\n"
     ./nightwatch.js --env firefox-on-windows --tag e2etest
 
-    echo "test chrome on mac"
+    printf "\n --- TEST CHROME on MAC (prod branch only) ---\n\n"
     ./nightwatch.js --env chrome-on-mac --tag e2etest
 
-    echo "test firefox on mac"
+    printf "\n --- TEST FIREFOX on MAC (prod branch only) ---\n\n"
     ./nightwatch.js --env firefox-on-mac --tag e2etest
 
-    echo "test safari on mac"
+    printf "\n --- TEST SAFARI on MAC (prod branch only) ---\n\n"
     ./nightwatch.js --env safari-on-mac --tag e2etest
   fi
 ;;
