@@ -1,0 +1,175 @@
+<!doctype html>
+
+<html lang="en" manifest="/pages/index.appcache">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="generator" content="UQ Library">
+
+  <title>ACDBA | UQ Library</title>
+
+  <!-- Place favicon.ico in the `app/` directory -->
+
+  <!-- Chrome for Android theme color -->
+  <meta name="theme-color" content="#49075E">
+
+  <!-- Web Application Manifest -->
+  <link rel="manifest" href="../manifest.json">
+
+  <!-- Tile color for Win8 -->
+  <meta name="msapplication-TileColor" content="##49075E">
+  <meta name="msapplication-navbutton-color" content="#49075E">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="UQ Library">
+  <link rel="icon" sizes="192x192" href="../images/touch/chrome-touch-icon-192x192.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="UQ Library">
+  <link rel="apple-touch-icon" href="../images/touch/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="../images/touch/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="../images/touch/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="../images/touch/apple-touch-icon-152x152.png">
+
+  <!-- Tile icon for Win8 (144x144) -->
+  <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+  <meta name="msapplication-square150x150logo" content="images/touch/apple-touch-icon-152x152.png">
+
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="../styles/main.css">
+  <!-- endbuild-->
+
+  <!-- force IMS login for on-campus users -->
+  <script src="//www.library.uq.edu.au/js/ims.js"></script>
+
+  <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <!-- endbuild -->
+
+  <!-- build:js bower_components/uqlibrary-browser-supported/uqlibrary-browser-supported.js -->
+  <script src="../bower_components/uqlibrary-browser-supported/uqlibrary-browser-supported.js"></script>
+  <!-- endbuild -->
+
+  <script>
+    //display browser update message for unsupported browsers,
+    //will be inserted by gulp task, do not remove
+    //bower_components/uqlibrary-browser-supported/browser-update.js
+  </script>
+
+  <!-- Because this project uses vulcanize this should be your only html import
+       in this file. All other imports should go in elements.html -->
+  <link rel="import" href="../elements/elements.html">
+
+  <!-- For shared styles, shared-styles.html import in elements.html -->
+  <style is="custom-style" include="common-styles">
+    body {
+      background-color: var(--body-color);
+    }
+
+    .card-actions {
+      text-align: right;
+    }
+  </style>
+</head>
+
+<body>
+<span id="browser-sync-binding"></span>
+<uqlibrary-alerts ga-app-name='Alerts'></uqlibrary-alerts>
+<uqlibrary-api-collection-encoded-url id="encodedUrlApi" plainUrl="[[ linkToEncode ]]"
+                                      on-uqlibrary-api-collection-encoded-url="encodeUrlLoaded"></uqlibrary-api-collection-encoded-url>
+<uqlibrary-ga id="home-ga" app-name="ACDBA"></uqlibrary-ga>
+
+<uq-minimal-header show-search-button="true"
+                   show-menu-button="true"
+                   show-login-button="true"
+                   show-apps-button="true"></uq-minimal-header>
+<uql-menu></uql-menu>
+
+<div id="content">
+
+  <!-- Preloader/Unsupported browser message -->
+  <!-- preloader will be inserted by gulp task, do not remove -->
+  #preloader#
+  <!-- End of Preloader/Unsupported browser message -->
+
+  <template is="dom-bind" id="documentDownload" unresolved>
+<!--
+    <uqlibrary-api-learning-resources id="learning_resources"
+                                      on-uqlibrary-api-learning-resources="learningResourcesLoaded"></uqlibrary-api-learning-resources>
+-->
+    <div id="layout">
+      <paper-card heading="[[ collection.pageHeader ]]">
+        <div class="card-content">
+
+<!--
+          <div class="header">
+            <h1>[[ collection.subHeader ]]</h1>
+          </div>
+-->
+
+<!--
+          <div id="thomsonList" hidden$="[[!isThomsonList]]">
+            <div hidden$="[[!isList]]">
+              <h1>List All Files in Collection - <collectionName /></h1>
+              // no, I think we can just do the loop here without creating another component
+              // no that doesnt make sense - we have to call something to get the file list
+              // so do we need a component to do that, or just another uqlibrary-api call?
+              // just the call, then loop I would say
+              <uqlibrary-filelist type="thomson" supply fileList for loop></uqlibrary-filelist>
+            </div>
+          </div>
+-->
+<!--
+          <div id="bomList" hidden$="[[!isBomList]]">
+            <div hidden$="[[!isList]]">
+              <h1>Bureau of Meteorology - Climate Data</h1>
+              <p>Access to files in these datasets is restricted to UQ users.</p>
+              <uqlibrary-filelist type="bom" supply fileList for loop></uqlibrary-filelist>
+            </div>
+          </div>
+-->
+
+          <div class="invalidRequest" hidden$="[[ isValidRequest ]]">
+            <h2>Invalid file location</h2>
+            <h3>Sorry, this is not a valid file location.</h3>
+            <p>Please check the link you have used.</p>
+          </div>
+
+          <div class="copyright" hidden$="[[ collection.isOpenaccess ]]">
+            <h2>COMMONWEALTH OF AUSTRALIA</h2>
+            <h3>Copyright Regulations 1969</h3>
+
+            <h2>WARNING</h2>
+            <p>This material has been reproduced and communicated to you by or on behalf of the University of Queensland pursuant to Part VB of the Copyright Act 1968 (the Act).</p>
+            <p>The material in this communication may be subject to copyright under the Act. Any further reproduction or communication of this material by you may be the subject of copyright protection under the Act.</p>
+            <p>If you would like to save the file to your PC, <strong>left click</strong> on
+              <a id="link" href="[[ deliveryFilename ]]"></a>
+              and then click 'Save' or 'Save to disk'.</p>
+            <p>Save the file with a name ending in .<span>[[ fext ]]</span> so your system will know how to open it.</p>
+          </div>
+
+        </div>
+      </paper-card>
+    </div>
+  </template>
+</div> <!-- id="content" -->
+
+<uql-connect-footer></uql-connect-footer>
+<uq-minimal-footer></uq-minimal-footer>
+
+
+<!-- build:js scripts/app.js -->
+<script src="../scripts/secure.js"></script>
+<!-- endbuild-->
+
+</body>
+
+</html>
