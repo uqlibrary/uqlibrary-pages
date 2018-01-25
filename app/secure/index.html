@@ -1,6 +1,6 @@
 <!doctype html>
 
-<html lang="en" manifest="/pages/index.appcache">
+<html lang="en" manifest="/pages/secure/index.appcache">
 
 <head>
   <meta charset="utf-8">
@@ -106,7 +106,7 @@
                                       on-uqlibrary-api-learning-resources="learningResourcesLoaded"></uqlibrary-api-learning-resources>
 -->
     <div id="layout">
-      <paper-card heading="[[ collection.pageHeader ]]">
+      <paper-card heading="dynamic: [[ documentDownloadPage.pageHeader ]]">
         <div class="card-content">
 
 <!--
@@ -136,13 +136,15 @@
             </div>
           </div>
 -->
-
+<!--
           <div class="invalidRequest" hidden$="[[ isValidRequest ]]">
             <h2>Invalid file location</h2>
             <h3>Sorry, this is not a valid file location.</h3>
             <p>Please check the link you have used.</p>
           </div>
+ -->
 
+<!--
           <div class="copyright" hidden$="[[ collection.isOpenaccess ]]">
             <h2>COMMONWEALTH OF AUSTRALIA</h2>
             <h3>Copyright Regulations 1969</h3>
@@ -155,7 +157,9 @@
               and then click 'Save' or 'Save to disk'.</p>
             <p>Save the file with a name ending in .<span>[[ fext ]]</span> so your system will know how to open it.</p>
           </div>
+ -->
 
+          page content
         </div>
       </paper-card>
     </div>
