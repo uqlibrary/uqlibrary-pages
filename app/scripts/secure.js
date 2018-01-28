@@ -4,50 +4,24 @@
  * and returns a web page with a clickable link to the s3 encoded url
  * (or various errors messages)
  */
-// 'use strict';
 
-  Polymer({
-    is: 'secure-page',
+(function(document) {
+  'use strict';
 
-    properties: {
-      isValidRequest: {
-        type: Boolean,
-        value: true
-      },
+      var isValidRequest = true;
+      var pathProperties = [];
+      var collectionType = '';
+      var filePath = '';
+      var copyrightAccepted = '';
+      var pageHeader = '';
 
-      pathProperties: {
-        type: Array
-      },
+  // method : {
+  //   type: String,
+  //   value: ''
+  // },
 
-      collectionType : {
-        type: String,
-        value: ''
-      },
 
-      filePath : {
-        type: String,
-        value: ''
-      },
-
-      // method : {
-      //   type: String,
-      //   value: ''
-      // },
-
-      copyrightAccepted : {
-        type: String,
-        value: ''
-      },
-
-      pageHeader: {
-        type: String,
-        value: ''
-      }
-    },
-
-    attached: function() {
-console.log('start attached');
-      this.pathProperties = [
+      pathProperties = [
         {
           name: 'pdf',
           oldPHP: '/coursebank/get.php',
@@ -130,18 +104,12 @@ console.log('start attached');
         }
       ];
 
-      this.collectionType = this.getVariableFromUrlParameter('collection');
-      this.filePath = this.getVariableFromUrlParameter('file');
-      this.copyrightAccepted = this.getVariableFromUrlParameter('copyright');
-      // this.method = this.getVariableFromUrlParameter('method');
+      collectionType = getVariableFromUrlParameter('collection');
+      filePath = getVariableFromUrlParameter('file');
+      // this.method = getVariableFromUrlParameter('method');
 console.log('end attached');
-    },
 
-    ready: function() {
-console.log('ready');
-    },
 
-    ready1: function() {
 console.log('start ready');
       var browserData = browserSupported();
 
@@ -190,26 +158,26 @@ console.log('start ready');
   //   });
   // }
 
-  var documentDownloadPage = document.querySelector('#documentDownload');
-console.log(documentDownloadPage);
-  this.collection = this.loadCollectionDetail(collectionType);
-  if (false === this.collection) {
-    documentDownloadPage.pageHeader = 'Invalid file location';
-console.log('documentDownloadPage.pageHeader = ' + documentDownloadPage.pageHeader);
+  var app = document.querySelector('#documentDownload');
+console.log(app);
+  var collection = loadCollectionDetail(collectionType, pathProperties);
+  if (false === collection) {
+    app.pageHeader = 'Invalid file location';
+console.log('app.pageHeader = ' + app.pageHeader);
   } else {
 console.log('collection ok');
   }
 
   var acceptCopyrightLink = '';
   var isRedirect = false;
-  documentDownloadPage.deliveryFilename = '';
-  this.isValidRequest = true; // default
+  app.deliveryFilename = '';
+  isValidRequest = true; // default
 
-      // documentDownloadPage.isValidRequest = this._isValidRequest();
+      // app.isValidRequest = _isValidRequest(collectionType);
 
-  if (true) { //documentDownloadPage.isValidRequest) {
-    var linkToEncode = this.collectionType + "/" + this.filePath;
-
+  if (true) { //app.isValidRequest) {
+    var linkToEncode = collectionType + filePath;
+console.log('linkToEncode = '+linkToEncode);
 console.log('about to get');
     this.$.encodedUrlApi.get({plainUrl: linkToEncode});
 
@@ -218,7 +186,7 @@ console.log('collection.isOpenaccess === true');
       isRedirect = true;
     } else {
 console.log('collection.isOpenaccess NOT true');
-      if (copyrightAccepted === 'proceed') {
+      if (copyrightAcknowledged()) {
         // they have acknowledged copyright
         isRedirect = true;
       } else {
@@ -231,20 +199,19 @@ console.log('collection.isOpenaccess NOT true');
 
 
     var self = this;
-//     this.$.encodedUrlApi.addEventListener('uqlibrary-api-collection-encoded-url', function (e) {
-//       console.log(e);
-//       if (e.detail.url) {
-//         self.clickableLink = e.detail.url;
-// console.log('self.clickableLink: ' + self.clickableLink);
-//       }
-//     });
-    this.$.list.addEventListener('uqlibrary-api', function (e) {
-      self.list = e.detail;
-      self.fire('uqlibrary-api-collection-encoded-url', self.list);
+    app.addEventListener('uqlibrary-api-collection-encoded-url', function (e) {
+console.log(e);
+      if (e.detail.url) {
+        self.clickableLink = e.detail.url;
+console.log('self.clickableLink: ' + self.clickableLink);
+        app.deliveryFilename = self.clickableLink; //that doesnt make sense! Its not asynchronous!
+      }
     });
+    // this.$.list.addEventListener('uqlibrary-api', function (e) {
+    //   self.list = e.detail;
+    //   self.fire('uqlibrary-api-collection-encoded-url', self.list);
+    // });
 
-
-    documentDownloadPage.deliveryFilename = this.clickableLink; //that doesnt make sense! Its not asynchronous!
 
     var fileList = [];
     // thomson and bom supply a list page
@@ -262,7 +229,7 @@ console.log('collection.isOpenaccess NOT true');
       //   set this.isValidRequest = false
       // }
       // vary deliver on method = get/serve
-      documentDownloadPage.deliveryFilename = clickableLink; // replace with aws thingy
+      app.deliveryFilename = clickableLink; // replace with aws thingy
       // get encoded file name from api
       // if cant find file (receive false?)
       //    set this.isValidRequest = false
@@ -272,18 +239,21 @@ console.log('collection.isOpenaccess NOT true');
 
 if (isRedirect) {
     // if eg file was openaccess, redirect to desired url
-    window.location.href = documentDownloadPage.deliveryFilename;
+    window.location.href = app.deliveryFilename;
   }
-},
 
-    encodeUrlLoaded: function(e) {
+  function copyrightAcknowledged() {
+    copyrightAccepted = getVariableFromUrlParameter('copyright');
+    return (copyrightAccepted !== false);
+  }
+
+  function encodeUrlLoaded(e) {
 console.log(e.detail);
 
-    },
+    }
 
-   _isValidRequest: function() {
+  function _isValidRequest(collectionType) {
     console.log('in _isValidRequest');
-    console.log(this.pathProperties);
 
     var requestedUrl = '';
 
@@ -294,7 +264,7 @@ console.log(e.detail);
       hasSubcollection = true;
     }
 
-    // this.collection = this.loadCollectionDetail(collectionType);
+    // collection = loadCollectionDetail(collectionType);
 
 
 
@@ -310,12 +280,12 @@ console.log(e.detail);
     } else {
       // if (collection.validMethods.indexOf(method) === -1) {
       //   // invalid method found
-      //   this.isValidRequest = false
+      //   isValidRequest = false
       // }
     }
 
-    return this.isValidRequest;
-  },
+    return isValidRequest;
+  }
 
   /*
   _showList: function () {
@@ -323,7 +293,7 @@ console.log(e.detail);
     this.fire('show-list');
   },
   */
-   getVariableFromUrlParameter: function(variable) {
+  function getVariableFromUrlParameter (variable) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
     for (var i = 0; i < vars.length; i++) {
@@ -335,26 +305,25 @@ console.log('getVariableFromUrlParameter: ' + variable + ' = ' + pair[1]);
     }
 console.log('getVariableFromUrlParameter: ' + variable + 'not found');
     return false;
-  },
+  }
 
-  loadCollectionDetail: function(collectionType) {
+  function loadCollectionDetail (collectionType, pathProperties) {
     var collection = false;
-    console.log('collectionType = ' + collectionType);
+console.log('collectionType = ' + collectionType);
 
-    collection = this.pathProperties.filter(function (e) {
+    collection = pathProperties.filter(function (e) {
       return collectionType === e.name;
     });
 
     if (collection) {
-      console.log(collection);
+console.log('returning collection:', collection[0]);
       return collection[0];
     } else {
-      console.log('collectionType not found');
+console.log('collectionType not found');
       return false;
     }
   }
-});
 
 
-//})(document);
+})(document);
 
