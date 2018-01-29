@@ -9,7 +9,8 @@ sauceConnectLauncher({
   username: '<SAUCE_USERNAME>',
   accessKey: '<SAUCE_ACCESS_KEY>',
   verbose: true,
-  logger: console.log
+  logger: console.log,
+  directDomains: "github.com" // per https://support.saucelabs.com/hc/en-us/articles/225267468-Browsers-Won-t-Load-Page-or-Display-Bad-Gateway-or-Security-Warning-for-an-HTTPS-Site
 }, function (err, sauceConnectProcess) {
   console.log("Started Sauce Connect Process");
 
