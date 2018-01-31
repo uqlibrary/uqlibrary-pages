@@ -42,6 +42,10 @@ case "$PIPE_NUM" in
   printf "\n --- TEST CHROME on WINDOWS (default) ---\n\n"
   ./nightwatch.js --tag e2etest
 
+  ls -la /tmp/sc.log
+
+  cat /tmp/sc.log
+
   if [ ${CI_BRANCH} == "production" ]; then
     printf "\n --- TEST EDGE (prod branch only) ---\n\n"
     ./nightwatch.js --env edge --tag e2etest
