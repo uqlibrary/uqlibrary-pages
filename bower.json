@@ -1,6 +1,5 @@
 {
-  "name": "uqlibrary-home-page",
-  "private": true,
+  "name": "uqlibrary-pages",
   "dependencies": {
     "iron-elements": "PolymerElements/iron-elements#^1.0.0",
     "neon-elements": "PolymerElements/neon-elements#^1.0.0",
