@@ -3,9 +3,15 @@
 set -eE
 
 function logSauceCommands {
-  ls -la /tmp/sc.log
+ SAUCELABS_LOG_FILE="/tmp/sc.log"
+ if [ -f {$SAUCELABS_LOG_FILE} ]; then
+  echo "Command failed - dumping {$SAUCELABS_LOG_FILE} for debug of saucelabs"
   cat /tmp/sc.log
+ else
+   echo "Command failed - attempting to dump saucelabs log file but {$SAUCELABS_LOG_FILE} not found - did we reach the saucelabs section?"
+ fi
 }
+
 trap logSauceCommands EXIT
 
 if [ -z $CI_BRANCH ]; then
