@@ -1,6 +1,12 @@
 #!/bin/bash
 # start debugging/tracing commands, -e - exit if command returns error (non-zero status)
-set -e
+set -eE
+
+function logSauceCommands {
+  ls -la /tmp/sc.log
+  cat /tmp/sc.log
+}
+trap logSauceCommands EXIT
 
 if [ -z $CI_BRANCH ]; then
   branch=$(git rev-parse --abbrev-ref HEAD)
@@ -41,10 +47,6 @@ case "$PIPE_NUM" in
 
   printf "\n --- TEST CHROME on WINDOWS (default) ---\n\n"
   ./nightwatch.js --tag e2etest
-
-  ls -la /tmp/sc.log
-
-  cat /tmp/sc.log
 
   if [ ${CI_BRANCH} == "production" ]; then
     printf "\n --- TEST EDGE (prod branch only) ---\n\n"
