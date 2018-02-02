@@ -11,8 +11,7 @@ sauceConnectLauncher({
   verbose: true,
   logger: console.log,
   verboseDebugging: false,
-  logfile: "/tmp/sc.log",
-  directDomains: "github.com,*.codeship.com" // per https://support.saucelabs.com/hc/en-us/articles/225267468-Browsers-Won-t-Load-Page-or-Display-Bad-Gateway-or-Security-Warning-for-an-HTTPS-Site
+  logfile: "/tmp/sc.log"
 }, function (err, sauceConnectProcess) {
   console.log("Started Sauce Connect Process");
 

@@ -90,7 +90,7 @@ Run `bin/test-setup.sh` to update settings for remote nightwatch.js testing and 
 * configuration is defined in wct.conf.js, it contains configuration for local testing (chrome/firefox) and for remote testing on SauceLabs (IE/Safari/etc)
 * from bower_components all custom uqlibrary-* tests suites are collected with in test-setup.sh into app/test/index.html
 
-Tests are launched with `gulp test` (gulp test:remote for testing on SauceLabs)
+Tests are launched with `gulp test` (`gulp test:remote` for testing on SauceLabs)
 
 When you run this command, you may get the error:
 
