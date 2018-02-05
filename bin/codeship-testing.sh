@@ -2,9 +2,10 @@
 # start debugging/tracing commands, -e - exit if command returns error (non-zero status)
 set -e
 
-if [ -z successTestSetup ] || [successTestSetup -e1 0 ]; then
+if [ -z ${successTestSetup} ] || [${successTestSetup} -eq 0 ]; then
   # the test-setup script did not end successfully
-  exit 1;
+  echo "ERROR: It does not seem that test-setup.sh has been run successfully"
+  exit 1
 fi
 
 
