@@ -48,11 +48,12 @@ if (!browserData.supported) {
       if (document.getElementById('preloader'))
         document.getElementById('preloader').style.display = 'none';
 
-      if(document.getElementById('mylibrary'))
-        document.getElementById('mylibrary').style.display = 'block';
+      if(document.getElementById('secure'))
+        document.getElementById('secure').style.display = 'block';
 
     } else {
-      app.$.accountApi.login(document.location.href);
+console.log('looking for account');
+      secure.$.accountApi.login(document.location.href);
     }
   });
 
