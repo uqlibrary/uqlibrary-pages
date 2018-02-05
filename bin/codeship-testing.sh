@@ -2,13 +2,6 @@
 # start debugging/tracing commands, -e - exit if command returns error (non-zero status)
 set -e
 
-if [ -z ${successTestSetup} ] || [${successTestSetup} -eq 0 ]; then
-  # the test-setup script did not end successfully
-  echo "ERROR: It does not seem that test-setup.sh has been run successfully"
-  exit 1
-fi
-
-
 if [ -z $CI_BRANCH ]; then
   branch=$(git rev-parse --abbrev-ref HEAD)
 else
