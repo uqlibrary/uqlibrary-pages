@@ -29,7 +29,9 @@ sed -i -e "s#${dir}##g" "app/test/index.html"
 
 echo "Build distribution"
 gulp
+echo $? # report any error, which will force an exit
 
+echo "create nightwatch test script"
 #replace Saucelabs keys in nightwatch.js
 nightwatchScriptTemp="bin/saucelabs/template.nightwatch.js"
 nightwatchScript="bin/saucelabs/nightwatch.js"
