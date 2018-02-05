@@ -1,6 +1,5 @@
 {
-  "name": "uqlibrary-home-page",
-  "private": true,
+  "name": "uqlibrary-pages",
   "dependencies": {
     "iron-elements": "PolymerElements/iron-elements#^1.0.0",
     "neon-elements": "PolymerElements/neon-elements#^1.0.0",
@@ -16,8 +15,7 @@
     "uqlibrary-browser-supported": "uqlibrary/uqlibrary-browser-supported#v1.0.7",
     "uqlibrary-receipt": "uqlibrary/uqlibrary-receipt#v1.0.5",
     "uqlibrary-ga": "uqlibrary/uqlibrary-ga#v1.1.1",
-    "uqlibrary-api": "uqlibrary/uqlibrary-api#file-152226514",
-    "uqlibrary-secure-file-access": "uqlibrary/uqlibrary-secure-file-access#file-152226514",
+    "uqlibrary-api": "uqlibrary/uqlibrary-api#1.5.1",
     "uqlibrary-training": "uqlibrary/uqlibrary-training#v1.1.0",
     "uqlibrary-autosuggest-input": "uqlibrary/uqlibrary-autosuggest-input#v1.1.3"
   },
