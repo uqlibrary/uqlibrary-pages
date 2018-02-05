@@ -3,6 +3,8 @@
 # start debugging/tracing commands, -e - exit if command returns error (non-zero status)
 set -e
 
+successTestSetup=0
+
 # Update paths in bower_components
 gulp clean_bower
 
@@ -29,7 +31,6 @@ sed -i -e "s#${dir}##g" "app/test/index.html"
 
 echo "Build distribution"
 gulp
-echo $? # report any error, which will force an exit
 
 echo "create nightwatch test script"
 #replace Saucelabs keys in nightwatch.js
@@ -40,3 +41,7 @@ cp $nightwatchScriptTemp $nightwatchScript
 
 sed -i -e "s#<SAUCE_USERNAME>#${SAUCE_USERNAME}#g" ${nightwatchScript}
 sed -i -e "s#<SAUCE_ACCESS_KEY>#${SAUCE_ACCESS_KEY}#g" ${nightwatchScript}
+
+successTestSetup=1
+
+echo "success! reached end of test-setup.sh!"
