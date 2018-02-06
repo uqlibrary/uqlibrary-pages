@@ -47,13 +47,8 @@ if (!browserData.supported) {
     if (e.detail.hasSession) {
       if (document.getElementById('preloader'))
         document.getElementById('preloader').style.display = 'none';
-
-      if(document.getElementById('secure'))
-        document.getElementById('secure').style.display = 'block';
-
     } else {
-console.log('looking for account');
-      secure.$.accountApi.login(document.location.href);
+      app.$.accountApi.login(document.location.href);
     }
   });
 
