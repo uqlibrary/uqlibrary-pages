@@ -23,6 +23,11 @@ requireDir('./tasks');
 var replace = require('gulp-replace-task');
 var taskList = require('gulp-task-listing');
 var argv = require('yargs').argv;
+// var plumber = require('gulp-plumber');
+var gutil = require('gulp-util');
+var jshint = require('gulp-jshint');
+
+var exitCode = 0;
 
 // var ghPages = require('gulp-gh-pages');
 var AUTOPREFIXER_BROWSERS = [
@@ -174,7 +179,7 @@ gulp.task('html', function() {
 });
 
 // Vulcanize granular configuration
-gulp.task('vulcanize', ['clean_bower'], function() {
+gulp.task('vulcanize', ['clean_bower'], function(cb) {
 
   var menuJson=fs.readFileSync("app/bower_components/uqlibrary-reusable-components/resources/uql-menu.json", "utf8");
   var regEx = new RegExp("menuJsonFileData;", "g");
@@ -188,6 +193,11 @@ gulp.task('vulcanize', ['clean_bower'], function() {
       inlineCss: true,
       inlineScripts: true
     }))
+    // .pipe(plumber())
+    .on('error', function (err) {
+      process.exit(1);
+      // process.emit('exit') // or throw err
+    })
     .pipe($.crisper({
       scriptInHead: false,
       onlySplit: false
@@ -197,7 +207,12 @@ gulp.task('vulcanize', ['clean_bower'], function() {
     .pipe($.if('*.js',$.uglify({preserveComments: 'some'}))) // Minify js output
     .pipe($.if('*.html', $.minifyHtml({quotes: true, empty: true, spare: true}))) // Minify html output
     .pipe(gulp.dest(dist('elements')))
-    .pipe($.size({title: 'vulcanize'}));
+    .pipe($.size({title: 'vulcanize'}))
+    // .on('error', function (code, signal) {
+    //   if (code) exitCode = code;
+    //   done()
+    // })
+    ;
 });
 
 // update paths to bower_components for all components inside bower_components
@@ -274,9 +289,8 @@ gulp.task('serve:dist', ['default'], function() {
   });
 });
 
-
 // Build production files, the default task
-gulp.task('default', ['clean'], function(cb) {
+gulp.task('default', ['clean', 'watch'], function(cb) {
   runSequence(
     ['ensureFiles', 'copy', 'styles'],
     'elements',
@@ -295,6 +309,17 @@ gulp.task('default', ['clean'], function(cb) {
     cb);
 });
 
+// gulp.on('error', function (err) {
+//   process.exit(1);
+//   process.emit('exit') // or throw err
+// });
+//
+// process.on('exit', function () {
+//   process.nextTick(function () {
+//     process.exit(exitCode)
+//   })
+// });
+
 // Load tasks for web-component-tester
 // Adds tasks for `gulp test:local` and `gulp test:remote`
 require('web-component-tester').gulp.init(gulp);
@@ -305,3 +330,58 @@ try {
 } catch (err) {}
 
 gulp.task('help', taskList);
+
+
+// per https://gist.github.com/noahmiller/61699ad1b0a7cc65ae2d
+// Command line option:
+//  --fatal=[warning|error|off]
+var fatalLevel = require('yargs').argv.fatal;
+
+var ERROR_LEVELS = ['error', 'warning'];
+
+// Return true if the given level is equal to or more severe than
+// the configured fatality error level.
+// If the fatalLevel is 'off', then this will always return false.
+// Defaults the fatalLevel to 'error'.
+function isFatal(level) {
+  return ERROR_LEVELS.indexOf(level) <= ERROR_LEVELS.indexOf(fatalLevel || 'error');
+}
+
+// Handle an error based on its severity level.
+// Log all levels, and exit the process for fatal levels.
+function handleError(level, error) {
+  gutil.log(error.message);
+  if (isFatal(level)) {
+    process.exit(1);
+  }
+}
+
+// Convenience handler for error-level errors.
+function onError(error) { handleError.call(this, 'error', error);}
+// Convenience handler for warning-level errors.
+function onWarning(error) { handleError.call(this, 'warning', error);}
+
+var testfiles = ['error.js', 'warning.js'];
+
+// Task that emits an error that's treated as a warning.
+gulp.task('warning', function() {
+  gulp.src(testfiles).
+  pipe(jshint()).
+  pipe(jshint.reporter('fail')).
+  on('error', onWarning);
+});
+
+// Task that emits an error that's treated as an error.
+gulp.task('error', function() {
+  gulp.src(testfiles).
+  pipe(jshint()).
+  pipe(jshint.reporter('fail')).
+  on('error', onError);
+});
+
+gulp.task('watch', function() {
+  // By default, errors during watch should not be fatal.
+  fatalLevel = fatalLevel || 'off';
+  gulp.watch(testfiles, ['error']);
+});
+
