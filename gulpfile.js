@@ -23,11 +23,6 @@ requireDir('./tasks');
 var replace = require('gulp-replace-task');
 var taskList = require('gulp-task-listing');
 var argv = require('yargs').argv;
-// var plumber = require('gulp-plumber');
-var gutil = require('gulp-util');
-var jshint = require('gulp-jshint');
-
-var exitCode = 0;
 
 // var ghPages = require('gulp-gh-pages');
 var AUTOPREFIXER_BROWSERS = [
@@ -179,7 +174,7 @@ gulp.task('html', function() {
 });
 
 // Vulcanize granular configuration
-gulp.task('vulcanize', ['clean_bower'], function(cb) {
+gulp.task('vulcanize', ['clean_bower'], function() {
 
   var menuJson=fs.readFileSync("app/bower_components/uqlibrary-reusable-components/resources/uql-menu.json", "utf8");
   var regEx = new RegExp("menuJsonFileData;", "g");
@@ -193,10 +188,8 @@ gulp.task('vulcanize', ['clean_bower'], function(cb) {
       inlineCss: true,
       inlineScripts: true
     }))
-    // .pipe(plumber())
     .on('error', function (err) {
       process.exit(1);
-      // process.emit('exit') // or throw err
     })
     .pipe($.crisper({
       scriptInHead: false,
@@ -207,12 +200,7 @@ gulp.task('vulcanize', ['clean_bower'], function(cb) {
     .pipe($.if('*.js',$.uglify({preserveComments: 'some'}))) // Minify js output
     .pipe($.if('*.html', $.minifyHtml({quotes: true, empty: true, spare: true}))) // Minify html output
     .pipe(gulp.dest(dist('elements')))
-    .pipe($.size({title: 'vulcanize'}))
-    // .on('error', function (code, signal) {
-    //   if (code) exitCode = code;
-    //   done()
-    // })
-    ;
+    .pipe($.size({title: 'vulcanize'}));
 });
 
 // update paths to bower_components for all components inside bower_components
@@ -289,8 +277,9 @@ gulp.task('serve:dist', ['default'], function() {
   });
 });
 
+
 // Build production files, the default task
-gulp.task('default', ['clean', 'watch'], function(cb) {
+gulp.task('default', ['clean'], function(cb) {
   runSequence(
     ['ensureFiles', 'copy', 'styles'],
     'elements',
@@ -309,29 +298,7 @@ gulp.task('default', ['clean', 'watch'], function(cb) {
     cb);
 });
 
-// gulp.on('error', function (err) {
-//   process.exit(1);
-//   process.emit('exit') // or throw err
-// });
-//
-// process.on('exit', function () {
-//   process.nextTick(function () {
-//     process.exit(exitCode)
-//   })
-// });
-
-// Load tasks for web-component-tester
-// Adds tasks for `gulp test:local` and `gulp test:remote`
-require('web-component-tester').gulp.init(gulp);
-
-// Load custom tasks from the `tasks` directory
-try {
-  require('require-dir')('tasks');
-} catch (err) {}
-
-gulp.task('help', taskList);
-
-
+// gulp was not emitting an error to the shell script on its own - add this code to make the process stop if there is an error
 // per https://gist.github.com/noahmiller/61699ad1b0a7cc65ae2d
 // Command line option:
 //  --fatal=[warning|error|off]
@@ -385,3 +352,13 @@ gulp.task('watch', function() {
   gulp.watch(testfiles, ['error']);
 });
 
+// Load tasks for web-component-tester
+// Adds tasks for `gulp test:local` and `gulp test:remote`
+require('web-component-tester').gulp.init(gulp);
+
+// Load custom tasks from the `tasks` directory
+try {
+  require('require-dir')('tasks');
+} catch (err) {}
+
+gulp.task('help', taskList);
