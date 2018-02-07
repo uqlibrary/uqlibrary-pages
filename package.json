@@ -52,6 +52,5 @@
     "npm": ">=3",
     "node": "^6.2.2"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
