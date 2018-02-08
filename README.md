@@ -8,6 +8,7 @@ This project contains pages for UQ Library website:
 
 * UQ Library Home page - [demo](http://assets.library.uq.edu.au/master/pages/index.html)
 * ACDBA - [demo](http://assets.library.uq.edu.au/master/pages/acdba.html)
+* Secure File Access - [demo](http://assets.library.uq.edu.au/master/pages/secure.html?collection=exams&file=/0001/ccccc.pdf)
 
 (Swap out alternate branch names for 'master' in this url to test other branches).
  
@@ -85,10 +86,11 @@ Run `bin/test-setup.sh` to update settings for remote nightwatch.js testing and 
   
 ### Components testing
 
-* done with [Web Component Tester](https://github.com/Polymer/web-component-tester)
+* tests are run with [Web Component Tester](https://github.com/Polymer/web-component-tester)
 * configuration is defined in wct.conf.js, it contains configuration for local testing (chrome/firefox) and for remote testing on SauceLabs (IE/Safari/etc)
 * from bower_components all custom uqlibrary-* tests suites are collected with in test-setup.sh into app/test/index.html
-* tests are launched with `gulp test` (gulp test:remote for testing on SauceLabs)
+
+Tests are launched with `gulp test` (`gulp test:remote` for testing on SauceLabs)
 
 When you run this command, you may get the error:
 
@@ -134,7 +136,7 @@ or `brew install selenium-server-standalone` then `selenium-server -port 4444`
 ```sh
   cd bin/local
   ./nightwatch.js
-  ./nightwatch.js --env chrome
+  ./nightwatch.js --env chrome --tag e2etest
 ```  
 
 #### SauceLabs testing
@@ -153,7 +155,7 @@ or `brew install selenium-server-standalone` then `selenium-server -port 4444`
 ```sh  
   cd bin/saucelabs 
   ./nightwatch.js
-  ./nightwatch.js --env ie11  
+  ./nightwatch.js --env ie11 --tag e2etest
 ```
 #### Functionality testing
 

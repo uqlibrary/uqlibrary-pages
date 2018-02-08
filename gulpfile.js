@@ -188,6 +188,9 @@ gulp.task('vulcanize', ['clean_bower'], function() {
       inlineCss: true,
       inlineScripts: true
     }))
+    .on('error', function (err) {
+      process.exit(1);
+    })
     .pipe($.crisper({
       scriptInHead: false,
       onlySplit: false
@@ -293,6 +296,60 @@ gulp.task('default', ['clean'], function(cb) {
     'rev-appcache-update',
     'remove-rev-file',
     cb);
+});
+
+// gulp was not emitting an error to the shell script on its own - add this code to make the process stop if there is an error
+// per https://gist.github.com/noahmiller/61699ad1b0a7cc65ae2d
+// Command line option:
+//  --fatal=[warning|error|off]
+var fatalLevel = require('yargs').argv.fatal;
+
+var ERROR_LEVELS = ['error', 'warning'];
+
+// Return true if the given level is equal to or more severe than
+// the configured fatality error level.
+// If the fatalLevel is 'off', then this will always return false.
+// Defaults the fatalLevel to 'error'.
+function isFatal(level) {
+  return ERROR_LEVELS.indexOf(level) <= ERROR_LEVELS.indexOf(fatalLevel || 'error');
+}
+
+// Handle an error based on its severity level.
+// Log all levels, and exit the process for fatal levels.
+function handleError(level, error) {
+  gutil.log(error.message);
+  if (isFatal(level)) {
+    process.exit(1);
+  }
+}
+
+// Convenience handler for error-level errors.
+function onError(error) { handleError.call(this, 'error', error);}
+// Convenience handler for warning-level errors.
+function onWarning(error) { handleError.call(this, 'warning', error);}
+
+var testfiles = ['error.js', 'warning.js'];
+
+// Task that emits an error that's treated as a warning.
+gulp.task('warning', function() {
+  gulp.src(testfiles).
+  pipe(jshint()).
+  pipe(jshint.reporter('fail')).
+  on('error', onWarning);
+});
+
+// Task that emits an error that's treated as an error.
+gulp.task('error', function() {
+  gulp.src(testfiles).
+  pipe(jshint()).
+  pipe(jshint.reporter('fail')).
+  on('error', onError);
+});
+
+gulp.task('watch', function() {
+  // By default, errors during watch should not be fatal.
+  fatalLevel = fatalLevel || 'off';
+  gulp.watch(testfiles, ['error']);
 });
 
 // Load tasks for web-component-tester

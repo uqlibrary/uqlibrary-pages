@@ -9,7 +9,9 @@ sauceConnectLauncher({
   username: '<SAUCE_USERNAME>',
   accessKey: '<SAUCE_ACCESS_KEY>',
   verbose: true,
-  logger: console.log
+  logger: console.log,
+  verboseDebugging: false,
+  logfile: "/tmp/sc.log"
 }, function (err, sauceConnectProcess) {
   console.log("Started Sauce Connect Process");
 
