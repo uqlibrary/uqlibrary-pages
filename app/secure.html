@@ -97,17 +97,19 @@
   <!-- End of Preloader/Unsupported browser message -->
 
   <template is="dom-bind" id="app">
+<!--    <uqlibrary-api-account id="accountApi" on-uqlibrary-api-account-loaded="_accountLoaded"></uqlibrary-api-account> -->
     <uqlibrary-api-account id="accountApi"></uqlibrary-api-account>
+
     <uqlibrary-secure-file-access></uqlibrary-secure-file-access>
   </template>
 
-</div> <!-- id="content" -->
+</div>
 
 <uql-connect-footer></uql-connect-footer>
 <uq-minimal-footer></uq-minimal-footer>
 
 
-<!-- build:js scripts/app.js -->
+<!-- build:js scripts/secure.js -->
 <script src="scripts/secure.js"></script>
 <!-- endbuild-->
 

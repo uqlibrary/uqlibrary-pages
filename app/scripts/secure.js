@@ -52,6 +52,8 @@ if (!browserData.supported) {
     }
   });
 
+  this.$.accountApi.get();
+
     // GA events
 // ask Nick about GA
 // ga = document.querySelector('#home-ga');

@@ -161,22 +161,22 @@ or `brew install selenium-server-standalone` then `selenium-server -port 4444`
 
 Sometimes you will need to test functionality end to end or demonstrate in the browser the effect of a backend change.
 
-* in repo uqlapp 
-  * make changes in branch testing
-* for polymer repos, pick a branch name that is meaningful to the work you are doing, e.g. newFrogs . 
+* in repo api make your changes and merge to branch master and then staging
+* for polymer repos, pick a branch name that is meaningful to the work you are doing, e.g. fixProblemX .
 * in the repo uqlibrary-api, 
-  * create a branch, as per the branch name above
-  * update file uqlibrary-api.html and change variable `baseApiUrl` to use domain `app-testing.library.uq.edu.au`
+  * create a branch, as per the branch name above, fixProblemX
+  * update file uqlibrary-api.html and change variable `baseApiUrl` to use domain `https://api.library.uq.edu.au/staging`
   * push (there is no codeship build process for uqlibrary-api)
 * make any required changes to other polymer repos, in like named branches
 * in the repo uqlibrary-pages 
   * create a branch, as per the branch name above
-  * create a deployment on codeship with the name matching the branch name
-  * update bower.json to point appropriate components to the feature branch (this will almost certainly include uqlibrary-api)
+  * create a deployment on codeship with the name matching the branch name & copy the deployment instructions from master
+  * update bower.json to point appropriate components to the feature branch, replacing the release number (this will almost certainly include uqlibrary-api)
+  * `bower update` locally to see if you need to add any resolutions
   * push and wait for build to pass
-* http://assets.library.uq.edu.au/newFrogs/pages/index.html should now work!
+* http://assets.library.uq.edu.au/fixProblemX/pages/index.html should now work!
 * If you require the final page to show on [test.library.uq.edu.au](http://test.library.uq.edu.au/) (e.g. the customer has asked for an easier url), ask a sys admin to change the current "haproxy backend config" for test.library.uq.edu.au to point to the pages branch on assets, eg, in this case, a branch called newFrogs,  (Remember to get them to change it back before you delete the branch on completion!)
-
+* When work is complete remember to update bower with release numbers to replace the branch names!!! Dont go to prod with branch names here!!
 
 ## Application Theming & Styling
 
