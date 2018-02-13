@@ -43,16 +43,16 @@ if (!browserData.supported) {
   //   });
   // }
 
-  window.addEventListener('uqlibrary-api-account-loaded', function (e) {
-    if (e.detail.hasSession) {
-      if (document.getElementById('preloader'))
-        document.getElementById('preloader').style.display = 'none';
-    } else {
-      app.$.accountApi.login(document.location.href);
-    }
-  });
-
-  this.$.accountApi.get();
+  // window.addEventListener('uqlibrary-api-account-loaded', function (e) {
+  //   if (e.detail.hasSession) {
+  //     if (document.getElementById('preloader'))
+  //       document.getElementById('preloader').style.display = 'none';
+  //   } else {
+  //     app.$.accountApi.login(document.location.href);
+  //   }
+  // });
+  //
+  // this.$.accountApi.get();
 
     // GA events
 // ask Nick about GA
