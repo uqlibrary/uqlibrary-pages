@@ -233,3 +233,17 @@ So, in summary:
 * collection.html calls repo uqlibrary-secure-file-access to control what html (including link to encoded file) is delivered to the user
 * cloudfront points files.library.uq.edu.au at the s3 bucket, though encryption for /secure path and loads collection.html in uqlibrary-pages for any other path
 * lambda rewrite-collectionfile-paths changes the paths so collection.html will be called
+
+sample urls:
+
+exams - eg of copyrighted files
+https://files.library.uq.edu.au/exams/0001/3e201.pdf
+(https://files.library.uq.edu.au/collection.html?collection=exams&file=0001/3e201.pdf&fwe4f)
+
+thomson - eg of open access files
+https://files.library.uq.edu.au/thomson/classic_legal_texts/Baker_Introduction_to_Torts_2e.pdf
+(https://files.library.uq.edu.au/collection.html?collection=thomson&file=classic_legal_texts/Baker_Introduction_to_Torts_2e.pdf)
+
+an invalid collection:
+https://files.library.uq.edu.au/invalid/x.pdf
+(https://files.library.uq.edu.au/collection.html?collection=invalid&file=x.pdf)
