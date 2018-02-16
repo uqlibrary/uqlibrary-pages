@@ -233,7 +233,9 @@ So, in summary:
 * uqlibrary-api calls api package files Collection controller to get those paths & access rights for a given file
 * uqlibrary-secure-file-access shows a chunk of html that gives the user a link to the requested file, via api
 * uqlibrary-pages has collection.html that loads uqlibrary-secure-file-access
-* cloudfront points files.library.uq.edu.au at the s3 bucket, through encryption for /secure path and loads collection.html in uqlibrary-pages for any other path
+* cloudfront points files.library.uq.edu.au either
+** at the s3 bucket, through encryption for /secure path or
+** at uqlibrary-pages to load collection.html for any other path
 * lambda rewrite-collectionfile-paths changes the paths so collection.html will be called
 
 sample urls:
