@@ -220,30 +220,32 @@ To view a copyright restricted file the user must view the copyright page (colle
 
 An open access file will redirect directly to the pdf on s3 (via short lived encoded url)
 
-In cloudfront, there is a lambda [rewrite-collectionfile-paths](https://console.aws.amazon.com/lambda/home?region=us-east-1#/functions) in region us-east-1 that takes a pretty url eg https://files.library.uq.edu.au/exams/0001/3e201.pdf and changes it to https://files.library.uq.edu.au/collection.html?collectionFolder=exams&filePath=0001/3e201.pdf so the actual .html file in this repo can be loaded.
+In cloudfront, there is a lambda [rewrite-collectionfile-paths](https://console.aws.amazon.com/lambda/home?region=us-east-1#/functions) in region us-east-1 that takes a pretty url
+eg `https://files.library.uq.edu.au/exams/0001/3e201.pdf` and 'rewrites' it to:
+eg `https://files.library.uq.edu.au/collection.html?collectionFolder=exams&filePath=0001/3e201.pdf`
 
 The html to be presented to the user is defined in repo [uqlibrary-secure-file-access](https://github.com/uqlibrary/uqlibrary-secure-file-access)
 
 So, in summary:
 
 * s3 bucket holds files
-* api package files encodes paths to these files and stores whether each folder of files is open access or copyright restricted.
-* uqlibrary-api calls api to get those paths & access rights for a given file
-* uqlibrary-pages has collection.html that uses uqlibrary-api to get details of the file the user has requested
-* collection.html calls repo uqlibrary-secure-file-access to control what html (including link to encoded file) is delivered to the user
-* cloudfront points files.library.uq.edu.au at the s3 bucket, though encryption for /secure path and loads collection.html in uqlibrary-pages for any other path
+* api package files Collection controller encodes paths to these files and stores whether each folder of files is open access or copyright restricted.
+* uqlibrary-api calls api package files Collection controller to get those paths & access rights for a given file
+* uqlibrary-secure-file-access shows a chunk of html that gives the user a link to the requested file, via api
+* uqlibrary-pages has collection.html that loads uqlibrary-secure-file-access
+* cloudfront points files.library.uq.edu.au at the s3 bucket, through encryption for /secure path and loads collection.html in uqlibrary-pages for any other path
 * lambda rewrite-collectionfile-paths changes the paths so collection.html will be called
 
 sample urls:
 
-exams - eg of copyrighted files
+copyrighted files eg exams
 https://files.library.uq.edu.au/exams/0001/3e201.pdf
-(https://files.library.uq.edu.au/collection.html?collection=exams&file=0001/3e201.pdf&fwe4f)
+(http://dev-app.library.uq.edu.au:9999/collection.html?collection=exams&file=0001/3e201.pdf)
 
-thomson - eg of open access files
+open access files eg thomson
 https://files.library.uq.edu.au/thomson/classic_legal_texts/Baker_Introduction_to_Torts_2e.pdf
-(https://files.library.uq.edu.au/collection.html?collection=thomson&file=classic_legal_texts/Baker_Introduction_to_Torts_2e.pdf)
+(http://dev-app.library.uq.edu.au:9999/collection.html?collection=thomson&file=classic_legal_texts/Baker_Introduction_to_Torts_2e.pdf)
 
 an invalid collection:
 https://files.library.uq.edu.au/invalid/x.pdf
-(https://files.library.uq.edu.au/collection.html?collection=invalid&file=x.pdf)
+(http://dev-app.library.uq.edu.au:9999/collection.html?collection=invalid&file=x.pdf)
