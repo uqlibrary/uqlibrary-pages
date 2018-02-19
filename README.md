@@ -206,7 +206,7 @@ This has 2 entries in cloudfront behaviours:
 * one to serve the actual file (secure) and
 * one (pages) to serve collection.html in this repo.
 
-There is a lambda attached to `pages` that splits eg /exams/0001/abc.pdf into /collection.html?collectionFolder=exams&filePath=0001/abc.pdf
+There is a lambda attached to `pages` that splits eg /exams/0001/abc.pdf into /collection.html?collectionFolder=exams&filePath=0001/abc.pdf to load collection.html
 
 collection.html in this repo allows the user to download/view files in the S3 bucket.
 
@@ -218,19 +218,21 @@ This json also defines whether the file is open access or copyright restricted, 
 
 To view a copyright restricted file the user must view the copyright page (collection.html, in this repo) and click 'ok'. (We arent worried enough to do a really rigorous system - we are looking at 'best efforts' here)
 
-An open access file will redirect directly to the pdf on s3 (via short lived encoded url)
+An open access file will redirect directly to the pdf on s3 (via short lived s3 encoded url)
 
 In cloudfront, there is a lambda [rewrite-collectionfile-paths](https://console.aws.amazon.com/lambda/home?region=us-east-1#/functions) in region us-east-1 that takes a pretty url
-eg `https://files.library.uq.edu.au/exams/0001/3e201.pdf` and 'rewrites' it to:
-eg `https://files.library.uq.edu.au/collection.html?collectionFolder=exams&filePath=0001/3e201.pdf`
+* eg `https://files.library.uq.edu.au/exams/0001/3e201.pdf` and 'rewrites' it to:
+* eg `https://files.library.uq.edu.au/collection.html?collectionFolder=exams&filePath=0001/3e201.pdf`
+
+The querystring sadly isnt passed to the front end js, only serverside
 
 The html to be presented to the user is defined in repo [uqlibrary-secure-file-access](https://github.com/uqlibrary/uqlibrary-secure-file-access)
 
 So, in summary:
 
 * s3 bucket holds files
-* api package files Collection controller encodes paths to these files and stores whether each folder of files is open access or copyright restricted.
-* uqlibrary-api calls api package files Collection controller to get those paths & access rights for a given file
+* api package `file` Collection controller encodes paths to these files and stores whether each folder of files is open access or copyright restricted.
+* uqlibrary-api calls api package `file` Collection controller to get those paths & access rights for a given file
 * uqlibrary-secure-file-access shows a chunk of html that gives the user a link to the requested file, via api
 * uqlibrary-pages has collection.html that loads uqlibrary-secure-file-access
 * cloudfront points files.library.uq.edu.au either
