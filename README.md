@@ -216,6 +216,8 @@ Repo api package `file` has a [json structure in the config](https://github.com/
 
 This json also defines whether the file is open access or copyright restricted, which is defined once for the whole folder within the bucket.
 
+If the folder is not in the api json, it will not be accessible via collection.html
+
 To view a copyright restricted file the user must view the copyright page (collection.html, in this repo) and click 'ok'. (We arent worried enough to do a really rigorous system - we are looking at 'best efforts' here)
 
 An open access file will redirect directly to the pdf on s3 (via short lived s3 encoded url)
