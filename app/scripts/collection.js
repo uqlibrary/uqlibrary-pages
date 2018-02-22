@@ -20,7 +20,7 @@ if (!browserData.supported) {
   'use strict';
 
   var app = document.querySelector('#app');
-  app.urlRequested = window.location.href;
+  app.urlRequested = window.location.pathname;
 
   var ga;
 
