@@ -20,6 +20,8 @@ if (!browserData.supported) {
   'use strict';
 
   var app = document.querySelector('#app');
+  app.urlRequested = window.location.href;
+
   var ga;
 
   // imports are loaded and elements have been registered
