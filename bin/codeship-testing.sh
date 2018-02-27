@@ -54,6 +54,10 @@ case "$PIPE_NUM" in
   printf "\n --- TEST CHROME on WINDOWS (default) ---\n\n"
   ./nightwatch.js --tag e2etest
 
+  # temporaily here to see what it does pre-prod, if usable move inside prod if, below
+  printf "\n --- TEST IE 11 ---\n\n"
+  ./nightwatch.js --env ie11 --tag e2etest
+
   if [ ${CI_BRANCH} == "production" ]; then
     printf "\n --- TEST EDGE (prod branch only) ---\n\n"
     ./nightwatch.js --env edge --tag e2etest
