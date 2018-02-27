@@ -47,12 +47,16 @@ case "$PIPE_NUM" in
   ./nightwatch.js --env chrome --tag e2etest
 ;;
 "3")
-  # "Nightwatch on saucelabs" on codeship
+  # "Test commands" on codeship
   printf "\n --- Saucelabs Integration Testing ---\n\n"
   cd bin/saucelabs
 
   printf "\n --- TEST CHROME on WINDOWS (default) ---\n\n"
   ./nightwatch.js --tag e2etest
+
+  # test pre-prod, for inconsistencies
+  printf "\n --- TEST IE 11 ---\n\n"
+  ./nightwatch.js --env ie11 --tag e2etest
 
   if [ ${CI_BRANCH} == "production" ]; then
     printf "\n --- TEST EDGE (prod branch only) ---\n\n"
