@@ -16,7 +16,7 @@
     "uqlibrary-receipt": "uqlibrary/uqlibrary-receipt#v1.0.5",
     "uqlibrary-ga": "uqlibrary/uqlibrary-ga#v1.1.1",
     "uqlibrary-api": "uqlibrary/uqlibrary-api#v1.5.5",
-    "uqlibrary-secure-file-access": "uqlibrary/uqlibrary-secure-file-access#v1.0.2",
+    "uqlibrary-secure-file-access": "uqlibrary/uqlibrary-secure-file-access#v1.0.3",
     "uqlibrary-training": "uqlibrary/uqlibrary-training#v1.1.0",
     "uqlibrary-autosuggest-input": "uqlibrary/uqlibrary-autosuggest-input#v1.1.3"
   },
