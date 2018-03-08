@@ -18,8 +18,8 @@ module.exports = {
             // this test will (hopefully) catch this so we can fix it before prod - or decide not to support IE11
             .assert.elementPresent('uqlibrary-search paper-button iron-icon', 'catalog search button is present')
             .getElementSize('uqlibrary-search paper-button iron-icon', function(element) {
-                this.assert.equal(element.value.width, 24, 'catalog search button is not correct width - suspect ES2016 usage that this browser doesnt understand');
-                this.assert.equal(element.value.height, 24, 'catalog search button is not correct height - suspect ES2016 usage that this browser doesnt understand');
+                this.assert.equal(element.value.width, 24, 'check catalog search button is correct width');
+                this.assert.equal(element.value.height, 24, 'check catalog search button is correct height');
             })
 
             .end();
