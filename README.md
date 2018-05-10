@@ -145,6 +145,8 @@ or `brew install selenium-server-standalone` then `selenium-server -port 4444`
 
 * environment variables required for SauceLabs ($SAUCE_USERNAME, $SAUCE_ACCESS_KEY), `test-setup.sh` replaces placeholders in test setup stage
 
+* use [the saucelabs configurator](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/) to get the latest browser versions for nightwatch.json (generally: [see the docs](https://wiki.saucelabs.com/display/DOCS/The+Sauce+Labs+Cookbook+Home))
+
 * start server (will start server and project will be accessible at http://localhost:5001)
 
 ```sh
@@ -154,7 +156,7 @@ or `brew install selenium-server-standalone` then `selenium-server -port 4444`
  
 ```sh  
   cd bin/saucelabs 
-  ./nightwatch.js
+  ./nightwatch.js # never run it without some sort of tag as you dont want to run the minimal package directly
   ./nightwatch.js --env ie11 --tag e2etest
 ```
 #### Functionality testing

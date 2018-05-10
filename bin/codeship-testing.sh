@@ -12,8 +12,6 @@ function logSauceCommands {
  fi
 }
 
-trap logSauceCommands EXIT
-
 if [ -z $CI_BRANCH ]; then
   branch=$(git rev-parse --abbrev-ref HEAD)
 else
@@ -22,7 +20,7 @@ fi
 
 case "$PIPE_NUM" in
 "1")
-  # "Unit testing" on codeship
+  # "Unit testing" pipeline on codeship
   printf "\n --- LOCAL UNIT TESTING ---\n\n"
   gulp test
 
@@ -33,24 +31,27 @@ case "$PIPE_NUM" in
 
 ;;
 "2")
-  # "Nightwatch local" on codeship
+  # "Nightwatch local" pipeline on codeship
   printf "\n --- Local Integration Testing ---\n"
 
   printf "\n --- Install Selenium ---\n\n"
   curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/packages/selenium_server.sh | bash -s
   cd bin/local
 
-  printf "\n --- TEST FIREFOX (default) ---\n\n"
-  ./nightwatch.js --tag e2etest
+  printf "\n Not testing firefox here atm - selenium would need an upgrade to use a recent enough geckodriver that recent firefox will work - see https://app.codeship.com/projects/131650/builds/34170514 \n\n"
 
   printf "\n --- TEST CHROME ---\n\n"
   ./nightwatch.js --env chrome --tag e2etest
 ;;
 "3")
-  # "Test commands" on codeship
+  # "Test commands" pipeline on codeship
+
+  trap logSauceCommands EXIT
+
   printf "\n --- Saucelabs Integration Testing ---\n\n"
   cd bin/saucelabs
 
+  # Win/Chrome is our most used browser, 2018
   printf "\n --- TEST CHROME on WINDOWS (default) ---\n\n"
   ./nightwatch.js --tag e2etest
 
@@ -58,12 +59,14 @@ case "$PIPE_NUM" in
   printf "\n --- TEST IE 11 ---\n\n"
   ./nightwatch.js --env ie11 --tag e2etest
 
+  # Win/FF is our second most used browser, 2018
+  printf "\n --- TEST FIREFOX on WINDOWS ---\n\n"
+  ./nightwatch.js --env firefox-on-windows --tag e2etest
+
   if [ ${CI_BRANCH} == "production" ]; then
+    # check all other browsers before actually going live
     printf "\n --- TEST EDGE (prod branch only) ---\n\n"
     ./nightwatch.js --env edge --tag e2etest
-
-    printf "\n --- TEST FIREFOX on WINDOWS (prod branch only) ---\n\n"
-    ./nightwatch.js --env firefox-on-windows --tag e2etest
 
     printf "\n --- TEST CHROME on MAC (prod branch only) ---\n\n"
     ./nightwatch.js --env chrome-on-mac --tag e2etest
