@@ -35,11 +35,12 @@
     "gulp-useref": "^3.1.2",
     "gulp-util": "^3.0.5",
     "gulp-vulcanize": "^6.0.0",
+    "hoek": "^5.0.3",
     "merge-stream": "^1.0.0",
     "nightwatch": "^0.9.9",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.0.2",
-    "sauce-connect-launcher": "^1.1.1",
+    "sauce-connect-launcher": "^1.2.4",
     "vulcanize": ">= 1.4.2",
     "web-component-tester": "^5.0.0",
     "yargs": "^6.5.0"
