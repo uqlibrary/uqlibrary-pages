@@ -65,6 +65,9 @@ case "$PIPE_NUM" in
 
   if [ ${CI_BRANCH} == "production" ]; then
     # check all other browsers before actually going live
+    printf "\n --- TEST SAFARI on MAC (prod branch only) ---\n\n"
+    ./nightwatch.js --env safari-on-mac --tag e2etest
+
     printf "\n --- TEST EDGE (prod branch only) ---\n\n"
     ./nightwatch.js --env edge --tag e2etest
 
@@ -74,8 +77,6 @@ case "$PIPE_NUM" in
     printf "\n --- TEST FIREFOX on MAC (prod branch only) ---\n\n"
     ./nightwatch.js --env firefox-on-mac --tag e2etest
 
-    printf "\n --- TEST SAFARI on MAC (prod branch only) ---\n\n"
-    ./nightwatch.js --env safari-on-mac --tag e2etest
   fi
 ;;
 esac
