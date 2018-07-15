@@ -59,7 +59,7 @@
       "desiredCapabilities": {
         "browserName": "chrome",
         "platform": "macOS 10.13",
-        "version": "66.0",
+        "version": "67.0",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
         "screenResolution": "1280x960"
@@ -69,7 +69,7 @@
       "desiredCapabilities": {
         "browserName": "firefox",
         "platform": "macOS 10.13",
-        "version": "59.0",
+        "version": "61.0",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
         "screenResolution": "1280x960"
@@ -79,7 +79,7 @@
       "desiredCapabilities": {
         "browserName": "safari",
         "platform": "macOS 10.13",
-        "version": "11.0",
+        "version": "11.1",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
         "screenResolution": "1280x960"
