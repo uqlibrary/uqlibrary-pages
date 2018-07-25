@@ -40,7 +40,7 @@
     "hoek": "^5.0.3",
     "merge-stream": "^1.0.0",
     "mime": "^2.3.1",
-    "nightwatch": "^0.9.9",
+    "nightwatch": "^1.0.8",
     "no-case": "^2.3.2",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.0.2",
