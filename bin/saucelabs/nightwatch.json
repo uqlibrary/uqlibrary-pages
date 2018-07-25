@@ -84,6 +84,86 @@
         "acceptSslCerts": true,
         "screenResolution": "1280x960"
       }
+    },
+    "firefox-on-mac-dev": {
+      "desiredCapabilities": {
+        "browserName": "firefox",
+        "platform": "macOS 10.13",
+        "version": "dev",
+        "javascriptEnabled": true,
+        "acceptSslCerts": true,
+        "screenResolution": "1280x960"
+      }
+    },
+    "firefox-on-mac-beta": {
+      "desiredCapabilities": {
+        "browserName": "firefox",
+        "platform": "macOS 10.13",
+        "version": "beta",
+        "javascriptEnabled": true,
+        "acceptSslCerts": true,
+        "screenResolution": "1280x960"
+      }
+    },
+    "chrome-on-mac-beta": {
+      "desiredCapabilities": {
+        "browserName": "chrome",
+        "platform": "macOS 10.13",
+        "version": "beta",
+        "javascriptEnabled": true,
+        "acceptSslCerts": true,
+        "screenResolution": "1280x960"
+      }
+    },
+    "chrome-on-mac-dev": {
+      "desiredCapabilities": {
+        "browserName": "chrome",
+        "platform": "macOS 10.13",
+        "version": "dev",
+        "javascriptEnabled": true,
+        "acceptSslCerts": true,
+        "screenResolution": "1280x960"
+      }
+    },
+    "firefox-on-windows-dev": {
+      "desiredCapabilities": {
+        "browserName": "firefox",
+        "platform": "Windows 10",
+        "version": "dev",
+        "javascriptEnabled": true,
+        "acceptSslCerts": true,
+        "screenResolution": "1280x960"
+      }
+    },
+    "firefox-on-windows-beta": {
+      "desiredCapabilities": {
+        "browserName": "firefox",
+        "platform": "Windows 10",
+        "version": "beta",
+        "javascriptEnabled": true,
+        "acceptSslCerts": true,
+        "screenResolution": "1280x960"
+      }
+    },
+    "chrome-on-windows-dev": {
+      "desiredCapabilities": {
+        "browserName": "chrome",
+        "platform": "Windows 10",
+        "version": "dev",
+        "javascriptEnabled": true,
+        "acceptSslCerts": true,
+        "screenResolution": "1280x960"
+      }
+    },
+    "chrome-on-windows-beta": {
+      "desiredCapabilities": {
+        "browserName": "chrome",
+        "platform": "Windows 10",
+        "version": "beta",
+        "javascriptEnabled": true,
+        "acceptSslCerts": true,
+        "screenResolution": "1280x960"
+      }
     }
   }
 }
