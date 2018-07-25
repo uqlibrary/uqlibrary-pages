@@ -92,11 +92,11 @@ case "$PIPE_NUM" in
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
 
-    printf "\n --- TEST FIREFOX Dev on MAC (canary test) ---\n\n"
-    ./nightwatch.js --env firefox-on-mac-dev --tag e2etest
+    printf "\n --- TEST CHROME Dev on WINDOWS (canary test) ---\n\n"
+    ./nightwatch.js --env chrome-on-windows-dev --tag e2etest
 
-    printf "\n --- TEST FIREFOX Beta on MAC (canary test) ---\n\n"
-    ./nightwatch.js --env firefox-on-mac-beta --tag e2etest
+    printf "\n --- TEST CHROME Beta on WINDOWS (canary test) ---\n\n"
+    ./nightwatch.js --env chrome-on-windows-beta --tag e2etest
 
     printf "\n --- TEST FIREFOX Dev on WINDOWS (canary test) ---\n\n"
     ./nightwatch.js --env firefox-on-windows-dev --tag e2etest
@@ -110,11 +110,11 @@ case "$PIPE_NUM" in
     printf "\n --- TEST CHROME Beta on MAC (canary test) ---\n\n"
     ./nightwatch.js --env chrome-on-mac-beta --tag e2etest
 
-    printf "\n --- TEST CHROME Dev on WINDOWS (canary test) ---\n\n"
-    ./nightwatch.js --env chrome-on-windows-dev --tag e2etest
+    printf "\n --- TEST FIREFOX Dev on MAC (canary test) ---\n\n"
+    ./nightwatch.js --env firefox-on-mac-dev --tag e2etest
 
-    printf "\n --- TEST CHROME Beta on WINDOWS (canary test) ---\n\n"
-    ./nightwatch.js --env chrome-on-windows-beta --tag e2etest
+    printf "\n --- TEST FIREFOX Beta on MAC (canary test) ---\n\n"
+    ./nightwatch.js --env firefox-on-mac-beta --tag e2etest
   fi
 ;;
 esac
