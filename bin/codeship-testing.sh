@@ -109,12 +109,6 @@ case "$PIPE_NUM" in
 
     printf "\n --- TEST CHROME Beta on MAC (canary test) ---\n\n"
     ./nightwatch.js --env chrome-on-mac-beta --tag e2etest
-
-    printf "\n --- TEST FIREFOX Dev on MAC (canary test) ---\n\n"
-    ./nightwatch.js --env firefox-on-mac-dev --tag e2etest
-
-    printf "\n --- TEST FIREFOX Beta on MAC (canary test) ---\n\n"
-    ./nightwatch.js --env firefox-on-mac-beta --tag e2etest
   fi
 ;;
 esac
