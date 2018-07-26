@@ -95,17 +95,17 @@ case "$PIPE_NUM" in
     printf "\n --- TEST CHROME Dev on WINDOWS (canary test) ---\n\n"
     ./nightwatch.js --env chrome-on-windows-dev --tag e2etest
 
-    printf "\n --- TEST CHROME Beta on WINDOWS (canary test) ---\n\n"
-    ./nightwatch.js --env chrome-on-windows-beta --tag e2etest
-
     printf "\n --- TEST FIREFOX Dev on WINDOWS (canary test) ---\n\n"
     ./nightwatch.js --env firefox-on-windows-dev --tag e2etest
 
-    printf "\n --- TEST FIREFOX Beta on WINDOWS (canary test) ---\n\n"
-    ./nightwatch.js --env firefox-on-windows-beta --tag e2etest
-
     printf "\n --- TEST CHROME Dev on MAC (canary test) ---\n\n"
     ./nightwatch.js --env chrome-on-mac-dev --tag e2etest
+
+    printf "\n --- TEST CHROME Beta on WINDOWS (canary test) ---\n\n"
+    ./nightwatch.js --env chrome-on-windows-beta --tag e2etest
+
+    printf "\n --- TEST FIREFOX Beta on WINDOWS (canary test) ---\n\n"
+    ./nightwatch.js --env firefox-on-windows-beta --tag e2etest
 
     printf "\n --- TEST CHROME Beta on MAC (canary test) ---\n\n"
     ./nightwatch.js --env chrome-on-mac-beta --tag e2etest
