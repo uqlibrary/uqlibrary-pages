@@ -3,10 +3,10 @@
 set -eE
 
 function logSauceCommands {
- SAUCELABS_LOG_FILE="/tmp/sc.log"
+ SAUCELABS_LOG_FILE="${TMPDIR}sc.log"
  if [ -f {$SAUCELABS_LOG_FILE} ]; then
   echo "Command failed - dumping {$SAUCELABS_LOG_FILE} for debug of saucelabs"
-  cat /tmp/sc.log
+  cat ${SAUCELABS_LOG_FILE}
  else
    echo "Command failed - attempting to dump saucelabs log file but {$SAUCELABS_LOG_FILE} not found - did we reach the saucelabs section?"
  fi
@@ -22,12 +22,12 @@ fi
 
 case "$PIPE_NUM" in
 "1")
-  # because codeship can be a little flakey, we arent wasting part of our canary test on general tests that arent relevent
+  # "Unit testing" pipeline on codeship
+
   if [ ${CI_BRANCH} != "canarytest" ]; then
-      # "Unit testing" pipeline on codeship
+      # because codeship can be a little flakey, we arent wasting part of our canary test on general tests that arent relevent
       printf "\n --- LOCAL UNIT TESTING ---\n\n"
       gulp test
-
   fi
 
   if [ ${CI_BRANCH} == "production" ]; then
@@ -53,8 +53,9 @@ case "$PIPE_NUM" in
   fi
 ;;
 "2")
+  # "Nightwatch local" pipeline on codeship
+
   if [ ${CI_BRANCH} != "canarytest" ]; then
-      # "Nightwatch local" pipeline on codeship
       printf "\n --- Local Integration Testing ---\n"
 
       printf "\n --- Install Selenium ---\n\n"
