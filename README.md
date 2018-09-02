@@ -12,7 +12,9 @@ This project contains pages for UQ Library website:
 
 (Swap out alternate branch names for 'master' in this url to test other branches).
  
-Instruction: Follow [polymer development style guide](http://polymerelements.github.io/style-guide/) for development. 
+Instruction: Follow [polymer development style guide](http://polymerelements.github.io/style-guide/) for development.
+
+* IMPORTANT! Before each change, update our [saucelab browser versions](https://github.com/uqlibrary/uqlibrary-pages/blob/master/bin/saucelabs/nightwatch.json) by using the [saucelabs configurator](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/) so we are testing against recent versions.
 
 ### Quick-start 
 
