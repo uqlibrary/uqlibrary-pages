@@ -182,6 +182,8 @@ Sometimes you will need to test functionality end to end or demonstrate in the b
 * If you require the final page to show on [test.library.uq.edu.au](http://test.library.uq.edu.au/) (e.g. the customer has asked for an easier url), ask a sys admin to change the current "haproxy backend config" for test.library.uq.edu.au to point to the pages branch on assets, eg, in this case, a branch called newFrogs,  (Remember to get them to change it back before you delete the branch on completion!)
 * When work is complete remember to update bower with release numbers to replace the branch names!!! Dont go to prod with branch names here!!
 
+The canarytest branch is used in a weekly job started from AWS as [repo-periodic-test](https://ap-southeast-2.console.aws.amazon.com/ecs/home?region=ap-southeast-2#/clusters/default/scheduledTasks) in scheduled tasks that checks that our sites work in future browsers. See bin/codeship-test.sh
+
 ## Application Theming & Styling
 
 Style guide for the project is [uqlibrary-styles](https://github.com/uqlibrary/uqlibrary-styles) [demo](http://uqlibrary.github.io/uqlibrary-styles/style-guide/demo/)

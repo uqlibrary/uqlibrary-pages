@@ -42,6 +42,11 @@ case "$PIPE_NUM" in
     printf "\n --- Saucelabs Integration Testing ---\n\n"
     cd bin/saucelabs
 
+    echo "start server in the background, wait 20 sec for it to load"
+    nohup bash -c "gulp serve:dist 2>&1 &"
+    sleep 20
+    cat nohup.out
+
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
 
@@ -74,6 +79,11 @@ case "$PIPE_NUM" in
     printf "\n --- Saucelabs Integration Testing ---\n\n"
     cd bin/saucelabs
 
+    echo "start server in the background, wait 20 sec for it to load"
+    nohup bash -c "gulp serve:dist 2>&1 &"
+    sleep 20
+    cat nohup.out
+
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
 
@@ -92,7 +102,13 @@ case "$PIPE_NUM" in
   printf "\n --- Saucelabs Integration Testing ---\n\n"
   cd bin/saucelabs
 
-  # these env names must match the entries in saucelabs/nightwatch.json
+  echo "start server in the background, wait 20 sec for it to load"
+  nohup bash -c "gulp serve:dist 2>&1 &"
+  sleep 20
+  cat nohup.out
+
+  # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
+
   if [ ${CI_BRANCH} != "canarytest" ]; then
       # Win/Chrome is our most used browser, 2018
       printf "\n --- TEST CHROME on WINDOWS (default) ---\n\n"
