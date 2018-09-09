@@ -2,14 +2,18 @@
 # start debugging/tracing commands, -e - exit if command returns error (non-zero status)
 set -eE
 
+if [ -z TMPDIR ]; then # codeship doesnt seem to set this
+  TMPDIR="/tmp"
+fi
+
 function logSauceCommands {
- SAUCELABS_LOG_FILE="${TMPDIR}sc.log"
- if [ -f {$SAUCELABS_LOG_FILE} ]; then
-  echo "Command failed - dumping {$SAUCELABS_LOG_FILE} for debug of saucelabs"
-  cat ${SAUCELABS_LOG_FILE}
- else
-   echo "Command failed - attempting to dump saucelabs log file but {$SAUCELABS_LOG_FILE} not found - did we reach the saucelabs section?"
- fi
+  SAUCELABS_LOG_FILE="${TMPDIR}sc.log"
+  if [ -f {$SAUCELABS_LOG_FILE} ]; then
+    echo "Command failed - dumping {$SAUCELABS_LOG_FILE} for debug of saucelabs"
+    cat ${SAUCELABS_LOG_FILE}
+  else
+    echo "Command failed - attempting to dump saucelabs log file but {$SAUCELABS_LOG_FILE} not found - did we reach the saucelabs section?"
+  fi
 }
 
 if [ -z $CI_BRANCH ]; then
