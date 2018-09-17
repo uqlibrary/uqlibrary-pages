@@ -9,7 +9,8 @@ module.exports = {
             .url(urlTest)
             .resizeWindow(1280, 1000)
             .pause(20000) // allow saucelabs to get the page loaded
-            .assert.containsText('#notFoundPage .title-text', 'Page not found');
+            .assert.containsText('#notFoundPage .title-text', 'Page not found')
+            .assert.hidden('uql-menu-button', 'uq hamburger menu button uql-menu-button component is hidden');
 
             minimalUql.commonChecks(client, urlTest, 1280, 1000);
 

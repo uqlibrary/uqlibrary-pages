@@ -11,7 +11,8 @@ module.exports = {
             .pause(20000) // allow saucelabs to get the page loaded
             .waitForElementVisible('uql-search-button', 10000)
             .assert.elementPresent('uqlibrary-receipt', 'receipt component is present')
-            .assert.containsText('#paymentReceipt .title-text', 'Payment receipt');
+            .assert.containsText('#paymentReceipt .title-text', 'Payment receipt')
+            .assert.hidden('uql-menu-button', 'uq hamburger menu button uql-menu-button component is hidden');
 
             minimalUql.commonChecks(client, urlTest, 1280, 1000);
 

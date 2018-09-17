@@ -13,6 +13,7 @@ module.exports = {
             .assert.elementPresent('paper-tabs#sidebar-tabs', 'paper-tabs component is present for side bar')
             .assert.elementPresent('uqlibrary-search', 'search component is present')
             .assert.elementPresent('iron-pages', 'iron-pages component is present')
+            .assert.hidden('uql-menu-button', 'uq hamburger menu button uql-menu-button component is hidden')
 
             // if IE11 fails because ES2016 syntax is used it will cause the iron-icons to be huuuge
             // this test will (hopefully) catch this so we can fix it before prod - or decide not to support IE11

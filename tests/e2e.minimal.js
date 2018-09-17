@@ -8,7 +8,6 @@ module.exports = {
             .assert.elementPresent('uq-minimal-header', 'uq header component is present')
             .assert.elementPresent('uq-minimal-header uql-global-links', 'uq global links component is present')
             .assert.elementPresent('uql-menu', 'uq menu component is present')
-            .assert.hidden('uql-menu-button', 'uq hamburger menu button uql-menu-button component is hidden')
             .assert.elementPresent('uql-connect-footer', 'uq connect footer component is present')
             .assert.elementPresent('uq-minimal-footer', 'uq footer component is present')
             .assert.containsText('.library-title a', 'UQ Library')
