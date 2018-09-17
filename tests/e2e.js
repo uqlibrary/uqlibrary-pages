@@ -22,16 +22,10 @@ module.exports = {
                 // have drawn properly, and arent like 100px tall, so comparing against a reasonable size is fine
                 this.assert.ok(element.value.width < 26, 'check catalog search button is correct width');
                 this.assert.ok(element.value.height < 26, 'check catalog search button is correct height');
-            })
+            });
 
-            .end();
+        minimalUql.commonChecks(client, urlTest, 1280, 1000);
+
+        client.end();
     },
-
-    'test search components' : function (client) {
-
-            //Common checks from e2e.minimal.js
-            minimalUql.commonChecks(client, urlTest);
-
-            client.end();
-    }
 };

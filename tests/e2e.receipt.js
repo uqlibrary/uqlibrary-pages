@@ -2,6 +2,7 @@ var minimalUql = require("./e2e.minimal.js");
 var urlTest = 'http://localhost:5001/payment-receipt.html?Success=1&AmountPaid=1099&Receipt=ABC123';
 
 module.exports = {
+    '@tags': ['e2etest', 'receipt'],
     'load uqlibrary payment receipt - should display receipt' : function (client) {
 
         client
@@ -12,7 +13,7 @@ module.exports = {
             .assert.elementPresent('uqlibrary-receipt', 'receipt component is present')
             .assert.containsText('#paymentReceipt .title-text', 'Payment receipt');
 
-            minimalUql.commonChecks(client, urlTest)
+            minimalUql.commonChecks(client, urlTest, 1280, 1000);
 
         client.end();
     }
