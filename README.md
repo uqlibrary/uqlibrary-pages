@@ -184,6 +184,8 @@ Sometimes you will need to test functionality end to end or demonstrate in the b
 
 The canarytest branch is used in a weekly job started from AWS as [repo-periodic-test](https://ap-southeast-2.console.aws.amazon.com/ecs/home?region=ap-southeast-2#/clusters/default/scheduledTasks) in scheduled tasks that checks that our sites work in future browsers. See bin/codeship-test.sh
 
+It may appear that the 404 page is not used, for example, if you visit https://www.library.uq.edu.au/404missing you will get the Drupal template 404 (actually you are seeing a file that Dan has stolen from the drupal layout and put on one of the old servers and served via haproxy, but never mind that...), but the uqlibrary-pages 404 is loaded at times, for example, any missing image or .js on www.library which is loaded directly (for example when a user notes it is missing and tries it manually) will load the uqlibrary-pages 404, and some s3 buckets on AWS are configured to return the uqlibrarypages 404 when there is a missing file, eg https://www.library.uq.edu.au/bomdata/doesntoexist
+
 ## Application Theming & Styling
 
 Style guide for the project is [uqlibrary-styles](https://github.com/uqlibrary/uqlibrary-styles) [demo](http://uqlibrary.github.io/uqlibrary-styles/style-guide/demo/)

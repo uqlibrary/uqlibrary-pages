@@ -3,7 +3,7 @@ var urlTest = 'http://localhost:5001/404.html';
 
 // note, 404s are served from drupal, so our 404 is never seen
 module.exports = {
-    '@tags': ['404'],
+    '@tags': ['e2etest', '404'],
     'load uqlibrary 404 page - content' : function (client) {
 
         client
