@@ -2,7 +2,7 @@
 # start debugging/tracing commands, -e - exit if command returns error (non-zero status)
 set -eE
 
-if [ -z TMPDIR ]; then # codeship doesnt seem to set this
+if [ -z ${TMPDIR} ]; then # codeship doesnt seem to set this
   TMPDIR="/tmp"
 fi
 
@@ -68,6 +68,7 @@ case "$PIPE_NUM" in
       printf "\n --- Local Integration Testing ---\n"
 
       printf "\n --- Install Selenium ---\n\n"
+      SELENIUM_VERSION="2.53.1"
       curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/packages/selenium_server.sh | bash -s
       cd bin/local
 
