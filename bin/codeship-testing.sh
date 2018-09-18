@@ -43,13 +43,13 @@ case "$PIPE_NUM" in
   if [ ${CI_BRANCH} == "canarytest" ]; then
     trap logSauceCommands EXIT
 
-    printf "\n --- Saucelabs Integration Testing ---\n\n"
-    cd bin/saucelabs
-
     echo "start server in the background, wait 20 sec for it to load"
     nohup bash -c "gulp serve:dist 2>&1 &"
     sleep 20
     cat nohup.out
+
+    printf "\n --- Saucelabs Integration Testing ---\n\n"
+    cd bin/saucelabs
 
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
@@ -64,11 +64,15 @@ case "$PIPE_NUM" in
 "2")
   # "Nightwatch local" pipeline on codeship
 
+  echo "start server in the background, wait 20 sec for it to load"
+  nohup bash -c "gulp serve:dist 2>&1 &"
+  sleep 20
+  cat nohup.out
+
   if [ ${CI_BRANCH} != "canarytest" ]; then
       printf "\n --- Local Integration Testing ---\n"
 
       printf "\n --- Install Selenium ---\n\n"
-      SELENIUM_VERSION="2.53.1"
       curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/packages/selenium_server.sh | bash -s
       cd bin/local
 
@@ -83,11 +87,6 @@ case "$PIPE_NUM" in
 
     printf "\n --- Saucelabs Integration Testing ---\n\n"
     cd bin/saucelabs
-
-    echo "start server in the background, wait 20 sec for it to load"
-    nohup bash -c "gulp serve:dist 2>&1 &"
-    sleep 20
-    cat nohup.out
 
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
@@ -104,13 +103,13 @@ case "$PIPE_NUM" in
 
   trap logSauceCommands EXIT
 
-  printf "\n --- Saucelabs Integration Testing ---\n\n"
-  cd bin/saucelabs
-
   echo "start server in the background, wait 20 sec for it to load"
   nohup bash -c "gulp serve:dist 2>&1 &"
   sleep 20
   cat nohup.out
+
+  printf "\n --- Saucelabs Integration Testing ---\n\n"
+  cd bin/saucelabs
 
   # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
 
