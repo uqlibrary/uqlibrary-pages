@@ -2,14 +2,18 @@
 # start debugging/tracing commands, -e - exit if command returns error (non-zero status)
 set -eE
 
+if [ -z ${TMPDIR} ]; then # codeship doesnt seem to set this
+  TMPDIR="/tmp"
+fi
+
 function logSauceCommands {
- SAUCELABS_LOG_FILE="${TMPDIR}sc.log"
- if [ -f {$SAUCELABS_LOG_FILE} ]; then
-  echo "Command failed - dumping {$SAUCELABS_LOG_FILE} for debug of saucelabs"
-  cat ${SAUCELABS_LOG_FILE}
- else
-   echo "Command failed - attempting to dump saucelabs log file but {$SAUCELABS_LOG_FILE} not found - did we reach the saucelabs section?"
- fi
+  SAUCELABS_LOG_FILE="${TMPDIR}sc.log"
+  if [ -f {$SAUCELABS_LOG_FILE} ]; then
+    echo "Command failed - dumping {$SAUCELABS_LOG_FILE} for debug of saucelabs"
+    cat ${SAUCELABS_LOG_FILE}
+  else
+    echo "Command failed - attempting to dump saucelabs log file but {$SAUCELABS_LOG_FILE} not found - did we reach the saucelabs section?"
+  fi
 }
 
 if [ -z $CI_BRANCH ]; then
@@ -39,6 +43,11 @@ case "$PIPE_NUM" in
   if [ ${CI_BRANCH} == "canarytest" ]; then
     trap logSauceCommands EXIT
 
+    echo "start server in the background, wait 20 sec for it to load"
+    nohup bash -c "gulp serve:dist 2>&1 &"
+    sleep 40
+    cat nohup.out
+
     printf "\n --- Saucelabs Integration Testing ---\n\n"
     cd bin/saucelabs
 
@@ -54,6 +63,11 @@ case "$PIPE_NUM" in
 ;;
 "2")
   # "Nightwatch local" pipeline on codeship
+
+  echo "start server in the background, wait 20 sec for it to load"
+  nohup bash -c "gulp serve:dist 2>&1 &"
+  sleep 40
+  cat nohup.out
 
   if [ ${CI_BRANCH} != "canarytest" ]; then
       printf "\n --- Local Integration Testing ---\n"
@@ -89,10 +103,16 @@ case "$PIPE_NUM" in
 
   trap logSauceCommands EXIT
 
+  echo "start server in the background, wait 20 sec for it to load"
+  nohup bash -c "gulp serve:dist 2>&1 &"
+  sleep 40
+  cat nohup.out
+
   printf "\n --- Saucelabs Integration Testing ---\n\n"
   cd bin/saucelabs
 
-  # these env names must match the entries in saucelabs/nightwatch.json
+  # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
+
   if [ ${CI_BRANCH} != "canarytest" ]; then
       # Win/Chrome is our most used browser, 2018
       printf "\n --- TEST CHROME on WINDOWS (default) ---\n\n"

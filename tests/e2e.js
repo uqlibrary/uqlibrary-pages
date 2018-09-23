@@ -13,6 +13,7 @@ module.exports = {
             .assert.elementPresent('paper-tabs#sidebar-tabs', 'paper-tabs component is present for side bar')
             .assert.elementPresent('uqlibrary-search', 'search component is present')
             .assert.elementPresent('iron-pages', 'iron-pages component is present')
+            .assert.hidden('uql-menu-button', 'uq hamburger menu button uql-menu-button component is hidden')
 
             // if IE11 fails because ES2016 syntax is used it will cause the iron-icons to be huuuge
             // this test will (hopefully) catch this so we can fix it before prod - or decide not to support IE11
@@ -22,16 +23,10 @@ module.exports = {
                 // have drawn properly, and arent like 100px tall, so comparing against a reasonable size is fine
                 this.assert.ok(element.value.width < 26, 'check catalog search button is correct width');
                 this.assert.ok(element.value.height < 26, 'check catalog search button is correct height');
-            })
+            });
 
-            .end();
+        minimalUql.commonChecks(client, urlTest, 1280, 1000);
+
+        client.end();
     },
-
-    'test search components' : function (client) {
-
-            //Common checks from e2e.minimal.js
-            minimalUql.commonChecks(client, urlTest);
-
-            client.end();
-    }
 };
