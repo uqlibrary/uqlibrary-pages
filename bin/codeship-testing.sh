@@ -45,7 +45,7 @@ case "$PIPE_NUM" in
 
     echo "start server in the background, wait 20 sec for it to load"
     nohup bash -c "gulp serve:dist 2>&1 &"
-    sleep 20
+    sleep 40
     cat nohup.out
 
     printf "\n --- Saucelabs Integration Testing ---\n\n"
@@ -66,7 +66,7 @@ case "$PIPE_NUM" in
 
   echo "start server in the background, wait 20 sec for it to load"
   nohup bash -c "gulp serve:dist 2>&1 &"
-  sleep 20
+  sleep 40
   cat nohup.out
 
   if [ ${CI_BRANCH} != "canarytest" ]; then
@@ -105,7 +105,7 @@ case "$PIPE_NUM" in
 
   echo "start server in the background, wait 20 sec for it to load"
   nohup bash -c "gulp serve:dist 2>&1 &"
-  sleep 20
+  sleep 40
   cat nohup.out
 
   printf "\n --- Saucelabs Integration Testing ---\n\n"
