@@ -6,7 +6,7 @@ var ret = {
         'pathMappings': []
     },
     plugins: {
-    local: {
+        sauce: {
             browsers: [
                 'Windows 10/chrome@beta',
                 'Windows 10/firefox@beta'

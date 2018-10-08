@@ -5,12 +5,13 @@ set -eE
 if [ -z ${TMPDIR} ]; then # codeship doesnt seem to set this
   TMPDIR="/tmp/"
 fi
+SAUCELABS_LOG_FILE="${TMPDIR}sc.log"
+echo "On failure, will look for Saucelabs error log here: ${SAUCELABS_LOG_FILE}"
 
 function logSauceCommands {
-  SAUCELABS_LOG_FILE="${TMPDIR}sc.log"
   if [ -f "$SAUCELABS_LOG_FILE" ]; then
-    echo "Command failed - dumping {$SAUCELABS_LOG_FILE} for debug of saucelabs"
-    cat ${SAUCELABS_LOG_FILE}
+    echo "Command failed - dumping $SAUCELABS_LOG_FILE for debug of saucelabs"
+    cat $SAUCELABS_LOG_FILE
   else
     echo "Command failed - attempting to dump saucelabs log file but $SAUCELABS_LOG_FILE not found - did we reach the saucelabs section?"
   fi
@@ -36,6 +37,7 @@ case "$PIPE_NUM" in
       rm wct.conf.js
 
     # temp placement: check remote testing befor epush to prod
+    printf "\n --- REMOTE UNIT TESTING (prod branch only) ---\n\n"
     cp wct.conf.js.remote wct.conf.js
     gulp test:remote
     rm wct.conf.js
@@ -44,7 +46,7 @@ case "$PIPE_NUM" in
   if [ ${CI_BRANCH} == "canarytest" ]; then
       printf "\n --- LOCAL CANARY UNIT TESTING ---\n\n"
       cp wct.conf.js.canary wct.conf.js
-      gulp test
+      gulp test:remote
       rm wct.conf.js
   fi
 
