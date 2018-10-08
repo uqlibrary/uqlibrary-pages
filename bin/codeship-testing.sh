@@ -8,11 +8,11 @@ fi
 
 function logSauceCommands {
   SAUCELABS_LOG_FILE="${TMPDIR}sc.log"
-  if [ -f {$SAUCELABS_LOG_FILE} ]; then
+  if [ -f "$SAUCELABS_LOG_FILE" ]; then
     echo "Command failed - dumping {$SAUCELABS_LOG_FILE} for debug of saucelabs"
     cat ${SAUCELABS_LOG_FILE}
   else
-    echo "Command failed - attempting to dump saucelabs log file but {$SAUCELABS_LOG_FILE} not found - did we reach the saucelabs section?"
+    echo "Command failed - attempting to dump saucelabs log file but $SAUCELABS_LOG_FILE not found - did we reach the saucelabs section?"
   fi
 }
 
@@ -64,6 +64,8 @@ case "$PIPE_NUM" in
 "2")
   # "Nightwatch local" pipeline on codeship
 
+  trap logSauceCommands EXIT
+
   echo "start server in the background, wait 20 sec for it to load"
   nohup bash -c "gulp serve:dist 2>&1 &"
   sleep 40
@@ -83,8 +85,6 @@ case "$PIPE_NUM" in
   fi
 
   if [ ${CI_BRANCH} == "canarytest" ]; then
-    trap logSauceCommands EXIT
-
     printf "\n --- Saucelabs Integration Testing ---\n\n"
     cd bin/saucelabs
 

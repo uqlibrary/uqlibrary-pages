@@ -1,31 +1,22 @@
 var path = require('path');
 
 var ret = {
-  'suites': ['app/test'],
-  'webserver': {
-    'pathMappings': []
-  },
-  plugins: {
-    local: {
-      browsers: [
-        'chrome'
-      ]
+    'suites': ['app/test'],
+    'webserver': {
+        'pathMappings': []
     },
-    sauce: {
-      browsers: [
-        // {
-        //   browserName: 'MicrosoftEdge',
-        //   platform: 'Windows 10',
-        //   version: '14.14393'
-        // },
-        {
-          browserName: 'safari',
-          platform: 'OS X 10.11',
-          version: '10.0'
+    plugins: {
+        sauce: {
+            browsers: [
+                'Windows 10/microsoftedge@13',
+                'Windows 10/chrome@54',
+                'Windows 10/firefox@50',
+                'OS X 10.11/safari@9.0',
+                'OS X 10.11/firefox@50',
+                'OS X 10.11/chrome@54'
+            ]
         }
-      ]
     }
-  }
 };
 
 var mapping = {};
