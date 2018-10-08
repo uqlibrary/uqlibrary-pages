@@ -29,14 +29,30 @@ case "$PIPE_NUM" in
   # "Unit testing" pipeline on codeship
 
   if [ ${CI_BRANCH} != "canarytest" ]; then
-      # because codeship can be a little flakey, we arent wasting part of our canary test on general tests that arent relevent
+      # quick single browser testing during dev
       printf "\n --- LOCAL UNIT TESTING ---\n\n"
+      cp wct.conf.js.default wct.conf.js
       gulp test
+      rm wct.conf.js
+
+    # temp placement: check remote testing befor epush to prod
+    cp wct.conf.js.remote wct.conf.js
+    gulp test:remote
+    rm wct.conf.js
+  fi
+
+  if [ ${CI_BRANCH} == "canarytest" ]; then
+      printf "\n --- LOCAL CANARY UNIT TESTING ---\n\n"
+      cp wct.conf.js.canary wct.conf.js
+      gulp test
+      rm wct.conf.js
   fi
 
   if [ ${CI_BRANCH} == "production" ]; then
     printf "\n --- REMOTE UNIT TESTING (prod branch only) ---\n\n"
+    cp wct.conf.js.remote wct.conf.js
     gulp test:remote
+    rm wct.conf.js
   fi
 
 
