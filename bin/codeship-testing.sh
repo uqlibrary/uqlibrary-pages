@@ -32,7 +32,7 @@ case "$PIPE_NUM" in
   if [ ${CI_BRANCH} != "canarytest" ]; then
       # quick single browser testing during dev
       printf "\n --- LOCAL UNIT TESTING ---\n\n"
-      cp wct.conf.js.default wct.conf.js
+      cp wct.conf.js.local wct.conf.js
       gulp test
       rm wct.conf.js
 
