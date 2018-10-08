@@ -24,6 +24,7 @@ else
 fi
 
 # "canarytest" is used by a job that runs weekly to test the polymer repos on the upcoming browser versions
+# the ordering of the canary browser tests is: test beta, then test dev (beta is closer to ready for prod, per http://www.chromium.org/getting-involved/dev-channel
 
 case "$PIPE_NUM" in
 "1")
