@@ -16,3 +16,4 @@ app/test/index.html
 *-e
 cdn
 app/styles/main.css
+wct.conf.js

@@ -3,16 +3,17 @@
 set -eE
 
 if [ -z ${TMPDIR} ]; then # codeship doesnt seem to set this
-  TMPDIR="/tmp"
+  TMPDIR="/tmp/"
 fi
+SAUCELABS_LOG_FILE="${TMPDIR}sc.log"
+echo "On failure, will look for Saucelabs error log here: ${SAUCELABS_LOG_FILE}"
 
 function logSauceCommands {
-  SAUCELABS_LOG_FILE="${TMPDIR}sc.log"
-  if [ -f {$SAUCELABS_LOG_FILE} ]; then
-    echo "Command failed - dumping {$SAUCELABS_LOG_FILE} for debug of saucelabs"
-    cat ${SAUCELABS_LOG_FILE}
+  if [ -f "$SAUCELABS_LOG_FILE" ]; then
+    echo "Command failed - dumping $SAUCELABS_LOG_FILE for debug of saucelabs"
+    cat $SAUCELABS_LOG_FILE
   else
-    echo "Command failed - attempting to dump saucelabs log file but {$SAUCELABS_LOG_FILE} not found - did we reach the saucelabs section?"
+    echo "Command failed - attempting to dump saucelabs log file but $SAUCELABS_LOG_FILE not found - did we reach the saucelabs section?"
   fi
 }
 
@@ -23,27 +24,38 @@ else
 fi
 
 # "canarytest" is used by a job that runs weekly to test the polymer repos on the upcoming browser versions
+# the ordering of the canary browser tests is: test beta, then test dev (beta is closer to ready for prod, per http://www.chromium.org/getting-involved/dev-channel
 
 case "$PIPE_NUM" in
 "1")
   # "Unit testing" pipeline on codeship
 
   if [ ${CI_BRANCH} != "canarytest" ]; then
-      # because codeship can be a little flakey, we arent wasting part of our canary test on general tests that arent relevent
+      # quick single browser testing during dev
       printf "\n --- LOCAL UNIT TESTING ---\n\n"
+      cp wct.conf.js.local wct.conf.js
       gulp test
+      rm wct.conf.js
   fi
 
   if [ ${CI_BRANCH} == "production" ]; then
     printf "\n --- REMOTE UNIT TESTING (prod branch only) ---\n\n"
+    cp wct.conf.js.remote wct.conf.js
     gulp test:remote
+    rm wct.conf.js
   fi
 
 
   if [ ${CI_BRANCH} == "canarytest" ]; then
+    printf "\n --- LOCAL WCT CANARY UNIT TESTING ---\n\n"
+    cp wct.conf.js.canary wct.conf.js
+    gulp test:remote
+    rm wct.conf.js
+    printf "\n --- WCT unit testing complete---\n\n"
+
     trap logSauceCommands EXIT
 
-    echo "start server in the background, wait 20 sec for it to load"
+    echo "\n-- start server in the background, wait 20 sec for it to load --"
     nohup bash -c "gulp serve:dist 2>&1 &"
     sleep 40
     cat nohup.out
@@ -54,15 +66,17 @@ case "$PIPE_NUM" in
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
 
+    printf "\n --- TEST CHROME Beta on WINDOWS (canary test) ---\n\n"
+    ./nightwatch.js --env chrome-on-windows-beta --tag e2etest
+
     printf "\n --- TEST CHROME Dev on WINDOWS (canary test) ---\n\n"
     ./nightwatch.js --env chrome-on-windows-dev --tag e2etest
-
-    printf "\n --- TEST FIREFOX Dev on WINDOWS (canary test) ---\n\n"
-    ./nightwatch.js --env firefox-on-windows-dev --tag e2etest
   fi
 ;;
 "2")
   # "Nightwatch local" pipeline on codeship
+
+  trap logSauceCommands EXIT
 
   echo "start server in the background, wait 20 sec for it to load"
   nohup bash -c "gulp serve:dist 2>&1 &"
@@ -83,19 +97,17 @@ case "$PIPE_NUM" in
   fi
 
   if [ ${CI_BRANCH} == "canarytest" ]; then
-    trap logSauceCommands EXIT
-
     printf "\n --- Saucelabs Integration Testing ---\n\n"
     cd bin/saucelabs
 
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
 
-    printf "\n --- TEST CHROME Dev on MAC (canary test) ---\n\n"
-    ./nightwatch.js --env chrome-on-mac-dev --tag e2etest
+    printf "\n --- TEST FIREFOX Beta on WINDOWS (canary test) ---\n\n"
+    ./nightwatch.js --env firefox-on-windows-beta --tag e2etest
 
-    printf "\n --- TEST CHROME Beta on WINDOWS (canary test) ---\n\n"
-    ./nightwatch.js --env chrome-on-windows-beta --tag e2etest
+    printf "\n --- TEST FIREFOX Dev on WINDOWS (canary test) ---\n\n"
+    ./nightwatch.js --env firefox-on-windows-dev --tag e2etest
   fi
 ;;
 "3")
@@ -146,11 +158,11 @@ case "$PIPE_NUM" in
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
 
-    printf "\n --- TEST FIREFOX Beta on WINDOWS (canary test) ---\n\n"
-    ./nightwatch.js --env firefox-on-windows-beta --tag e2etest
-
     printf "\n --- TEST CHROME Beta on MAC (canary test) ---\n\n"
     ./nightwatch.js --env chrome-on-mac-beta --tag e2etest
+
+    printf "\n --- TEST CHROME Dev on MAC (canary test) ---\n\n"
+    ./nightwatch.js --env chrome-on-mac-dev --tag e2etest
   fi
 ;;
 esac
