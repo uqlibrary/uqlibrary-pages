@@ -9,11 +9,11 @@ var ret = {
         sauce: {
             browsers: [
                 'Windows 10/microsoftedge@16',
-                'Windows 10/chrome@68',
-                'Windows 10/firefox@61',
+                'Windows 10/chrome',
+                'Windows 10/firefox',
                 'OS X 10.13/safari@11.1',
-                'OS X 10.13/firefox@61',
-                'OS X 10.13/chrome@68'
+                'OS X 10.13/firefox',
+                'OS X 10.13/chrome'
             ]
         }
     }
