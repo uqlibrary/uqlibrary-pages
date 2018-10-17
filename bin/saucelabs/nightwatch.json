@@ -23,7 +23,6 @@
       "desiredCapabilities": {
         "browserName": "chrome",
         "platform": "Windows 10",
-        "version": "68",
         "screenResolution": "1280x960"
       }
     },
@@ -31,7 +30,6 @@
       "desiredCapabilities": {
         "browserName": "internet explorer",
         "platform": "Windows 10",
-        "version": "11.103",
         "acceptSslCerts": true,
         "screenResolution": "1280x960"
       }
@@ -40,7 +38,6 @@
       "desiredCapabilities": {
         "browserName": "MicrosoftEdge",
         "platform": "Windows 10",
-        "version": "17.17134",
         "acceptSslCerts": true,
         "screenResolution": "1280x960"
       }
@@ -49,7 +46,6 @@
       "desiredCapabilities": {
         "browserName": "firefox",
         "platform": "Windows 10",
-        "version": "61.0",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
         "screenResolution": "1280x960"
@@ -59,7 +55,6 @@
       "desiredCapabilities": {
         "browserName": "chrome",
         "platform": "macOS 10.13",
-        "version": "68.0",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
         "screenResolution": "1280x960"
@@ -69,7 +64,6 @@
       "desiredCapabilities": {
         "browserName": "firefox",
         "platform": "macOS 10.13",
-        "version": "61.0",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
         "screenResolution": "1280x960"
@@ -79,7 +73,6 @@
       "desiredCapabilities": {
         "browserName": "safari",
         "platform": "macOS 10.13",
-        "version": "11.1",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
         "screenResolution": "1280x960"
@@ -140,6 +133,26 @@
         "browserName": "chrome",
         "platform": "Windows 10",
         "version": "beta",
+        "javascriptEnabled": true,
+        "acceptSslCerts": true,
+        "screenResolution": "1280x960"
+      }
+    },
+    "firefox-on-windows-esr": {
+      "desiredCapabilities": {
+        "browserName": "firefox",
+        "platform": "Windows 10",
+        "version": "60.0",
+        "javascriptEnabled": true,
+        "acceptSslCerts": true,
+        "screenResolution": "1280x960"
+      }
+    },
+    "firefox-on-mac-esr": {
+      "desiredCapabilities": {
+        "browserName": "firefox",
+        "platform": "macOS 10.13",
+        "version": "60.0",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
         "screenResolution": "1280x960"

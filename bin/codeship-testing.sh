@@ -144,13 +144,16 @@ case "$PIPE_NUM" in
       printf "\n --- TEST IE 11 ---\n\n"
       ./nightwatch.js --env ie11 --tag e2etest
 
-      # Win/FF is our second most used browser, 2018
-      printf "\n --- TEST FIREFOX on WINDOWS ---\n\n"
-      ./nightwatch.js --env firefox-on-windows --tag e2etest
+      # Win/FF is our second most used browser, 2018 - we have the ESR release on Library Desktop SOE
+      printf "\n --- TEST FIREFOX on WINDOWS ESR (prod branch only) ---\n\n"
+      ./nightwatch.js --env firefox-on-windows-esr --tag e2etest
   fi
 
   if [ ${CI_BRANCH} == "production" ]; then
     # check all other browsers before going live
+    printf "\n --- TEST FIREFOX on WINDOWS (prod branch only) ---\n\n"
+    ./nightwatch.js --env firefox-on-windows --tag e2etest
+
     printf "\n --- TEST SAFARI on MAC (prod branch only) ---\n\n"
     ./nightwatch.js --env safari-on-mac --tag e2etest
 
@@ -162,6 +165,9 @@ case "$PIPE_NUM" in
 
     printf "\n --- TEST FIREFOX on MAC (prod branch only) ---\n\n"
     ./nightwatch.js --env firefox-on-mac --tag e2etest
+
+    printf "\n --- TEST FIREFOX on MAC ESR (prod branch only) ---\n\n"
+    ./nightwatch.js --env firefox-on-mac-esr --tag e2etest
   fi
 
   if [ ${CI_BRANCH} == "canarytest" ]; then

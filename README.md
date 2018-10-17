@@ -14,7 +14,7 @@ This project contains pages for UQ Library website:
  
 Instruction: Follow [polymer development style guide](http://polymerelements.github.io/style-guide/) for development.
 
-* IMPORTANT! Before each change, update our saucelab browser versions for [nightwatch](https://github.com/uqlibrary/uqlibrary-pages/blob/master/bin/saucelabs/nightwatch.json) and [wct](https://github.com/uqlibrary/uqlibrary-pages/blob/master/wct.conf.js) by using the [saucelabs configurator](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/) so we are testing against recent versions.
+* IMPORTANT! Before each change, update saucelab operating system versions for [nightwatch](https://github.com/uqlibrary/uqlibrary-pages/blob/master/bin/saucelabs/nightwatch.json) and [wct](https://github.com/uqlibrary/uqlibrary-pages/blob/master/wct.conf.js) by using the [saucelabs configurator](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/) so we are testing against recent versions. Also check the [latest ESR version for firefox](https://www.mozilla.org/en-US/firefox/organizations/). (ESR versions are deployed in our Standard Environment across the Libraries).
 
 ### Quick-start 
 
