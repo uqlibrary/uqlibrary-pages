@@ -145,7 +145,7 @@ case "$PIPE_NUM" in
       ./nightwatch.js --env ie11 --tag e2etest
 
       # Win/FF is our second most used browser, 2018 - we have the ESR release on Library Desktop SOE
-      printf "\n --- TEST FIREFOX on WINDOWS ESR (prod branch only) ---\n\n"
+      printf "\n --- TEST FIREFOX on WINDOWS ESR ---\n\n"
       ./nightwatch.js --env firefox-on-windows-esr --tag e2etest
   fi
 
