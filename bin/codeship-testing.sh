@@ -50,7 +50,14 @@ case "$PIPE_NUM" in
 
   if [ ${CI_BRANCH} == "production" ]; then
     printf "\n --- REMOTE UNIT TESTING (prod branch only) ---\n\n"
-    cp wct.conf.js.remote wct.conf.js
+    # split testing into 2 runs so it doesnt occupy all saucelab resources in one hit
+    cp wct.conf.js.remoteA wct.conf.js
+    gulp test:remote
+    rm wct.conf.js
+
+    sleep 10 # seconds
+
+    cp wct.conf.js.remoteB wct.conf.js
     gulp test:remote
     rm wct.conf.js
 
@@ -70,9 +77,9 @@ case "$PIPE_NUM" in
 
     trap logSauceCommands EXIT
 
-    echo "\n-- start server in the background, wait 20 sec for it to load --"
+    echo "\n-- start server in the background, then sleep to give it time to load --"
     nohup bash -c "gulp serve:dist 2>&1 &"
-    sleep 40
+    sleep 40 # seconds
     cat nohup.out
 
     printf "\n --- Saucelabs Integration Testing ---\n\n"
@@ -93,9 +100,9 @@ case "$PIPE_NUM" in
 
   trap logSauceCommands EXIT
 
-  echo "start server in the background, wait 20 sec for it to load"
+  echo "\n-- start server in the background, then sleep to give it time to load --"
   nohup bash -c "gulp serve:dist 2>&1 &"
-  sleep 40
+  sleep 40 # seconds
   cat nohup.out
 
   if [ ${CI_BRANCH} != "canarytest" ]; then
@@ -138,9 +145,9 @@ case "$PIPE_NUM" in
 
   trap logSauceCommands EXIT
 
-  echo "start server in the background, wait 20 sec for it to load"
+  echo "\n-- start server in the background, then sleep to give it time to load --"
   nohup bash -c "gulp serve:dist 2>&1 &"
-  sleep 40
+  sleep 40 # seconds
   cat nohup.out
 
   printf "\n --- Saucelabs Integration Testing ---\n\n"
