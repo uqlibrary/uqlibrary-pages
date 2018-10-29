@@ -134,7 +134,7 @@ case "$PIPE_NUM" in
 
   if [ ${CI_BRANCH} == "production" ]; then
     printf "\n --- TEST EDGE (prod branch only) ---\n\n"
-    ./nightwatch.js --env edge --tag e2etest
+//    ./nightwatch.js --env edge --tag e2etest
 
     printf "\n --- TEST CHROME on MAC (prod branch only) ---\n\n"
     ./nightwatch.js --env chrome-on-mac --tag e2etest
