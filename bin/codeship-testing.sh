@@ -61,6 +61,9 @@ case "$PIPE_NUM" in
     gulp test:remote
     rm wct.conf.js
 
+    printf "\n --- Saucelabs Integration Testing ---\n\n"
+    cd bin/saucelabs
+
     printf "\n --- TEST FIREFOX on MAC (prod branch only) ---\n\n"
     ./nightwatch.js --env firefox-on-mac --tag e2etest
 
@@ -133,8 +136,11 @@ case "$PIPE_NUM" in
   fi
 
   if [ ${CI_BRANCH} == "production" ]; then
+    printf "\n --- Saucelabs Integration Testing ---\n\n"
+    cd bin/saucelabs
+
     printf "\n --- TEST EDGE (prod branch only) ---\n\n"
-//    ./nightwatch.js --env edge --tag e2etest
+    ./nightwatch.js --env edge --tag e2etest
 
     printf "\n --- TEST CHROME on MAC (prod branch only) ---\n\n"
     ./nightwatch.js --env chrome-on-mac --tag e2etest
