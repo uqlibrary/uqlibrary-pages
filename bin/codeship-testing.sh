@@ -113,6 +113,7 @@ case "$PIPE_NUM" in
 
       printf "\n --- Install Selenium ---\n\n"
       curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/packages/selenium_server.sh | bash -s
+
       cd bin/local
 
       printf "\n Not testing firefox here atm - selenium would need an upgrade to use a recent enough geckodriver that recent firefox will work - see https://app.codeship.com/projects/131650/builds/34170514 \n\n"
@@ -137,7 +138,8 @@ case "$PIPE_NUM" in
 
   if [ ${CI_BRANCH} == "production" ]; then
     printf "\n --- Saucelabs Integration Testing ---\n\n"
-    cd bin/saucelabs
+
+    cd ../saucelabs
 
     printf "\n --- TEST EDGE (prod branch only) ---\n\n"
     ./nightwatch.js --env edge --tag e2etest
