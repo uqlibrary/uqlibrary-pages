@@ -60,15 +60,6 @@ case "$PIPE_NUM" in
     cp wct.conf.js.remoteB wct.conf.js
     gulp test:remote
     rm wct.conf.js
-
-    printf "\n --- Saucelabs Integration Testing ---\n\n"
-    cd bin/saucelabs
-
-    printf "\n --- TEST FIREFOX on MAC (prod branch only) ---\n\n"
-    ./nightwatch.js --env firefox-on-mac --tag e2etest
-
-    printf "\n --- TEST FIREFOX on MAC ESR (prod branch only) ---\n\n"
-    ./nightwatch.js --env firefox-on-mac-esr --tag e2etest
   fi
 
   if [ ${CI_BRANCH} == "canarytest" ]; then
@@ -135,18 +126,6 @@ case "$PIPE_NUM" in
     printf "\n --- TEST FIREFOX Dev on WINDOWS (canary test) ---\n\n"
     ./nightwatch.js --env firefox-on-windows-dev --tag e2etest
   fi
-
-  if [ ${CI_BRANCH} == "production" ]; then
-    printf "\n --- Saucelabs Integration Testing ---\n\n"
-
-    cd ../saucelabs
-
-    printf "\n --- TEST EDGE (prod branch only) ---\n\n"
-    ./nightwatch.js --env edge --tag e2etest
-
-    printf "\n --- TEST CHROME on MAC (prod branch only) ---\n\n"
-    ./nightwatch.js --env chrome-on-mac --tag e2etest
-  fi
 ;;
 "3")
   # "Test commands" pipeline on codeship
@@ -184,6 +163,18 @@ case "$PIPE_NUM" in
 
     printf "\n --- TEST SAFARI on MAC (prod branch only) ---\n\n"
     ./nightwatch.js --env safari-on-mac --tag e2etest
+
+    printf "\n --- TEST EDGE (prod branch only) ---\n\n"
+    ./nightwatch.js --env edge --tag e2etest
+
+    printf "\n --- TEST CHROME on MAC (prod branch only) ---\n\n"
+    ./nightwatch.js --env chrome-on-mac --tag e2etest
+
+    printf "\n --- TEST FIREFOX on MAC (prod branch only) ---\n\n"
+    ./nightwatch.js --env firefox-on-mac --tag e2etest
+
+    printf "\n --- TEST FIREFOX on MAC ESR (prod branch only) ---\n\n"
+    ./nightwatch.js --env firefox-on-mac-esr --tag e2etest
   fi
 
   if [ ${CI_BRANCH} == "canarytest" ]; then
