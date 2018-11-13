@@ -86,13 +86,18 @@ There are two testing procedures for uqlibrary-pages: components testing and int
 
 Run `bin/test-setup.sh` to update settings for remote nightwatch.js testing and for wct unit testing
   
-### Components testing
+### Components testing ('unit testing' on codeship)
 
+* on codeship, tests are run by bin/codeship-testing.sh. You may find reading through this file helpful to follow what happens.
 * tests are run with [Web Component Tester](https://github.com/Polymer/web-component-tester)
-* configuration is defined in wct.conf.js, it contains configuration for local testing (chrome/firefox) and for remote testing on SauceLabs (IE/Safari/etc)
+* configuration is defined in wct.conf.js (various files such as wct.conf.js.local are renamed at run time), it contains configuration for local testing (chrome/firefox) and for remote testing on SauceLabs (IE/Safari/etc)
 * from bower_components all custom uqlibrary-* tests suites are collected with in test-setup.sh into app/test/index.html
 
-Tests are launched with `gulp test` (`gulp test:remote` for testing on SauceLabs)
+Tests are run with gulp:
+
+* setup the wct.conf.js file by choosing which file you want to use and copying, eg: `cp wct.conf.js.local wct.conf.js`
+* `gulp test` to launch the tests (`gulp test:remote` for testing on SauceLabs)
+
 
 When you run this command, you may get the error:
 
@@ -100,15 +105,15 @@ When you run this command, you may get the error:
 
 To set these fields: 
 
-1. Visit the [Pages Codeship Environment Variable page](https://app.codeship.com/projects/131650/configure_environment)
+1. Visit the [uqlibrary-pages Codeship Environment Variable page](https://app.codeship.com/projects/131650/configure_environment)
 2. Note the values for SAUCE_USERNAME and for SAUCE_ACCESS_KEY
 3. export these as local variables on your box, eq:
 
     `$ export SAUCE_ACCESS_KEY='XXX'`
 
-then run the `wct` command again
+then run the gulp command again
 
-### Integration testing
+### Integration testing ('test commands' on codeship)
 
 Integration testing is performed using [Nightwatch.js](http://nightwatchjs.org/). Integration testing is performed before deployment on Codeship.
 SauceLabs are not running for master branch.
@@ -117,7 +122,7 @@ SauceLabs are not running for master branch.
 * nightwatch.json - contains settings for local (bin/local/* ) and remote testing on SauceLabs (bin/saucelabs/*)
 * nightwatch.js - is a test runner script
 
-#### Local testing
+#### Local testing ('nightwatch local' on codeship)
 
 * Run Selenium server. Selenium is required to run tests locally [Selenium Installer] (http://selenium-release.storage.googleapis.com/index.html)
 
@@ -125,7 +130,10 @@ SauceLabs are not running for master branch.
   java -jar selenium-server-standalone-{VERSION}.jar
 ```
 
-or `brew install selenium-server-standalone` then `selenium-server -port 4444`
+or
+
+1. `brew install selenium-server-standalone` (OSX - first time only, or on reinstall) then
+2. `selenium-server -port 4444` (each time, to start the server)
 
 * start server (will start server and project will be accessible at http://localhost:5001)
 
