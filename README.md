@@ -113,7 +113,7 @@ To set these fields:
 
 then run the gulp command again
 
-### Integration testing ('test commands' on codeship)
+### Integration testing
 
 Integration testing is performed using [Nightwatch.js](http://nightwatchjs.org/). Integration testing is performed before deployment on Codeship.
 SauceLabs are not running for master branch.
@@ -130,9 +130,9 @@ SauceLabs are not running for master branch.
   java -jar selenium-server-standalone-{VERSION}.jar
 ```
 
-or
+or, if you are on OSX:
 
-1. `brew install selenium-server-standalone` (OSX - first time only, or on reinstall) then
+1. `brew install selenium-server-standalone` (first time only, or on reinstall) then
 2. `selenium-server -port 4444` (each time, to start the server)
 
 * start server (will start server and project will be accessible at http://localhost:5001)
@@ -145,11 +145,11 @@ or
 
 ```sh
   cd bin/local
-  ./nightwatch.js
+  ./nightwatch.js # never run it without some sort of tag as you dont want to run the minimal package directly
   ./nightwatch.js --env chrome --tag e2etest
 ```  
 
-#### SauceLabs testing
+#### SauceLabs testing ('test commands' on codeship)
 
 * testing requires Sauce Connect node module (installed with all node dependencies)
 
@@ -186,7 +186,7 @@ Sometimes you will need to test functionality end to end or demonstrate in the b
   * update bower.json to point appropriate components to the feature branch, replacing the release number (this will almost certainly include uqlibrary-api)
   * `bower update` locally to see if you need to add any resolutions
   * push and wait for build to pass
-* http://assets.library.uq.edu.au/fixProblemX/pages/index.html should now work!
+* http://assets.library.uq.edu.au/fixProblemX/pages/index.html should now work! (note the branch name we specified above is in the path)
 * If you require the final page to show on [test.library.uq.edu.au](http://test.library.uq.edu.au/) (e.g. the customer has asked for an easier url), ask a sys admin to change the current "haproxy backend config" for test.library.uq.edu.au to point to the pages branch on assets, eg, in this case, a branch called newFrogs,  (Remember to get them to change it back before you delete the branch on completion!)
 * When work is complete remember to update bower with release numbers to replace the branch names!!! Dont go to prod with branch names here!!
 
