@@ -50,6 +50,7 @@
     "tough-cookie": "^2.4.3",
     "vulcanize": ">= 1.4.2",
     "web-component-tester": "^5.0.0",
+    "wct-local": "2.0.15",
     "yargs": "^6.5.0"
   },
   "scripts": {
@@ -57,8 +58,7 @@
     "start": "gulp serve"
   },
   "engines": {
-    "npm": ">=3",
-    "node": "^6.2.2"
-  },
-  "dependencies": {}
+    "npm": "^6.4.1",
+    "node": "^8.12.0"
+  }
 }
