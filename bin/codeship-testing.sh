@@ -158,22 +158,22 @@ case "$PIPE_NUM" in
 
   if [ ${CI_BRANCH} == "production" ]; then
     # check all other browsers before going live
-    printf "\n --- TEST FIREFOX on WINDOWS (prod branch only) ---\n\n"
+    printf "\n --- TEST FIREFOX on WINDOWS (prod branch only) [ test browser 4 of 9 ] ---\n\n"
     ./nightwatch.js --env firefox-on-windows --tag e2etest
 
-    printf "\n --- TEST SAFARI on MAC (prod branch only) ---\n\n"
+    printf "\n --- TEST SAFARI on MAC (prod branch only) [ test browser 5 of 9 ] ---\n\n"
     ./nightwatch.js --env safari-on-mac --tag e2etest
 
-    printf "\n --- TEST EDGE (prod branch only) ---\n\n"
+    printf "\n --- TEST EDGE (prod branch only) [ test browser 6 of 9 ] ---\n\n"
     ./nightwatch.js --env edge --tag e2etest
 
-    printf "\n --- TEST CHROME on MAC (prod branch only) ---\n\n"
+    printf "\n --- TEST CHROME on MAC (prod branch only) [ test browser 7 of 9 ] ---\n\n"
     ./nightwatch.js --env chrome-on-mac --tag e2etest
 
-    printf "\n --- TEST FIREFOX on MAC (prod branch only) ---\n\n"
+    printf "\n --- TEST FIREFOX on MAC (prod branch only) [ test browser 8 of 9 ] ---\n\n"
     ./nightwatch.js --env firefox-on-mac --tag e2etest
 
-    printf "\n --- TEST FIREFOX on MAC ESR (prod branch only) ---\n\n"
+    printf "\n --- TEST FIREFOX on MAC ESR (prod branch only) [ test browser 9 of 9 ] ---\n\n"
     ./nightwatch.js --env firefox-on-mac-esr --tag e2etest
   fi
 
