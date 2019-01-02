@@ -13,7 +13,7 @@
     "uqlibrary-ga": "uqlibrary/uqlibrary-ga",
     "uqlibrary-hours": "uqlibrary/uqlibrary-hours",
     "uqlibrary-receipt": "uqlibrary/uqlibrary-receipt",
-    "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components",
+    "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components#feature-remove-UQ-from-titles-161945449",
     "uqlibrary-search": "uqlibrary/uqlibrary-search",
     "uqlibrary-secure-file-access": "uqlibrary/uqlibrary-secure-file-access",
     "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights",
