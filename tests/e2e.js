@@ -1,5 +1,7 @@
 var minimalUql = require('./e2e.minimal.js');
 var urlTest = 'http://localhost:5001';
+var clientWidth = 1280;
+var clientHeight = 1000;
 
 module.exports = {
     '@tags': ['e2etest', 'Main'],
@@ -7,7 +9,7 @@ module.exports = {
 
         client
             .url(urlTest)
-            .resizeWindow(1280, 1000)
+            .resizeWindow(clientWidth, clientHeight)
             .pause(20000) // allow saucelabs to get the page loaded
             .assert.elementPresent('paper-tabs#sidebar-tabs', 'paper-tabs component is present for side bar')
             .assert.elementPresent('paper-tabs#sidebar-tabs', 'paper-tabs component is present for side bar')
@@ -25,7 +27,7 @@ module.exports = {
                 }
             });
 
-        minimalUql.commonChecks(client, urlTest, 1280, 1000);
+        minimalUql.commonChecks(client, urlTest, clientWidth, clientHeight);
 
         client.end();
     },
