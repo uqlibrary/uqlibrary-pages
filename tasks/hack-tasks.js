@@ -17,9 +17,11 @@ var dist = function(subpath) {
 
 // remove when PR is done and cleared
 gulp.task('monkey-patch-paper-input', function() {
-  var regEx = new RegExp("bind-value=\"{{value}}\"", "g");
+  var regEx = new RegExp('bind-value="{{value}}"', 'g');
   return gulp.src(dist('**/elements.html'))
-      .pipe(replace({patterns: [{ match: regEx, replacement: "bind-value=\"{{value}}\" value$=\"[[value]]\" "}], usePrefix: false}))
+      .pipe(replace({
+        patterns: [{ match: regEx, replacement: 'bind-value="{{value}}" value$="[[value]]" '}], 
+        usePrefix: false}))
       .pipe(gulp.dest(dist()))
       .pipe($.size({title: 'monkey-patch-paper-input'}));
 });

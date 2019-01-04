@@ -1,4 +1,4 @@
-var minimalUql = require("./e2e.minimal.js");
+var minimalUql = require('./e2e.minimal.js');
 var urlTest = 'http://localhost:5001';
 
 module.exports = {

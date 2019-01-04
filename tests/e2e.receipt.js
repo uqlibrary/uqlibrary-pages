@@ -1,4 +1,4 @@
-var minimalUql = require("./e2e.minimal.js");
+var minimalUql = require('./e2e.minimal.js');
 var urlTest = 'http://localhost:5001/payment-receipt.html?Success=1&AmountPaid=1099&Receipt=ABC123';
 
 module.exports = {

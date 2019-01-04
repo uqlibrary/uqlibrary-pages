@@ -21,7 +21,7 @@ var dist = function(subpath) {
 
 var absolutePath = function () {
   var branch = "";
-  if (process.env.CI_BRANCH !== "production"){
+  if (process.env.CI_BRANCH !== 'production'){
     branch = process.env.CI_BRANCH + "/";
   }
 
@@ -32,24 +32,35 @@ var absolutePath = function () {
 // use only for deployment
 gulp.task('app-cache-version-update', function() {
 
-  var regExVersion = new RegExp("<VERSION>", "g");
-  var regExPath = new RegExp("/pages", "g");
+  var regExVersion = new RegExp('<VERSION>', 'g');
+  var regExPath = new RegExp('/pages', 'g');
   var absPath = absolutePath();
 
   var timeStamp = new Date();
 
   return gulp.src(dist('**/*.appcache'))
-      .pipe(replace({patterns: [{ match: regExVersion, replacement: timeStamp.getTime()}], usePrefix: false}))
-      .pipe(replace({patterns: [{ match: regExPath, replacement: absPath + 'pages'}], usePrefix: false}))
+      .pipe(replace({
+        patterns: [{ match: regExVersion, replacement: timeStamp.getTime()}], 
+        usePrefix: false
+      }))
+      .pipe(replace({
+        patterns: [{ match: regExPath, replacement: absPath + 'pages'}], 
+        usePrefix: false
+      }))
       .pipe(gulp.dest(dist()));
 });
 
 gulp.task('rev-appcache-update', function () {
-  var json = JSON.parse(fs.readFileSync(dist() + "/rev-manifest.json"));
+  var json = JSON.parse(fs.readFileSync(dist() + '/rev-manifest.json', 'utf8'));
 
-  var source = gulp.src(dist() + '/index.appcache');
+  var source = gulp.src(dist() + '/index.appcache', {
+    allowEmpty: true
+  });
+
   for (var key in json) {
-    if (!json.hasOwnProperty(key)) continue;
+    if (!json.hasOwnProperty(key)) {
+      continue;
+    }
     source.pipe($.replace(key, json[key]));
   }
 
@@ -71,27 +82,27 @@ gulp.task('rev', function () {
 
   var filter = $.filter(fileFilter, {restore: true});
   return gulp.src('dist/**')
-      .pipe(filter)
-      .pipe(rev())
-      .pipe(revDelete())
-      .pipe(filter.restore)
-      .pipe(revReplace({replaceInExtensions: ['.appcache']}))
-      .pipe(gulp.dest(dist()))
-      .pipe(rev.manifest())
-      .pipe(gulp.dest(dist()));
+    .pipe(filter)
+    .pipe(rev())
+    .pipe(revDelete())
+    .pipe(filter.restore)
+    .pipe(revReplace({replaceInExtensions: ['.appcache']}))
+    .pipe(gulp.dest(dist()))
+    .pipe(rev.manifest())
+    .pipe(gulp.dest(dist()));
 });
 
 gulp.task('rev-replace-polymer-fix', function () {
   // Polymer does not use a rev-replace compatible string so we need to manually replace
   return gulp.src('dist/**/*.html')
-      .pipe(revReplace({
-        manifest: gulp.src('dist/rev-manifest.json')
-      }))
-      .pipe(gulp.dest(dist()));
+    .pipe(revReplace({
+      manifest: gulp.src('dist/rev-manifest.json')
+    }))
+    .pipe(gulp.dest(dist()));
 });
 
 gulp.task('monkey-patch-rev-manifest', function () {
   return gulp.src('dist/rev-manifest.json')
-      .pipe($.replace('elements/elements', 'elements'))
-      .pipe(gulp.dest(dist()));
+    .pipe($.replace('elements/elements', 'elements'))
+    .pipe(gulp.dest(dist()));
 });

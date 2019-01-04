@@ -1,4 +1,4 @@
-var minimalUql = require("./e2e.minimal.js");
+var minimalUql = require('./e2e.minimal.js');
 var urlTest = 'http://localhost:5001';
 var clientWidth = 600;
 var clientHeight = 800;
