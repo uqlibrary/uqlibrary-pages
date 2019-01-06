@@ -28,7 +28,7 @@ Instruction: Follow [polymer development style guide](http://polymerelements.git
 With Node.js installed, run the following one liner from the root of your project:
 
 ```sh
-npm install -g gulp bower && npm install && bower install
+npm install -g gulp-cli bower && npm install && bower install
 ```
 
 ### Serve / watch
