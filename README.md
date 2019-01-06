@@ -195,9 +195,15 @@ Sometimes you will need to test functionality end to end or demonstrate in the b
 * If you require the final page to show on <https://test.library.uq.edu.au/> (e.g. the customer has asked for an easier url), ask a sys admin to change the current "haproxy backend config" for test.library.uq.edu.au to point to the pages branch on assets, eg, in this case, a branch called newFrogs,  (Remember to get them to change it back before you delete the branch on completion!)
 * When work is complete remember to update bower with release numbers to replace the branch names!!! Dont go to prod with branch names here!!
 
-The canarytest branch is used in a weekly job started from AWS as [repo-periodic-test](https://ap-southeast-2.console.aws.amazon.com/ecs/home?region=ap-southeast-2#/clusters/default/scheduledTasks) in scheduled tasks that checks that our sites work in future browsers. See bin/codeship-test.sh
+#### Canary Tests
 
-It may appear that the 404 page is not used, for example, if you visit <https://www.library.uq.edu.au/404missing> you will get the Drupal template 404 (actually you are seeing a file that Dan has stolen from the drupal layout and put on one of the old servers and served via haproxy, but never mind that...), but the uqlibrary-pages 404 is loaded at times, for example, any missing image or .js on www.library which is loaded directly (for example when a user notes it is missing and tries it manually) will load the uqlibrary-pages 404, and some s3 buckets on AWS are configured to return the uqlibrarypages 404 when there is a missing file, eg <https://www.library.uq.edu.au/bomdata/doesntoexist>.
+* The canarytest branch is used in a weekly job started from AWS as [repo-periodic-test](https://ap-southeast-2.console.aws.amazon.com/ecs/home?region=ap-southeast-2#/clusters/default/scheduledTasks) in Scheduled Tasks that checks that our sites work in future browsers. See bin/codeship-test.sh 
+* Scheduled Tasks: in Amazon, go to ECS > Clusters > Default > Scheduled Tasks tab which may be [here](https://ap-southeast-2.console.aws.amazon.com/ecs/home?region=ap-southeast-2#/clusters/default/scheduledTasks) and note task `repo-periodic-test` (more indicative naming would be `repo-periodic-test-pages`). 
+* This can be run manually from the Tasks tab - (put in repo-periodic-test as the Name and I think you have to click open Advanced Options so you can add the same extra parameter as the scheduled task?)
+
+#### 404s
+
+It may appear that the 404 page is not used, for example, if you visit <https://www.library.uq.edu.au/404missing> you will get the Drupal template 404 (actually you are seeing a file that Dan has stolen from the drupal layout and put on one of the old servers and served via haproxy, but never mind that...), but the uqlibrary-pages 404 is loaded at times, for example, any missing image or .js on www.library.uq.edu.au which is loaded directly (for example when a user notes it is missing and tries it manually) will load the uqlibrary-pages 404, and some s3 buckets on AWS are configured to return the uqlibrarypages 404 when there is a missing file, eg <https://www.library.uq.edu.au/bomdata/doesntoexist>.
 
 ## Application Theming & Styling
 
