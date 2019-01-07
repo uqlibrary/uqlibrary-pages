@@ -20,8 +20,9 @@ requireDir('./tasks');
 var replace = require('gulp-replace-task');
 var taskList = require('gulp-task-listing');
 var argv = require('yargs/yargs')(process.argv.slice(2));
+var gutil = require('gulp-util');
+var jshint = require('gulp-jshint');
 
-// var ghPages = require('gulp-gh-pages');
 var AUTOPREFIXER_BROWSERS = [
   'ie >= 10',
   'ie_mob >= 10',
