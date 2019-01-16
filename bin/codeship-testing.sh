@@ -71,7 +71,7 @@ case "$PIPE_NUM" in
 
     # trap logSauceCommands EXIT
 
-    printf "\n-- start server in the background, then sleep to give it time to load --"
+    printf "\n-- Start server in the background, then sleep to give it time to load --"
     nohup bash -c "gulp serve:dist 2>&1 &"
     sleep 40 # seconds
     cat nohup.out
@@ -87,11 +87,11 @@ case "$PIPE_NUM" in
   fi
 ;;
 "2")
-  # "Nightwatch local" pipeline on codeship
+  # "Nightwatch" pipeline on codeship
 
   # trap logSauceCommands EXIT
 
-  echo "\n-- start server in the background, then sleep to give it time to load --"
+  printf "\n-- Start server in the background, then sleep to give it time to load --"
   nohup bash -c "gulp serve:dist 2>&1 &"
   sleep 40 # seconds
   cat nohup.out
@@ -126,7 +126,7 @@ case "$PIPE_NUM" in
 
   # trap logSauceCommands EXIT
 
-  echo "\n-- start server in the background, then sleep to give it time to load --"
+  echo "\n-- Start server in the background, then sleep to give it time to load --"
   nohup bash -c "gulp serve:dist 2>&1 &"
   sleep 40 # seconds
   cat nohup.out
