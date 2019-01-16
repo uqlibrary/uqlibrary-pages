@@ -4,7 +4,6 @@ module.exports = {
         client
             .url(urlTest)
             .resizeWindow(clientWidth, clientHeight)
-            .pause(20000) // allow saucelabs to get the page loaded
             .waitForElementVisible('uql-search-button', 10000)
             .assert.elementPresent('uq-minimal-header', 'uq header component is present')
             .assert.elementPresent('uq-minimal-header uql-global-links', 'uq global links component is present')
