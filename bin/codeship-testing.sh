@@ -71,7 +71,7 @@ case "$PIPE_NUM" in
 
     trap logSauceCommands EXIT
 
-    echo "\n-- start server in the background, then sleep to give it time to load --"
+    printf "\n-- start server in the background, then sleep to give it time to load --"
     nohup bash -c "gulp serve:dist 2>&1 &"
     sleep 40 # seconds
     cat nohup.out

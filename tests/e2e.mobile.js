@@ -13,10 +13,8 @@ module.exports = {
             .pause(20000) // allow saucelabs to get the page loaded
             .assert.elementPresent('uql-menu-button', 'uq hamburger menu button uql-menu-button component is present');
 
-        //Common checks from e2e.minimal.js
         minimalUql.commonChecks(client, urlTest, clientWidth, clientHeight);
 
-        client.end()
-
+        client.end();
     }
 };
