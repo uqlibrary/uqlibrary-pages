@@ -69,7 +69,7 @@ case "$PIPE_NUM" in
     rm wct.conf.js
     printf "\n --- WCT unit testing complete---\n\n"
 
-    trap logSauceCommands EXIT
+    # trap logSauceCommands EXIT
 
     printf "\n-- start server in the background, then sleep to give it time to load --"
     nohup bash -c "gulp serve:dist 2>&1 &"
@@ -82,17 +82,14 @@ case "$PIPE_NUM" in
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
 
-    printf "\n --- TEST CHROME Beta on WINDOWS (canary test) ---\n\n"
-    ./nightwatch.js --env chrome-on-windows-beta --tag e2etest
-
-    printf "\n --- TEST CHROME Dev on WINDOWS (canary test) ---\n\n"
-    ./nightwatch.js --env chrome-on-windows-dev --tag e2etest
+    printf "\n --- TEST CHROME Beta and Dev on WINDOWS (canary test) ---\n\n"
+    ./nightwatch.js --env chrome-on-windows-beta,chrome-on-windows-dev --tag e2etest
   fi
 ;;
 "2")
   # "Nightwatch local" pipeline on codeship
 
-  trap logSauceCommands EXIT
+  # trap logSauceCommands EXIT
 
   echo "\n-- start server in the background, then sleep to give it time to load --"
   nohup bash -c "gulp serve:dist 2>&1 &"
@@ -120,17 +117,14 @@ case "$PIPE_NUM" in
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
 
-    printf "\n --- TEST FIREFOX Beta on WINDOWS (canary test) ---\n\n"
-    ./nightwatch.js --env firefox-on-windows-beta --tag e2etest
-
-    printf "\n --- TEST FIREFOX Dev on WINDOWS (canary test) ---\n\n"
-    ./nightwatch.js --env firefox-on-windows-dev --tag e2etest
+    printf "\n --- TEST FIREFOX Beta and Dev on WINDOWS (canary test) ---\n\n"
+    ./nightwatch.js --env firefox-on-windows-beta,firefox-on-windows-dev --tag e2etest
   fi
 ;;
 "3")
   # "Test commands" pipeline on codeship
 
-  trap logSauceCommands EXIT
+  # trap logSauceCommands EXIT
 
   echo "\n-- start server in the background, then sleep to give it time to load --"
   nohup bash -c "gulp serve:dist 2>&1 &"
@@ -144,16 +138,10 @@ case "$PIPE_NUM" in
 
   if [ ${CI_BRANCH} != "canarytest" ]; then
       # Win/Chrome is our most used browser, 2018
-      printf "\n --- TEST CHROME on WINDOWS (default) ---\n\n"
-      ./nightwatch.js --tag e2etest
-
-      # test pre-prod, for inconsistencies
-      printf "\n --- TEST IE 11 ---\n\n"
-      ./nightwatch.js --env ie11 --tag e2etest
-
       # Win/FF is our second most used browser, 2018 - we have the ESR release on Library Desktop SOE
-      printf "\n --- TEST FIREFOX on WINDOWS ESR ---\n\n"
-      ./nightwatch.js --env firefox-on-windows-esr --tag e2etest
+
+      printf "\n --- TEST popular browsers on WINDOWS ---\n\n"
+      ./nightwatch.js --tag e2etest --env default,ie11,firefox-on-windows-esr --tag e2etest
   fi
 
   if [ ${CI_BRANCH} == "production" ]; then
@@ -169,11 +157,8 @@ case "$PIPE_NUM" in
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
 
-    printf "\n --- TEST CHROME Beta on MAC (canary test) ---\n\n"
-    ./nightwatch.js --env chrome-on-mac-beta --tag e2etest
-
-    printf "\n --- TEST CHROME Dev on MAC (canary test) ---\n\n"
-    ./nightwatch.js --env chrome-on-mac-dev --tag e2etest
+    printf "\n --- TEST CHROME Beta and Dev on MAC (canary test) ---\n\n"
+    ./nightwatch.js --env chrome-on-mac-beta,chrome-on-mac-dev --tag e2etest
   fi
 ;;
 esac
