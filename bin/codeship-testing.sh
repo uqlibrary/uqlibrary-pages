@@ -157,24 +157,12 @@ case "$PIPE_NUM" in
   fi
 
   if [ ${CI_BRANCH} == "production" ]; then
-    # check all other browsers before going live
-    printf "\n --- TEST FIREFOX on WINDOWS (prod branch only) ---\n\n"
-    ./nightwatch.js --env firefox-on-windows --tag e2etest
-
-    printf "\n --- TEST SAFARI on MAC (prod branch only) ---\n\n"
-    ./nightwatch.js --env safari-on-mac --tag e2etest
-
-    printf "\n --- TEST EDGE (prod branch only) ---\n\n"
-    ./nightwatch.js --env edge --tag e2etest
-
-    printf "\n --- TEST CHROME on MAC (prod branch only) ---\n\n"
-    ./nightwatch.js --env chrome-on-mac --tag e2etest
-
-    printf "\n --- TEST FIREFOX on MAC (prod branch only) ---\n\n"
-    ./nightwatch.js --env firefox-on-mac --tag e2etest
-
-    printf "\n --- TEST FIREFOX on MAC ESR (prod branch only) ---\n\n"
-    ./nightwatch.js --env firefox-on-mac-esr --tag e2etest
+    # Use multiple environments as we have more than 4 browsers to test.
+    # This is more than the number of test scripts, so parallelising environments is better
+    # than parallelising scripts. Keep to a maximum of 6 browsers so that parallel runs in 
+    # other pipelines don't overrun available SauceLabs slots (10).
+    printf "\n --- Check all other browsers before going live (prod branch only) ---\n\n"
+    ./nightwatch.js --env firefox-on-windows,safari-on-mac,edge,chrome-on-mac,firefox-on-mac,firefox-on-mac-esr --tag e2etest
   fi
 
   if [ ${CI_BRANCH} == "canarytest" ]; then
