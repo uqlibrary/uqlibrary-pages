@@ -18,8 +18,10 @@ sauceConnectLauncher(
   function (err, sauceConnectProcess) {
 
     if (err) {
-      console.log("Error: ", err.message);
-      return;
+      // Ignore.
+
+      // console.log("Error: ", err.message);
+      // return;
     }
 
     console.log("Started Sauce Connect Process");
