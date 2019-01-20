@@ -1,9 +1,9 @@
 module.exports = {
     commonChecks : function (client, urlTest, clientWidth, clientHeight) {
+
         client
             .url(urlTest)
             .resizeWindow(clientWidth, clientHeight)
-            .pause(20000) // allow saucelabs to get the page loaded
             .waitForElementVisible('uql-search-button', 10000)
             .assert.elementPresent('uq-minimal-header', 'uq header component is present')
             .assert.elementPresent('uq-minimal-header uql-global-links', 'uq global links component is present')
@@ -16,7 +16,8 @@ module.exports = {
             .assert.elementPresent('uql-login-button', 'uql login button is present')
             .assert.elementPresent('uq-minimal-footer', 'uq footer component is present')
             .assert.elementPresent('uq-minimal-footer .footer-legal-details a', 'Emergency Phone footer component is present')
-            .assert.containsText('uq-minimal-footer .footer-legal-details .h6', 'Emergency');
+            .assert.containsText('uq-minimal-footer .footer-legal-details .h6', 'Emergency')
+        ;
 
         client.end();
     }

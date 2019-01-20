@@ -11,7 +11,7 @@ var cloudfront = require('gulp-invalidate-cloudfront');
 
 var path = require('path');
 var fs = require('fs');
-var argv = require('yargs').argv;
+var argv = require('yargs/yargs')(process.argv.slice(2));
 
 var DIST = 'dist';
 var dist = function(subpath) {
@@ -25,7 +25,7 @@ var dist = function(subpath) {
  * If no bucket path passed will invalidate production subdir
  */
 gulp.task('invalidate', function () {
-  var awsConfig = JSON.parse(fs.readFileSync('./aws.json'));
+  var awsConfig = JSON.parse(fs.readFileSync('./aws.json', 'utf8'));
 
   var invalidatePath = '';
 
@@ -64,7 +64,7 @@ gulp.task('invalidate', function () {
 gulp.task('publish', function () {
 
   // create a new publisher using S3 options
-  var awsConfig = JSON.parse(fs.readFileSync('./aws.json'));
+  var awsConfig = JSON.parse(fs.readFileSync('./aws.json', 'utf8'));
   var publisher = $.awspublish.create(awsConfig);
 
   // define custom headers

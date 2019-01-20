@@ -12,9 +12,9 @@ base=$(basename ${src})
 dest="${base/uqlibrary-/}"
 
 echo "Install dependencies"
-npm install -g gulp bower
+npm install -g gulp-cli bower
 npm install
-bower install
+bower install --production
 
 npm rebuild node-sass
 

@@ -29,8 +29,8 @@ var gtmConfig = {
 // inject preloader.html code into html pages
 gulp.task('inject-preloader', function() {
 
-  var regEx = new RegExp("#preloader#", "g");
-  var browserUpdate = fs.readFileSync("app/bower_components/uqlibrary-browser-supported/preloader.html", "utf8");
+  var regEx = new RegExp('#preloader#', 'g');
+  var browserUpdate = fs.readFileSync('app/bower_components/uqlibrary-browser-supported/preloader.html', 'utf8');
 
   return gulp.src(dist('*'))
       .pipe(replace({patterns: [{ match: regEx, replacement: browserUpdate}], usePrefix: false}))
@@ -41,8 +41,8 @@ gulp.task('inject-preloader', function() {
 // inject browser-update.js code into html pages
 gulp.task('inject-browser-update', function() {
 
-  var regEx = new RegExp("//bower_components/uqlibrary-browser-supported/browser-update.js", "g");
-  var browserUpdate=fs.readFileSync("app/bower_components/uqlibrary-browser-supported/browser-update.js", "utf8");
+  var regEx = new RegExp('//bower_components/uqlibrary-browser-supported/browser-update.js', 'g');
+  var browserUpdate=fs.readFileSync('app/bower_components/uqlibrary-browser-supported/browser-update.js', 'utf8');
 
   return gulp.src(dist('*'))
       .pipe(replace({patterns: [{ match: regEx, replacement: browserUpdate}], usePrefix: false}))
@@ -51,15 +51,17 @@ gulp.task('inject-browser-update', function() {
 });
 
 // inject values for GA
-gulp.task('inject-ga-values', function() {
+gulp.task('inject-ga-values', function(done) {
 
-  if (process.env.CI_BRANCH !== "production")
+  if (process.env.CI_BRANCH !== "production") {
+    done();
     return;
+  }
 
-  var gaIdEx = new RegExp("<GA-TRACKING-ID>", "g");
-  var gaUrlEx = new RegExp("<GA-WEBSITE-URL>", "g");
-  var gaDomainEx = new RegExp("<GA-COOKIE-DOMAIN>", "g");
-  var gtmIdEx = new RegExp("<GTM-CONTAINER-ID>", "g");
+  var gaIdEx = new RegExp('<GA-TRACKING-ID>', 'g');
+  var gaUrlEx = new RegExp('<GA-WEBSITE-URL>', 'g');
+  var gaDomainEx = new RegExp('<GA-COOKIE-DOMAIN>', 'g');
+  var gtmIdEx = new RegExp('<GTM-CONTAINER-ID>', 'g');
 
   return gulp.src(dist('**/elements/*.js'))
       .pipe(replace({patterns: [{ match: gaIdEx, replacement: gaConfig.id}], usePrefix: false}))
