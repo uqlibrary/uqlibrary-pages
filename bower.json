@@ -14,7 +14,7 @@
     "uqlibrary-hours": "uqlibrary/uqlibrary-hours",
     "uqlibrary-receipt": "uqlibrary/uqlibrary-receipt",
     "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components",
-    "uqlibrary-search": "uqlibrary/uqlibrary-search",
+    "uqlibrary-search": "uqlibrary/uqlibrary-search#primo-url",
     "uqlibrary-secure-file-access": "uqlibrary/uqlibrary-secure-file-access",
     "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights",
     "uqlibrary-styles": "uqlibrary/uqlibrary-styles",
@@ -24,6 +24,7 @@
     "web-component-tester": "*"
   },
   "resolutions": {
-    "test-fixture": "^1.0.0"
+    "test-fixture": "^1.0.0",
+    "uqlibrary-search": "primo-url"
   }
 }
