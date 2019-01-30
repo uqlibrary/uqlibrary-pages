@@ -120,7 +120,7 @@
           <div class="card-content">
             <uqlibrary-search ga-app-name="Homepage search"></uqlibrary-search>
           </div>
-          <div class="card-actions">
+          <div id="help-links" class="card-actions">
             <template is="dom-repeat" items="[[selectedSearchSource.helpLinks]]">
               <paper-button class="button-secondary" tabindex="-1"><a href$="[[item.url]]">[[item.title]]</a></paper-button>
             </template>

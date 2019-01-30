@@ -16,7 +16,6 @@ if (!browserData.supported) {
 
   // imports are loaded and elements have been registered
   window.addEventListener('WebComponentsReady', function(e) {
-
     //only display unsupported big message if web components can't be loaded
     if (document.getElementById('preloader-unsupported'))
       document.getElementById('preloader-unsupported').style.display = 'none';
@@ -30,6 +29,18 @@ if (!browserData.supported) {
       var menu = document.querySelector('uql-menu');
       menu.toggleMenu();
     });
+
+      var helpLinks = document.querySelector("#help-links");
+      helpLinks.addEventListener('tap', function (e) {
+          e.preventDefault();
+          var url = e.target.href;
+          // only modify primo urls with logged in params
+          if (url.indexOf('primo') !== -1) {
+            var search = Polymer.dom(document).querySelector("uqlibrary-search");
+            url = search.links.primoLoggedIn(url);
+          }
+          window.location.href = url;
+      });
 
     // GA events
     ga = document.querySelector('#home-ga');
@@ -46,7 +57,6 @@ if (!browserData.supported) {
     //// Listen for template bound event to know when bindings
     //// have resolved and content has been stamped to the page
     uqlFrontPage.addEventListener('dom-change', function () {
-
       //set sidebar tab default
       uqlFrontPage.selectedSidebarTab = 0;
       uqlFrontPage.selectedSearchTab = 0;
