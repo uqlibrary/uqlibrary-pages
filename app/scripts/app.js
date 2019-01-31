@@ -37,7 +37,7 @@ if (!browserData.supported) {
           // only modify primo urls with logged in params
           if (url.indexOf('primo') !== -1) {
             var search = Polymer.dom(document).querySelector("uqlibrary-search");
-            url = search.links.primoLoggedIn(url);
+            url = search.getPrimoLoggedInUrl(url);
           }
           window.location.href = url;
       });
