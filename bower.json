@@ -6,7 +6,7 @@
     "paper-elements": "PolymerElements/paper-elements#^1.0.1",
     "polymer": "Polymer/polymer#^1.11.3",
     "uqlibrary-alerts": "uqlibrary/uqlibrary-alerts",
-    "uqlibrary-api": "uqlibrary/uqlibrary-api",
+    "uqlibrary-api": "uqlibrary/uqlibrary-api#1.5.17",
     "uqlibrary-autosuggest-input": "uqlibrary/uqlibrary-autosuggest-input",
     "uqlibrary-browser-supported": "uqlibrary/uqlibrary-browser-supported",
     "uqlibrary-computers": "uqlibrary/uqlibrary-computers",
