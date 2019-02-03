@@ -2,6 +2,9 @@
 # start debugging/tracing commands, -e - exit if command returns error (non-zero status)
 set -eE
 
+# if you want to log any saucelab errors to the codeship log, set this to true; else leave it as false
+LOG_SAUCELAB_ERRORS=false
+
 if [ -z ${TMPDIR} ]; then # codeship doesnt seem to set this
   TMPDIR="/tmp/"
 fi
@@ -9,6 +12,11 @@ SAUCELABS_LOG_FILE="${TMPDIR}sc.log"
 echo "On failure, will look for Saucelabs error log here: ${SAUCELABS_LOG_FILE}"
 
 function logSauceCommands {
+  if [[ "$LOG_SAUCELAB_ERRORS" = false ]]; then
+    echo "An error happened and saucelabs failed but we arent reporting the output - set LOG_SAUCELAB_ERRORS to true in bin/codeship-testing.sh to see the log next time"
+    return
+  fi
+
   if [ ! -f "$SAUCELABS_LOG_FILE" ]; then
     echo "$SAUCELABS_LOG_FILE not found - looking for alt file"
     # testing with check /tmp/sc.log presencewct? it writes to a subdirectory, eg /tmp/wct118915-6262-1w0uwzy.q8it/sc.log
@@ -33,8 +41,8 @@ else
   branch=$CI_BRANCH
 fi
 
-# "canarytest" is used by a job that runs weekly to test the polymer repos on the upcoming browser versions
-# the ordering of the canary browser tests is: test beta, then test dev (beta is closer to ready for prod, per http://www.chromium.org/getting-involved/dev-channel
+# "canarytest" branch is used by a job that runs weekly to test the polymer repos on the upcoming browser versions
+# The intent is to get early notice of polymer 1 failing in modern browsers
 
 case "$PIPE_NUM" in
 "1")
@@ -49,6 +57,9 @@ case "$PIPE_NUM" in
   fi
 
   if [ ${CI_BRANCH} == "production" ]; then
+
+    trap logSauceCommands EXIT
+
     printf "\n --- REMOTE UNIT TESTING (prod branch only) ---\n\n"
     # split testing into 2 runs so it doesnt occupy all saucelab resources in one hit
     cp wct.conf.js.remoteA wct.conf.js
@@ -65,7 +76,7 @@ case "$PIPE_NUM" in
 "2")
   # "Nightwatch" pipeline on codeship
 
-  # trap logSauceCommands EXIT
+  trap logSauceCommands EXIT
 
   printf "\n-- Start server in the background, then sleep to give it time to load --"
   nohup bash -c "gulp serve:dist 2>&1 &"
@@ -89,7 +100,7 @@ case "$PIPE_NUM" in
 "3")
   # "Test commands" pipeline on codeship
 
-  # trap logSauceCommands EXIT
+  trap logSauceCommands EXIT
 
   printf "\n-- Start server in the background, then sleep to give it time to load --"
   nohup bash -c "gulp serve:dist 2>&1 &"
@@ -127,8 +138,6 @@ case "$PIPE_NUM" in
     gulp test:remote
     rm wct.conf.js
     printf "\n --- WCT unit testing complete ---\n\n"
-
-    # trap logSauceCommands EXIT
 
     printf "\n-- Start server in the background, then sleep to give it time to load --"
     nohup bash -c "gulp serve:dist 2>&1 &"
