@@ -63,11 +63,14 @@ case "$PIPE_NUM" in
   fi
 
   if [ ${CI_BRANCH} == "canarytest" ]; then
+    printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
+    printf "If you get a fail, try it manually in that browser\n\n"
+
     printf "\n --- LOCAL WCT CANARY UNIT TESTING ---\n\n"
     cp wct.conf.js.canary wct.conf.js
     gulp test:remote
     rm wct.conf.js
-    printf "\n --- WCT unit testing complete---\n\n"
+    printf "\n --- WCT unit testing complete ---\n\n"
 
     # trap logSauceCommands EXIT
 
@@ -79,11 +82,16 @@ case "$PIPE_NUM" in
     printf "\n --- Saucelabs Integration Testing ---\n\n"
     cd bin/saucelabs
 
-    printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
-    printf "If you get a fail, try it manually in that browser\n\n"
+    # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
 
     printf "\n --- TEST CHROME Beta and Dev on WINDOWS (canary test) ---\n\n"
     ./nightwatch.js --env chrome-on-windows-beta,chrome-on-windows-dev --tag e2etest
+
+    printf "\n --- TEST FIREFOX Beta and Dev on WINDOWS (canary test) ---\n\n"
+    ./nightwatch.js --env firefox-on-windows-beta,firefox-on-windows-dev --tag e2etest
+
+    printf "\n --- TEST CHROME Beta and Dev on MAC (canary test) ---\n\n"
+    ./nightwatch.js --env chrome-on-mac-beta,chrome-on-mac-dev --tag e2etest
   fi
 ;;
 "2")
@@ -108,17 +116,6 @@ case "$PIPE_NUM" in
 
       printf "\n --- TEST CHROME ---\n\n"
       ./nightwatch.js --env chrome --tag e2etest
-  fi
-
-  if [ ${CI_BRANCH} == "canarytest" ]; then
-    printf "\n --- Saucelabs Integration Testing ---\n\n"
-    cd bin/saucelabs
-
-    printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
-    printf "If you get a fail, try it manually in that browser\n\n"
-
-    printf "\n --- TEST FIREFOX Beta and Dev on WINDOWS (canary test) ---\n\n"
-    ./nightwatch.js --env firefox-on-windows-beta,firefox-on-windows-dev --tag e2etest
   fi
 ;;
 "3")
@@ -151,14 +148,6 @@ case "$PIPE_NUM" in
     # other pipelines don't overrun available SauceLabs slots (10).
     printf "\n --- Check all other browsers before going live (prod branch only) ---\n\n"
     ./nightwatch.js --env firefox-on-windows,safari-on-mac,edge,chrome-on-mac,firefox-on-mac,firefox-on-mac-esr --tag e2etest
-  fi
-
-  if [ ${CI_BRANCH} == "canarytest" ]; then
-    printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
-    printf "If you get a fail, try it manually in that browser\n\n"
-
-    printf "\n --- TEST CHROME Beta and Dev on MAC (canary test) ---\n\n"
-    ./nightwatch.js --env chrome-on-mac-beta,chrome-on-mac-dev --tag e2etest
   fi
 ;;
 esac
