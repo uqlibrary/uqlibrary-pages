@@ -83,15 +83,8 @@ case "$PIPE_NUM" in
     cd bin/saucelabs
 
     # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
-
     printf "\n --- TEST CHROME Beta and Dev on WINDOWS (canary test) ---\n\n"
-    ./nightwatch.js --env chrome-on-windows-beta,chrome-on-windows-dev --tag e2etest
-
-    printf "\n --- TEST FIREFOX Beta and Dev on WINDOWS (canary test) ---\n\n"
-    ./nightwatch.js --env firefox-on-windows-beta,firefox-on-windows-dev --tag e2etest
-
-    printf "\n --- TEST CHROME Beta and Dev on MAC (canary test) ---\n\n"
-    ./nightwatch.js --env chrome-on-mac-beta,chrome-on-mac-dev --tag e2etest
+    ./nightwatch.js --env chrome-on-windows-beta,chrome-on-windows-dev,chrome-on-mac-beta,chrome-on-mac-dev,firefox-on-windows-beta,firefox-on-windows-dev --tag e2etest
   fi
 ;;
 "2")
@@ -138,7 +131,7 @@ case "$PIPE_NUM" in
       # Win/FF is our second most used browser, 2018 - we have the ESR release on Library Desktop SOE
 
       printf "\n --- TEST popular browsers on WINDOWS ---\n\n"
-      ./nightwatch.js --tag e2etest --env default,ie11,firefox-on-windows-esr --tag e2etest
+      ./nightwatch.js --env default,ie11,firefox-on-windows-esr --tag e2etest
   fi
 
   if [ ${CI_BRANCH} == "production" ]; then
