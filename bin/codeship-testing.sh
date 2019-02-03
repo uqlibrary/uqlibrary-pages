@@ -107,12 +107,12 @@ case "$PIPE_NUM" in
   sleep 40 # seconds
   cat nohup.out
 
-  printf "\n --- Saucelabs Integration Testing ---\n\n"
-  cd bin/saucelabs
-
   # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
 
   if [ ${CI_BRANCH} != "canarytest" ]; then
+      printf "\n --- Saucelabs Integration Testing (nightwatch) ---\n\n"
+      cd bin/saucelabs
+
       # Win/Chrome is our most used browser, 2018
       # Win/FF is our second most used browser, 2018 - we have the ESR release on Library Desktop SOE
 
@@ -121,6 +121,9 @@ case "$PIPE_NUM" in
   fi
 
   if [ ${CI_BRANCH} == "production" ]; then
+    printf "\n --- Saucelabs Integration Testing (nightwatch) ---\n\n"
+    cd bin/saucelabs
+
     # Use multiple environments as we have more than 4 browsers to test.
     # This is more than the number of test scripts, so parallelising environments is better
     # than parallelising scripts. Keep to a maximum of 6 browsers so that parallel runs in 
@@ -139,16 +142,10 @@ case "$PIPE_NUM" in
     rm wct.conf.js
     printf "\n --- WCT unit testing complete ---\n\n"
 
-    printf "\n-- Start server in the background, then sleep to give it time to load --"
-    nohup bash -c "gulp serve:dist 2>&1 &"
-    sleep 40 # seconds
-    cat nohup.out
-
-    printf "\n --- Saucelabs Integration Testing ---\n\n"
+    printf "\n --- Saucelabs Integration Testing (nightwatch) ---\n\n"
     cd bin/saucelabs
 
     # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
-    printf "\n --- TEST CHROME Beta and Dev on WINDOWS (canary test) ---\n\n"
     ./nightwatch.js --env chrome-on-windows-beta,chrome-on-windows-dev,chrome-on-mac-beta,chrome-on-mac-dev,firefox-on-windows-beta,firefox-on-windows-dev --tag e2etest
   fi
 ;;
