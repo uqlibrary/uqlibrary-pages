@@ -122,11 +122,10 @@ case "$PIPE_NUM" in
 
   if [ ${CI_BRANCH} == "production" ]; then
     printf "\n --- Saucelabs Integration Testing (nightwatch) ---\n\n"
-    cd bin/saucelabs
 
     # Use multiple environments as we have more than 4 browsers to test.
     # This is more than the number of test scripts, so parallelising environments is better
-    # than parallelising scripts. Keep to a maximum of 6 browsers so that parallel runs in 
+    # than parallelising scripts. Keep to a maximum of 6 browsers so that parallel runs in
     # other pipelines don't overrun available SauceLabs slots (10).
     printf "\n --- Check all other browsers before going live (prod branch only) ---\n\n"
     ./nightwatch.js --env firefox-on-windows,safari-on-mac,edge,chrome-on-mac,firefox-on-mac,firefox-on-mac-esr --tag e2etest
