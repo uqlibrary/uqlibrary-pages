@@ -48,7 +48,9 @@ fi
 if [[ -z $PIPE_NUM ]]; then
   PIPE_NUM=3
 fi
+
 # "canarytest" is used by a job that runs weekly to test the polymer repos on the upcoming browser versions
+# The intent is to get early notice of polymer 1 failing in modern browsers
 # the ordering of the canary browser tests is: test beta, then test dev (beta is closer to ready for prod, per http://www.chromium.org/getting-involved/dev-channel
 
 case "$PIPE_NUM" in
@@ -63,6 +65,8 @@ case "$PIPE_NUM" in
       gulp test
       rm wct.conf.js
   fi
+
+  trap logSauceCommands EXIT
 
   if [[ ${CI_BRANCH} == "production" ]]; then
     printf "\n --- REMOTE UNIT TESTING (prod branch only) ---\n\n"
@@ -86,8 +90,6 @@ case "$PIPE_NUM" in
     gulp test:remote
     rm wct.conf.js
     printf "\n --- WCT unit testing complete---\n\n"
-
-    # trap logSauceCommands EXIT
 
     printf "\n-- Start server in the background, then sleep to give it time to load --"
     nohup bash -c "gulp serve:dist 2>&1 &"
@@ -117,7 +119,7 @@ case "$PIPE_NUM" in
 "2")
   # "Nightwatch" pipeline on codeship
 
-  # trap logSauceCommands EXIT
+  trap logSauceCommands EXIT
 
   printf "\n-- Start server in the background, then sleep to give it time to load --"
   nohup bash -c "gulp serve:dist 2>&1 &"
@@ -155,7 +157,7 @@ case "$PIPE_NUM" in
 "3")
   # "Test commands" pipeline on codeship
 
-  # trap logSauceCommands EXIT
+  trap logSauceCommands EXIT
 
   printf "\n-- Start server in the background, then sleep to give it time to load --"
   nohup bash -c "gulp serve:dist 2>&1 &"

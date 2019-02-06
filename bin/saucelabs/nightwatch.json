@@ -73,6 +73,26 @@
         "screenResolution": "1280x960"
       }
     },
+    "firefox-on-mac-dev": {
+      "desiredCapabilities": {
+        "browserName": "firefox",
+        "platform": "macOS 10.13",
+        "version": "dev",
+        "javascriptEnabled": true,
+        "acceptSslCerts": true,
+        "screenResolution": "1280x960"
+      }
+    },
+    "firefox-on-mac-beta": {
+      "desiredCapabilities": {
+        "browserName": "firefox",
+        "platform": "macOS 10.13",
+        "version": "beta",
+        "javascriptEnabled": true,
+        "acceptSslCerts": true,
+        "screenResolution": "1280x960"
+      }
+    },
     "safari-on-mac": {
       "desiredCapabilities": {
         "browserName": "safari",
