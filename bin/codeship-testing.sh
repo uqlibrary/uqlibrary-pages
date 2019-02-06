@@ -25,7 +25,7 @@ function logSauceCommands {
 
   if [[ ! -f "$SAUCELABS_LOG_FILE" ]]; then
     echo "$SAUCELABS_LOG_FILE not found - looking for alt file"
-    # testing with check /tmp/sc.log presencewct? it writes to a subdirectory, eg /tmp/wct118915-6262-1w0uwzy.q8it/sc.log
+    # check /tmp/sc.log presence - it writes to a subdirectory, eg /tmp/wct118915-6262-1w0uwzy.q8it/sc.log
     ALTERNATE_SAUCE_LOCN="$(find ${TMPDIR} -name 'wct*')"
     if [[ -d "${ALTERNATE_SAUCE_LOCN}" ]]; then
       SAUCELABS_LOG_FILE="${ALTERNATE_SAUCE_LOCN}/sc.log"
@@ -84,9 +84,11 @@ case "$PIPE_NUM" in
 
 #  if [[ ${CI_BRANCH} == "canarytest" ]]; then
   if [[ ${CI_BRANCH} == "canary-163684472-B" ]]; then
-    echo "sleep to give jobs time to run without clashing"
-    sleep 180 # seconds = 3 minutes
+    echo "Current time : $(date +"%T")"
+    printf "\nsleep to give jobs time to run without clashing"
+    sleep 180 # seconds
     echo "awake!"
+    echo "Current time : $(date +"%T")"
 
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
@@ -108,7 +110,14 @@ case "$PIPE_NUM" in
     printf "\n --- TEST CHROME Beta and Dev on WINDOWS (canary test) ---\n\n"
     ./nightwatch.js --env chrome-on-windows-beta --tag e2etest
 
+    # saucelabs currently cant handle win chrome dev (chrome 74) for saucelabs admin reasons
+    # the error is: session not created: Chrome version must be between 70 and 73
+    # move it to last so we can check everything else passes but still check on this one.
+    # when they fix it, replace it in the main wct.conf.js.canary file and delete this block
+    # and also add it back into the nightwatch section above
 
+    # OSX firefox dev is also here because it is not appearing in the list of submitted tests
+    # and then never returns, causing the job to hang
     printf "\n --- start unreliable testing ---\n\n"
     cp wct.conf.js.canary.temp wct.conf.js
     gulp test:remote
@@ -159,6 +168,15 @@ case "$PIPE_NUM" in
 ;;
 "3")
   # "Test commands" pipeline on codeship
+#  if [[ ${CI_BRANCH} == "canarytest" ]]; then
+  if [[ ${CI_BRANCH} == "canary-163684472-B" ]]; then
+    echo "Current time : $(date +"%T")"
+    printf "\nsleep to give jobs time to run without clashing"
+    sleep 600 # seconds
+    echo "awake!"
+    echo "Current time : $(date +"%T")"
+  fi
+
   trap logSauceCommands EXIT
 
   printf "\n-- Start server in the background, then sleep to give it time to load --"
@@ -191,15 +209,17 @@ case "$PIPE_NUM" in
 
 #  if [[ ${CI_BRANCH} == "canarytest" ]]; then
   if [[ ${CI_BRANCH} == "canary-163684472-B" ]]; then
-    echo "sleep to give jobs time to run without clashing"
-    sleep 420 # seconds = 7 minutes
-    echo "awake!"
-
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
 
     printf "\n --- TEST CHROME Beta and Dev on MAC (canary test) ---\n\n"
     ./nightwatch.js --env chrome-on-mac-beta,chrome-on-mac-dev,firefox-on-mac-beta --tag e2etest
+
+    # OSX firefox dev is also here because it is not appearing in the list of submitted tests
+    # and then never returns, causing the job to hang
+    # move it to last so we can check everything else passes but still check on this one.
+    # when they fix it, replace it in the main wct.conf.js.canary file, add it back into the nightwatch section above
+    # and delete this block
 
     printf "\n --- start unreliable testing ---\n\n"
     # this one is failing because it never returns on saucelabs
