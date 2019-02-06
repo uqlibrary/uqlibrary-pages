@@ -63,6 +63,7 @@ case "$PIPE_NUM" in
   fi
 
   if [ ${CI_BRANCH} == "canarytest" ]; then
+
     printf "\n --- LOCAL WCT CANARY UNIT TESTING ---\n\n"
     cp wct.conf.js.canary wct.conf.js
     gulp test:remote
@@ -83,7 +84,17 @@ case "$PIPE_NUM" in
     printf "If you get a fail, try it manually in that browser\n\n"
 
     printf "\n --- TEST CHROME Beta and Dev on WINDOWS (canary test) ---\n\n"
-    ./nightwatch.js --env chrome-on-windows-beta,chrome-on-windows-dev --tag e2etest
+    ./nightwatch.js --env chrome-on-windows-beta --tag e2etest
+
+
+    printf "\n --- start unreliable testing ---\n\n"
+    cp wct.conf.js.canary.temp wct.conf.js
+    gulp test:remote
+    rm wct.conf.js
+    printf "\n --- unreliable wct testing complete ---\n\n"
+
+    ./nightwatch.js --env chrome-on-windows-dev --tag e2etest
+    printf "\n --- unreliable integration testing complete ---\n\n"
   fi
 ;;
 "2")
@@ -96,7 +107,7 @@ case "$PIPE_NUM" in
   sleep 40 # seconds
   cat nohup.out
 
-  if [ ${CI_BRANCH} != "canarytest" ]; then
+  if [ ${CI_BRANCH} != "canary-163684472-B" ]; then
       printf "\n --- Local Integration Testing ---\n"
 
       printf "\n --- Install Selenium ---\n\n"
@@ -110,7 +121,8 @@ case "$PIPE_NUM" in
       ./nightwatch.js --env chrome --tag e2etest
   fi
 
-  if [ ${CI_BRANCH} == "canarytest" ]; then
+  if [ ${CI_BRANCH} == "canary-163684472-B" ]; then
+
     printf "\n --- Saucelabs Integration Testing ---\n\n"
     cd bin/saucelabs
 
@@ -136,7 +148,7 @@ case "$PIPE_NUM" in
 
   # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
 
-  if [ ${CI_BRANCH} != "canarytest" ]; then
+  if [ ${CI_BRANCH} != "canary-163684472-B" ]; then
       # Win/Chrome is our most used browser, 2018
       # Win/FF is our second most used browser, 2018 - we have the ESR release on Library Desktop SOE
 
@@ -153,12 +165,16 @@ case "$PIPE_NUM" in
     ./nightwatch.js --env firefox-on-windows,safari-on-mac,edge,chrome-on-mac,firefox-on-mac,firefox-on-mac-esr --tag e2etest
   fi
 
-  if [ ${CI_BRANCH} == "canarytest" ]; then
+  if [ ${CI_BRANCH} == "canary-163684472-B" ]; then
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
 
     printf "\n --- TEST CHROME Beta and Dev on MAC (canary test) ---\n\n"
-    ./nightwatch.js --env chrome-on-mac-beta,chrome-on-mac-dev --tag e2etest
+    ./nightwatch.js --env chrome-on-mac-beta,chrome-on-mac-dev,firefox-on-mac-beta --tag e2etest
+
+    # this one is failing because it never returns on saucelabs
+    printf "\n --- unreliable wct testing complete ---\n\n"
+    ./nightwatch.js --env firefox-on-mac-dev --tag e2etest
   fi
 ;;
 esac
