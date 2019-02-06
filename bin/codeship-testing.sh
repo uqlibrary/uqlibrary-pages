@@ -84,6 +84,12 @@ case "$PIPE_NUM" in
 
 #  if [[ ${CI_BRANCH} == "canarytest" ]]; then
   if [[ ${CI_BRANCH} == "canary-163684472-B" ]]; then
+    echo "sleep to give jobs time to run without clashing"
+    sleep 180 # seconds = 3 minutes
+    echo "awake!"
+
+    printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
+    printf "If you get a fail, try it manually in that browser\n\n"
 
     printf "\n --- LOCAL WCT CANARY UNIT TESTING ---\n\n"
     cp wct.conf.js.canary wct.conf.js
@@ -98,9 +104,6 @@ case "$PIPE_NUM" in
 
     printf "\n --- Saucelabs Integration Testing ---\n\n"
     cd bin/saucelabs
-
-    printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
-    printf "If you get a fail, try it manually in that browser\n\n"
 
     printf "\n --- TEST CHROME Beta and Dev on WINDOWS (canary test) ---\n\n"
     ./nightwatch.js --env chrome-on-windows-beta --tag e2etest
@@ -144,11 +147,11 @@ case "$PIPE_NUM" in
 #  if [[ ${CI_BRANCH} == "canarytest" ]]; then
   if [[ ${CI_BRANCH} == "canary-163684472-B" ]]; then
 
-    printf "\n --- Saucelabs Integration Testing ---\n\n"
-    cd bin/saucelabs
-
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
+
+    printf "\n --- Saucelabs Integration Testing ---\n\n"
+    cd bin/saucelabs
 
     printf "\n --- TEST FIREFOX Beta and Dev on WINDOWS (canary test) ---\n\n"
     ./nightwatch.js --env firefox-on-windows-beta,firefox-on-windows-dev --tag e2etest
@@ -156,7 +159,6 @@ case "$PIPE_NUM" in
 ;;
 "3")
   # "Test commands" pipeline on codeship
-
   trap logSauceCommands EXIT
 
   printf "\n-- Start server in the background, then sleep to give it time to load --"
@@ -189,6 +191,10 @@ case "$PIPE_NUM" in
 
 #  if [[ ${CI_BRANCH} == "canarytest" ]]; then
   if [[ ${CI_BRANCH} == "canary-163684472-B" ]]; then
+    echo "sleep to give jobs time to run without clashing"
+    sleep 420 # seconds = 7 minutes
+    echo "awake!"
+
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
 
