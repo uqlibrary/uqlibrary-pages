@@ -84,11 +84,10 @@ case "$PIPE_NUM" in
 
 #  if [[ ${CI_BRANCH} == "canarytest" ]]; then
   if [[ ${CI_BRANCH} == "canary-163684472-B" ]]; then
-    echo "Current time : $(date +"%T")"
-    printf "\nsleep to give jobs time to run without clashing"
+    printf "\nCurrent time : $(date +"%T")\n"
+    printf "sleep to give jobs time to run without clashing\n"
     sleep 180 # seconds
-    echo "awake!"
-    echo "Current time : $(date +"%T")"
+    printf "Time of awaken : $(date +"%T")\n\n"
 
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
@@ -170,11 +169,10 @@ case "$PIPE_NUM" in
   # "Test commands" pipeline on codeship
 #  if [[ ${CI_BRANCH} == "canarytest" ]]; then
   if [[ ${CI_BRANCH} == "canary-163684472-B" ]]; then
-    echo "Current time : $(date +"%T")"
-    printf "\nsleep to give jobs time to run without clashing"
-    sleep 600 # seconds
-    echo "awake!"
-    echo "Current time : $(date +"%T")"
+    printf "\nCurrent time : $(date +"%T")\n"
+    printf "sleep to give jobs time to run without clashing\n"
+    sleep 720 # seconds
+    printf "Time of awaken : $(date +"%T")\n\n"
   fi
 
   trap logSauceCommands EXIT
@@ -212,13 +210,13 @@ case "$PIPE_NUM" in
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
 
-    printf "\n --- TEST CHROME Beta and Dev on MAC (canary test) ---\n\n"
+    printf "\n --- TEST Beta and Dev on MAC (canary test) ---\n\n"
     ./nightwatch.js --env chrome-on-mac-beta,chrome-on-mac-dev,firefox-on-mac-beta --tag e2etest
 
     # OSX firefox dev is also here because it is not appearing in the list of submitted tests
     # and then never returns, causing the job to hang
     # move it to last so we can check everything else passes but still check on this one.
-    # when they fix it, replace it in the main wct.conf.js.canary file, add it back into the nightwatch section above
+    # when they fix it, add it back into the nightwatch section above
     # and delete this block
 
     printf "\n --- start unreliable testing ---\n\n"
