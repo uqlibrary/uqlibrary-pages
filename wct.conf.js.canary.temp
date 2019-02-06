@@ -8,8 +8,7 @@ var ret = {
     plugins: {
         sauce: {
             browsers: [
-                'Windows 10/chrome@dev',
-                'OS X 10.13/firefox@dev'
+                'Windows 10/chrome@dev'
             ]
         }
     }

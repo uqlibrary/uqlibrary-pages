@@ -86,7 +86,7 @@ case "$PIPE_NUM" in
   if [[ ${CI_BRANCH} == "canary-163684472-B" ]]; then
     printf "\nCurrent time : $(date +"%T")\n"
     printf "sleep to give jobs time to run without clashing\n"
-    sleep 180 # seconds
+    sleep 600 # seconds
     printf "Time of awaken : $(date +"%T")\n\n"
 
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
@@ -171,7 +171,7 @@ case "$PIPE_NUM" in
   if [[ ${CI_BRANCH} == "canary-163684472-B" ]]; then
     printf "\nCurrent time : $(date +"%T")\n"
     printf "sleep to give jobs time to run without clashing\n"
-    sleep 600 # seconds
+    sleep 180 # seconds
     printf "Time of awaken : $(date +"%T")\n\n"
   fi
 
@@ -211,17 +211,7 @@ case "$PIPE_NUM" in
     printf "If you get a fail, try it manually in that browser\n\n"
 
     printf "\n --- TEST Beta and Dev on MAC (canary test) ---\n\n"
-    ./nightwatch.js --env chrome-on-mac-beta,chrome-on-mac-dev,firefox-on-mac-beta --tag e2etest
-
-    # OSX firefox dev is also here because it is not appearing in the list of submitted tests
-    # and then never returns, causing the job to hang
-    # move it to last so we can check everything else passes but still check on this one.
-    # when they fix it, add it back into the nightwatch section above
-    # and delete this block
-
-    printf "\n --- start unreliable testing ---\n\n"
-    # this one is failing because it never returns on saucelabs
-    ./nightwatch.js --env firefox-on-mac-dev --tag e2etest
+    ./nightwatch.js --env chrome-on-mac-beta,chrome-on-mac-dev --tag e2etest
     printf "\n --- unreliable wct testing complete ---\n\n"
   fi
 ;;
