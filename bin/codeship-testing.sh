@@ -98,7 +98,7 @@ case "$PIPE_NUM" in
     rm wct.conf.js
     printf "\n --- WCT unit testing complete---\n\n"
 
-    printf "\n-- Start server in the background, then sleep to give it time to load --"
+    printf "\n-- Start server in the background, then sleep to give it time to load --\n"
     nohup bash -c "gulp serve:dist 2>&1 &"
     sleep 40 # seconds
     cat nohup.out
@@ -132,7 +132,7 @@ case "$PIPE_NUM" in
 
   trap logSauceCommands EXIT
 
-  printf "\n-- Start server in the background, then sleep to give it time to load --"
+  printf "\n-- Start server in the background, then sleep to give it time to load --\n"
   nohup bash -c "gulp serve:dist 2>&1 &"
   sleep 40 # seconds
   cat nohup.out
@@ -171,13 +171,13 @@ case "$PIPE_NUM" in
   if [[ ${CI_BRANCH} == "canary-163684472-B" ]]; then
     printf "\nCurrent time : $(date +"%T")\n"
     printf "sleep to give jobs time to run without clashing\n"
-    sleep 720 # seconds
+    sleep 600 # seconds
     printf "Time of awaken : $(date +"%T")\n\n"
   fi
 
   trap logSauceCommands EXIT
 
-  printf "\n-- Start server in the background, then sleep to give it time to load --"
+  printf "\n-- Start server in the background, then sleep to give it time to load --\n"
   nohup bash -c "gulp serve:dist 2>&1 &"
   sleep 40 # seconds
   cat nohup.out
