@@ -52,6 +52,7 @@ fi
 # "canarytest" is used by a job that runs weekly to test the polymer repos on the upcoming browser versions
 # The intent is to get early notice of polymer 1 failing in modern browsers
 # the ordering of the canary browser tests is: test beta, then test dev (beta is closer to ready for prod, per http://www.chromium.org/getting-involved/dev-channel
+# win chrome, win firefox and osx chrome are tested -  other options either dont have canaries or usage is too low to justify
 
 case "$PIPE_NUM" in
 "1")
@@ -210,7 +211,7 @@ case "$PIPE_NUM" in
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
 
-    printf "\n --- TEST Beta and Dev on MAC (canary test) ---\n\n"
+    printf "\n --- TEST Chrome Beta and Dev on MAC (canary test) ---\n\n"
     ./nightwatch.js --env chrome-on-mac-beta,chrome-on-mac-dev --tag e2etest
     printf "\n --- unreliable wct testing complete ---\n\n"
   fi
