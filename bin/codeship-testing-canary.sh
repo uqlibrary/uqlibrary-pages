@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# this is run from codeship-testing.sh - it cant be run on its own as the varibales are missing
+# this is run from codeship-testing.sh - it cannot be run on its own as the variables are missing
 
 # "canarytest" is used by a job that runs weekly to test the polymer repos on the upcoming browser versions
 # The intent is to get early notice of polymer 1 failing in modern browsers
@@ -14,14 +14,14 @@ case "$PIPE_NUM" in
     trap logSauceCommands EXIT
 
     printf "\nCurrent time : $(date +"%T")\n"
-    printf "sleep to give jobs time to run without clashing\n"
+    printf "sleep to give other pipelines time to run without clashing\n"
     sleep 600 # seconds
     printf "Time of awaken : $(date +"%T")\n\n"
 
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
 
-    printf "\n --- LOCAL WCT CANARY UNIT TESTING ---\n\n"
+    printf "\n --- WCT CANARY UNIT TESTING ---\n\n"
     cp wct.conf.js.canary wct.conf.js
     gulp test:remote
     rm wct.conf.js
@@ -43,28 +43,26 @@ case "$PIPE_NUM" in
     # move it to last so we can check everything else passes but still check on this one.
     # when they fix it, replace it in the main wct.conf.js.canary file and delete this block
     # and also add it back into the nightwatch section above
-
-    # OSX firefox dev is also here because it is not appearing in the list of submitted tests
-    # and then never returns, causing the job to hang
     printf "\n --- start unreliable testing ---\n\n"
     cp wct.conf.js.canary.temp wct.conf.js
     gulp test:remote
     rm wct.conf.js
     printf "\n --- unreliable wct testing complete ---\n\n"
 
+    # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
     ./nightwatch.js --env chrome-on-windows-dev --tag e2etest
     printf "\n --- unreliable integration testing complete ---\n\n"
 
 ;;
 "2")
-  # "Nightwatch" pipeline on codeship
+    # "Nightwatch" pipeline on codeship
 
-  trap logSauceCommands EXIT
+    trap logSauceCommands EXIT
 
-  printf "\n-- Start server in the background, then sleep to give it time to load --\n"
-  nohup bash -c "gulp serve:dist 2>&1 &"
-  sleep 40 # seconds
-  cat nohup.out
+    printf "\n-- Start server in the background, then sleep to give it time to load --\n"
+    nohup bash -c "gulp serve:dist 2>&1 &"
+    sleep 40 # seconds
+    cat nohup.out
 
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
@@ -73,31 +71,32 @@ case "$PIPE_NUM" in
     cd bin/saucelabs
 
     printf "\n --- TEST FIREFOX Beta and Dev on WINDOWS (canary test) ---\n\n"
+    # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
     ./nightwatch.js --env firefox-on-windows-beta,firefox-on-windows-dev --tag e2etest
 ;;
 "3")
-  # "Test commands" pipeline on codeship
+    # "Test commands" pipeline on codeship
+
     printf "\nCurrent time : $(date +"%T")\n"
-    printf "sleep to give jobs time to run without clashing\n"
+    printf "sleep to give other pipelines time to run without clashing\n"
     sleep 180 # seconds
     printf "Time of awaken : $(date +"%T")\n\n"
 
-  trap logSauceCommands EXIT
+    trap logSauceCommands EXIT
 
-  printf "\n-- Start server in the background, then sleep to give it time to load --\n"
-  nohup bash -c "gulp serve:dist 2>&1 &"
-  sleep 40 # seconds
-  cat nohup.out
+    printf "\n-- Start server in the background, then sleep to give it time to load --\n"
+    nohup bash -c "gulp serve:dist 2>&1 &"
+    sleep 40 # seconds
+    cat nohup.out
 
-  printf "\n --- Saucelabs Integration Testing ---\n\n"
-  cd bin/saucelabs
-
-  # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
+    printf "\n --- Saucelabs Integration Testing ---\n\n"
+    cd bin/saucelabs
 
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
 
     printf "\n --- TEST Chrome Beta and Dev on MAC (canary test) ---\n\n"
+    # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
     ./nightwatch.js --env chrome-on-mac-beta,chrome-on-mac-dev --tag e2etest
     printf "\n --- wct testing complete ---\n\n"
 ;;
