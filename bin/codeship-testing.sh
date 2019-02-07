@@ -54,7 +54,7 @@ fi
 
 #  if [[ ${CI_BRANCH} == "canarytest" ]]; then
 if [[ ${CI_BRANCH} == "canary-163684472-C" ]]; then
-  source ./codeship-testing-canary.sh
+  source ./bin/codeship-testing-canary.sh
   exit 0
 fi
 
