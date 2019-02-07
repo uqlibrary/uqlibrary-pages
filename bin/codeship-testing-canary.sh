@@ -44,6 +44,7 @@ case "$PIPE_NUM" in
     # when they fix it, replace it in the main wct.conf.js.canary file and delete this block
     # and also add it back into the nightwatch section above
     printf "\n --- start unreliable testing ---\n\n"
+    cd ../../
     cp wct.conf.js.canary.temp wct.conf.js
     gulp test:remote
     rm wct.conf.js
