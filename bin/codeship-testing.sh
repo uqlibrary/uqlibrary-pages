@@ -51,21 +51,22 @@ fi
 
 # "canarytest" is used by a job that runs weekly to test the polymer repos on the upcoming browser versions
 # The intent is to get early notice of polymer 1 failing in modern browsers
-# the ordering of the canary browser tests is: test beta, then test dev (beta is closer to ready for prod, per http://www.chromium.org/getting-involved/dev-channel
-# win chrome, win firefox and osx chrome are tested -  other options either dont have canaries or usage is too low to justify
+
+#  if [[ ${CI_BRANCH} == "canarytest" ]]; then
+if [[ ${CI_BRANCH} == "canary-163684472-C" ]]; then
+  source ./codeship-testing-canary.sh
+  exit 0
+fi
 
 case "$PIPE_NUM" in
 "1")
   # "Unit testing" pipeline on codeship
 
-#  if [[ ${CI_BRANCH} != "canarytest" ]]; then
-  if [[ ${CI_BRANCH} != "canary-163684472-B" ]]; then
-      # quick single browser testing during dev
-      printf "\n --- LOCAL UNIT TESTING ---\n\n"
-      cp wct.conf.js.local wct.conf.js
-      gulp test
-      rm wct.conf.js
-  fi
+  # quick single browser testing during dev
+  printf "\n --- LOCAL UNIT TESTING ---\n\n"
+  cp wct.conf.js.local wct.conf.js
+  gulp test
+  rm wct.conf.js
 
   trap logSauceCommands EXIT
 
@@ -82,51 +83,6 @@ case "$PIPE_NUM" in
     gulp test:remote
     rm wct.conf.js
   fi
-
-#  if [[ ${CI_BRANCH} == "canarytest" ]]; then
-  if [[ ${CI_BRANCH} == "canary-163684472-B" ]]; then
-    printf "\nCurrent time : $(date +"%T")\n"
-    printf "sleep to give jobs time to run without clashing\n"
-    sleep 600 # seconds
-    printf "Time of awaken : $(date +"%T")\n\n"
-
-    printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
-    printf "If you get a fail, try it manually in that browser\n\n"
-
-    printf "\n --- LOCAL WCT CANARY UNIT TESTING ---\n\n"
-    cp wct.conf.js.canary wct.conf.js
-    gulp test:remote
-    rm wct.conf.js
-    printf "\n --- WCT unit testing complete---\n\n"
-
-    printf "\n-- Start server in the background, then sleep to give it time to load --\n"
-    nohup bash -c "gulp serve:dist 2>&1 &"
-    sleep 40 # seconds
-    cat nohup.out
-
-    printf "\n --- Saucelabs Integration Testing ---\n\n"
-    cd bin/saucelabs
-
-    printf "\n --- TEST CHROME Beta and Dev on WINDOWS (canary test) ---\n\n"
-    ./nightwatch.js --env chrome-on-windows-beta --tag e2etest
-
-    # saucelabs currently cant handle win chrome dev (chrome 74) for saucelabs admin reasons
-    # the error is: session not created: Chrome version must be between 70 and 73
-    # move it to last so we can check everything else passes but still check on this one.
-    # when they fix it, replace it in the main wct.conf.js.canary file and delete this block
-    # and also add it back into the nightwatch section above
-
-    # OSX firefox dev is also here because it is not appearing in the list of submitted tests
-    # and then never returns, causing the job to hang
-    printf "\n --- start unreliable testing ---\n\n"
-    cp wct.conf.js.canary.temp wct.conf.js
-    gulp test:remote
-    rm wct.conf.js
-    printf "\n --- unreliable wct testing complete ---\n\n"
-
-    ./nightwatch.js --env chrome-on-windows-dev --tag e2etest
-    printf "\n --- unreliable integration testing complete ---\n\n"
-  fi
 ;;
 "2")
   # "Nightwatch" pipeline on codeship
@@ -138,44 +94,20 @@ case "$PIPE_NUM" in
   sleep 40 # seconds
   cat nohup.out
 
-#  if [[ ${CI_BRANCH} != "canarytest" ]]; then
-  if [[ ${CI_BRANCH} != "canary-163684472-B" ]]; then
-      printf "\n --- Local Integration Testing ---\n"
+  printf "\n --- Local Integration Testing ---\n"
 
-      printf "\n --- Install Selenium ---\n\n"
-      curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/packages/selenium_server.sh | bash -s
+  printf "\n --- Install Selenium ---\n\n"
+  curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/packages/selenium_server.sh | bash -s
 
-      cd bin/local
+  cd bin/local
 
-      printf "\n Not testing firefox here atm - selenium would need an upgrade to use a recent enough geckodriver that recent firefox will work - see https://app.codeship.com/projects/131650/builds/34170514 \n\n"
+  printf "\n Not testing firefox locally atm - selenium on codeship would need an upgrade to use a recent enough geckodriver that recent firefox will work - see https://app.codeship.com/projects/131650/builds/34170514 \n\n"
 
-      printf "\n --- TEST CHROME ---\n\n"
-      ./nightwatch.js --env chrome --tag e2etest
-  fi
-
-#  if [[ ${CI_BRANCH} == "canarytest" ]]; then
-  if [[ ${CI_BRANCH} == "canary-163684472-B" ]]; then
-
-    printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
-    printf "If you get a fail, try it manually in that browser\n\n"
-
-    printf "\n --- Saucelabs Integration Testing ---\n\n"
-    cd bin/saucelabs
-
-    printf "\n --- TEST FIREFOX Beta and Dev on WINDOWS (canary test) ---\n\n"
-    ./nightwatch.js --env firefox-on-windows-beta,firefox-on-windows-dev --tag e2etest
-  fi
+  printf "\n --- TEST CHROME ---\n\n"
+  ./nightwatch.js --env chrome --tag e2etest
 ;;
 "3")
   # "Test commands" pipeline on codeship
-#  if [[ ${CI_BRANCH} == "canarytest" ]]; then
-  if [[ ${CI_BRANCH} == "canary-163684472-B" ]]; then
-    printf "\nCurrent time : $(date +"%T")\n"
-    printf "sleep to give jobs time to run without clashing\n"
-    sleep 180 # seconds
-    printf "Time of awaken : $(date +"%T")\n\n"
-  fi
-
   trap logSauceCommands EXIT
 
   printf "\n-- Start server in the background, then sleep to give it time to load --\n"
@@ -188,32 +120,19 @@ case "$PIPE_NUM" in
 
   # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
 
-#  if [[ ${CI_BRANCH} != "canarytest" ]]; then
-  if [[ ${CI_BRANCH} != "canary-163684472-B" ]]; then
-      # Win/Chrome is our most used browser, 2018
-      # Win/FF is our second most used browser, 2018 - we have the ESR release on Library Desktop SOE
+  # Win/Chrome is our most used browser, 2018
+  # Win/FF is our second most used browser, 2018 - we have the ESR release on Library Desktop SOE
+  # IE11 should be tested on each build for earlier detection of problematic js
 
-      printf "\n --- TEST popular browsers on WINDOWS ---\n\n"
-      ./nightwatch.js --tag e2etest --env default,ie11,firefox-on-windows-esr --tag e2etest
-  fi
+  printf "\n --- TEST popular browsers ---\n\n"
+  ./nightwatch.js --tag e2etest --env default,ie11,firefox-on-windows-esr --tag e2etest
 
   if [[ ${CI_BRANCH} == "production" ]]; then
-    # Use multiple environments as we have more than 4 browsers to test.
     # This is more than the number of test scripts, so parallelising environments is better
     # than parallelising scripts. Keep to a maximum of 6 browsers so that parallel runs in 
     # other pipelines don't overrun available SauceLabs slots (10).
     printf "\n --- Check all other browsers before going live (prod branch only) ---\n\n"
     ./nightwatch.js --env firefox-on-windows,safari-on-mac,edge,chrome-on-mac,firefox-on-mac,firefox-on-mac-esr --tag e2etest
-  fi
-
-#  if [[ ${CI_BRANCH} == "canarytest" ]]; then
-  if [[ ${CI_BRANCH} == "canary-163684472-B" ]]; then
-    printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
-    printf "If you get a fail, try it manually in that browser\n\n"
-
-    printf "\n --- TEST Chrome Beta and Dev on MAC (canary test) ---\n\n"
-    ./nightwatch.js --env chrome-on-mac-beta,chrome-on-mac-dev --tag e2etest
-    printf "\n --- unreliable wct testing complete ---\n\n"
   fi
 ;;
 esac
