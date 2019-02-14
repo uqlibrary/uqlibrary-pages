@@ -83,6 +83,25 @@ Include following placeholder and gulp task 'inject-browser-update' to include s
 </script>
 ```
 
+### Updating UQL component dependencies
+
+The `bower.json` file points to the repos of UQL components without specifying specific branch, commit or release number. This means that when a `bower install` or `bower update` command is run, the version that is fetched is dependent on whether or not the particular dependency's GitHub repo uses releases or not. If there are no releases, then bower fetches the latest commit in the default branch (which may be either `master` or `polymer1.0` - configured in GitHub). If releases are used in the dependency's GitHub repo, then the commit that the latest published public release points to is fetched.
+
+`uqlibrary-resuable-components` is the only dependency of `uqlibrary-pages` that doesn't use releases. Its default branch is `master`, so this repo points to the latest commit in that branch.
+
+Notes:
+
+* The mechanism described above is overridden if the reference in `bower.json` is changed to point to a specific commit or branch. In that case, the specified commit or the latest commit in the specified branch is picked up. This is useful when you're testing a change in a child component by creating a feature branch in that component.
+* The decision to not to point to a specific release number was taken to avoid the need to update the references in multiple places when pushing a change, and also to avoid issues with version conflicts (requiring the use of 'resolutions'). This does come at a cost of not being able to lock down the variant of dependency being deployed. In other words, maintainability at the expense of specificity. The latest version of components are expected to continue to work with all other projects which reference it. The issue of lack of specificity can be avoided by switching from bower to npm for dependencies, which adds the lock file during install.
+* GitHub releases are linked to git tags, but they are a separate entity. You need to make a release in the child component (not just a tag) for the new version to be recognised by bower in this repo.
+* When updating a child component, please bump the version number in `package.json`, and `bower.json`, as well as `package-lock.json` - the last one should get updated automatically when `npm install` is run locally. Then, push the changes to GitHub and see if the CodeShip tests pass, and if they do, create and publish the new version in GitHub.
+
+  * You can bump the version number of the npm files by running the following command. Please refer to [npm docs](https://docs.npmjs.com/cli/version.html) for details and variations.
+
+    ```sh
+    npm version patch --no-git-tag-version
+    ```
+
 ## Testing
 
 There are two testing procedures for uqlibrary-pages: components testing and integration end to end testing.
@@ -91,14 +110,14 @@ Run `bin/test-setup.sh` to update settings for remote nightwatch.js testing and 
   
 ### Components testing ('unit testing' on codeship)
 
-* On codeship, tests are run by bin/codeship-testing.sh. You may find reading through this file helpful to follow what happens.
+* On codeship, tests are run by `bin/codeship-testing.sh`. You may find reading through this file helpful to follow what happens.
 * Tests are run with [Web Component Tester](https://github.com/Polymer/web-component-tester)
-* Configuration is defined in wct.conf.js (various files such as wct.conf.js.local are renamed at run time), it contains configuration for local testing (Chrome / Firefox) and for remote testing on SauceLabs (IE, Edge, Safari, etc.)
-* From bower_components all custom uqlibrary-* tests suites are collected with in test-setup.sh into app/test/index.html
+* Configuration is defined in `wct.conf.js` (various files such as wct.conf.js.local are renamed at run time), it contains configuration for local testing (Chrome / Firefox) and for remote testing on SauceLabs (IE, Edge, Safari, etc.)
+* From `bower_components` all custom uqlibrary-* tests suites are collected with in `test-setup.sh` into `app/test/index.html`
 
 Tests are run with gulp:
 
-* setup the wct.conf.js file by choosing which file you want to use and copying, eg: `cp wct.conf.js.local wct.conf.js`
+* Setup the `wct.conf.js` file by choosing which file you want to use and copying, eg: `cp wct.conf.js.local wct.conf.js`
 * `gulp test` to launch the tests (`gulp test:remote` for testing on SauceLabs)
 
 When you run this command, you may get the error:
@@ -109,7 +128,7 @@ To set these fields:
 
 1. Visit the [uqlibrary-pages Codeship Environment Variable page](https://app.codeship.com/projects/131650/configure_environment)
 2. Note the values for SAUCE_USERNAME and for SAUCE_ACCESS_KEY
-3. export these as local variables on your box, eq:
+3. Export these as local variables on your box, eq:
 
     `$ export SAUCE_ACCESS_KEY='XXX'`
 
@@ -120,9 +139,9 @@ then run the gulp command again
 Integration testing is performed using [Nightwatch.js](http://nightwatchjs.org/). Integration testing is performed before deployment on Codeship.
 SauceLabs are not running for master branch.
 
-* test scripts are located in tests/* (eg tests/e2e.js)
-* nightwatch.json - contains settings for local (bin/local/* ) and remote testing on SauceLabs (bin/saucelabs/*)
-* nightwatch.js - is a test runner script
+* Test scripts are located in tests/* (eg tests/e2e.js)
+* `nightwatch.json` - contains settings for local (`bin/local/*`) and remote testing on SauceLabs (`bin/saucelabs/*`)
+* `nightwatch.js` - is a test runner script
 
 #### Local testing ('nightwatch local' on codeship)
 
@@ -133,6 +152,7 @@ SauceLabs are not running for master branch.
         ```bash
         java -jar selenium-server-standalone-{VERSION}.jar
         ```
+
         You may want to create a bash alias for this.
 
     * On OSX, `brew install selenium-server-standalone` to install, and then run the server with:
@@ -148,7 +168,7 @@ SauceLabs are not running for master branch.
     ```
 
 1. Start testing
-  
+
     ```sh
     cd bin/local
     ./nightwatch.js # never run it without some sort of tag as you dont want to run the minimal package directly
@@ -197,8 +217,8 @@ Sometimes you will need to test functionality end to end or demonstrate in the b
 
 #### Canary Tests
 
-* The canarytest branch is used in a weekly job started from AWS as [repo-periodic-test](https://ap-southeast-2.console.aws.amazon.com/ecs/home?region=ap-southeast-2#/clusters/default/scheduledTasks) in Scheduled Tasks that checks that our sites work in future browsers. See bin/codeship-test.sh 
-* Scheduled Tasks: in Amazon, go to ECS > Clusters > Default > Scheduled Tasks tab which may be [here](https://ap-southeast-2.console.aws.amazon.com/ecs/home?region=ap-southeast-2#/clusters/default/scheduledTasks) and note task `repo-periodic-test` (more indicative naming would be `repo-periodic-test-pages`). 
+* The canarytest branch is used in a weekly job started from AWS as [repo-periodic-test](https://ap-southeast-2.console.aws.amazon.com/ecs/home?region=ap-southeast-2#/clusters/default/scheduledTasks) in Scheduled Tasks that checks that our sites work in future browsers. See bin/codeship-test.sh
+* Scheduled Tasks: in Amazon, go to ECS > Clusters > Default > Scheduled Tasks tab which may be [here](https://ap-southeast-2.console.aws.amazon.com/ecs/home?region=ap-southeast-2#/clusters/default/scheduledTasks) and note task `repo-periodic-test` (more indicative naming would be `repo-periodic-test-pages`).
 * This can be run manually from the Tasks tab - (put in repo-periodic-test as the Name and I think you have to click open Advanced Options so you can add the same extra parameter as the scheduled task?)
 
 #### 404s
