@@ -85,6 +85,12 @@ Include following placeholder and gulp task 'inject-browser-update' to include s
 
 ### Updating UQL component dependencies
 
+#### TL;DR
+
+When updating child components, make sure you bump the npm & bower version numbers (don't forget the lock file for npm!) and create a release with that version number in GitHub. This is necessary for the changes to be picked by by bower in this repo.
+
+#### Longer version
+
 The `bower.json` file points to the repos of UQL components without specifying specific branch, commit or release number. This means that when a `bower install` or `bower update` command is run, the version that is fetched is dependent on whether or not the particular dependency's GitHub repo uses releases or not. If there are no releases, then bower fetches the latest commit in the default branch (which may be either `master` or `polymer1.0` - configured in GitHub). If releases are used in the dependency's GitHub repo, then the commit that the latest published public release points to is fetched.
 
 `uqlibrary-resuable-components` is the only dependency of `uqlibrary-pages` that doesn't use releases. Its default branch is `master`, so this repo points to the latest commit in that branch.
