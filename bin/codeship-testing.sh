@@ -2,32 +2,38 @@
 # start debugging/tracing commands, -e - exit if command returns error (non-zero status)
 set -eE
 
-# if you want to log any saucelab errors to the codeship log, set this to true; else leave it as false
-LOG_SAUCELAB_ERRORS=false
-
-if [ -z ${TMPDIR} ]; then # codeship doesnt seem to set this
-  TMPDIR="/tmp/"
+# if you want to log any saucelab errors to the codeship log, set LOG_SAUCELAB_ERRORS to true in the codeship variables
+# at https://app.codeship.com/projects/131650/environment/edit;
+# else leave it missing in codeship environment variables or false
+if [[ -z $LOG_SAUCELAB_ERRORS ]]; then
+    LOG_SAUCELAB_ERRORS=false
 fi
-SAUCELABS_LOG_FILE="${TMPDIR}sc.log"
-echo "On failure, will look for Saucelabs error log here: ${SAUCELABS_LOG_FILE}"
+if [[ "$LOG_SAUCELAB_ERRORS" == true ]]; then
+    if [[ -z ${TMPDIR} ]]; then # codeship doesnt seem to set this
+      TMPDIR="/tmp/"
+    fi
+
+    SAUCELABS_LOG_FILE="${TMPDIR}sc.log"
+    echo "On failure, will look for Saucelabs error log here: ${SAUCELABS_LOG_FILE}"
+fi
 
 function logSauceCommands {
-  if [[ "$LOG_SAUCELAB_ERRORS" = false ]]; then
-    echo "An error happened and saucelabs failed but we arent reporting the output - set LOG_SAUCELAB_ERRORS to true in bin/codeship-testing.sh to see the log next time"
+  if [[ "$LOG_SAUCELAB_ERRORS" != true ]]; then
+    echo "An error happened and (presumably) saucelabs failed but we arent reporting the output - set LOG_SAUCELAB_ERRORS to true in Codeship Environment Variables to see the log next time"
     return
   fi
 
-  if [ ! -f "$SAUCELABS_LOG_FILE" ]; then
+  if [[ ! -f "$SAUCELABS_LOG_FILE" ]]; then
     echo "$SAUCELABS_LOG_FILE not found - looking for alt file"
-    # testing with check /tmp/sc.log presencewct? it writes to a subdirectory, eg /tmp/wct118915-6262-1w0uwzy.q8it/sc.log
+    # check /tmp/sc.log presence - it writes to a subdirectory, eg /tmp/wct118915-6262-1w0uwzy.q8it/sc.log
     ALTERNATE_SAUCE_LOCN="$(find ${TMPDIR} -name 'wct*')"
-    if [ -d "${ALTERNATE_SAUCE_LOCN}" ]; then
+    if [[ -d "${ALTERNATE_SAUCE_LOCN}" ]]; then
       SAUCELABS_LOG_FILE="${ALTERNATE_SAUCE_LOCN}/sc.log"
     else # debug
       echo "Could not find alternate log file ${ALTERNATE_SAUCE_LOCN}"
     fi
   fi
-  if [ -f "$SAUCELABS_LOG_FILE" ]; then
+  if [[ -f "$SAUCELABS_LOG_FILE" ]]; then
     echo "Command failed - dumping $SAUCELABS_LOG_FILE for debug of saucelabs"
     cat $SAUCELABS_LOG_FILE
   else
@@ -35,31 +41,35 @@ function logSauceCommands {
   fi
 }
 
-if [ -z $CI_BRANCH ]; then
-  branch=$(git rev-parse --abbrev-ref HEAD)
-else
-  branch=$CI_BRANCH
+if [[ -z $CI_BRANCH ]]; then
+  CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 fi
 
-# "canarytest" branch is used by a job that runs weekly to test the polymer repos on the upcoming browser versions
+if [[ -z $PIPE_NUM ]]; then
+  PIPE_NUM=3
+fi
+
+# "canarytest" is used by a job that runs weekly to test the polymer repos on the upcoming browser versions
 # The intent is to get early notice of polymer 1 failing in modern browsers
+#  if [[ ${CI_BRANCH} == "canarytest" ]]; then
+if [[ ${CI_BRANCH} == "canarytest" ]]; then
+  source ./bin/codeship-testing-canary.sh
+  exit 0
+fi
 
 case "$PIPE_NUM" in
 "1")
   # "Unit testing" pipeline on codeship
 
-  if [ ${CI_BRANCH} != "canarytest" ]; then
-      # quick single browser testing during dev
-      printf "\n --- LOCAL UNIT TESTING ---\n\n"
-      cp wct.conf.js.local wct.conf.js
-      gulp test
-      rm wct.conf.js
-  fi
+  # quick single browser testing during dev
+  printf "\n --- LOCAL UNIT TESTING ---\n\n"
+  cp wct.conf.js.local wct.conf.js
+  gulp test
+  rm wct.conf.js
 
-  if [ ${CI_BRANCH} == "production" ]; then
+  trap logSauceCommands EXIT
 
-    trap logSauceCommands EXIT
-
+  if [[ ${CI_BRANCH} == "production" ]]; then
     printf "\n --- REMOTE UNIT TESTING (prod branch only) ---\n\n"
     # split testing into 2 runs so it doesnt occupy all saucelab resources in one hit
     cp wct.conf.js.remoteA wct.conf.js
@@ -78,74 +88,50 @@ case "$PIPE_NUM" in
 
   trap logSauceCommands EXIT
 
-  printf "\n-- Start server in the background, then sleep to give it time to load --"
+  printf "\n-- Start server in the background, then sleep to give it time to load --\n"
   nohup bash -c "gulp serve:dist 2>&1 &"
   sleep 40 # seconds
   cat nohup.out
 
-  if [ ${CI_BRANCH} != "canarytest" ]; then
-      printf "\n --- Local Integration Testing ---\n"
+  printf "\n --- Local Integration Testing ---\n"
 
-      printf "\n --- Install Selenium ---\n\n"
-      curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/packages/selenium_server.sh | bash -s
+  printf "\n --- Install Selenium ---\n\n"
+  curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/packages/selenium_server.sh | bash -s
 
-      cd bin/local
+  cd bin/local
 
-      printf "\n Not testing firefox here atm - selenium would need an upgrade to use a recent enough geckodriver that recent firefox will work - see https://app.codeship.com/projects/131650/builds/34170514 \n\n"
+  printf "\n Not testing firefox locally atm - selenium on codeship would need an upgrade to use a recent enough geckodriver that recent firefox will work - see https://app.codeship.com/projects/131650/builds/34170514 \n\n"
 
-      printf "\n --- TEST CHROME ---\n\n"
-      ./nightwatch.js --env chrome --tag e2etest
-  fi
+  printf "\n --- TEST CHROME ---\n\n"
+  ./nightwatch.js --env chrome --tag e2etest
 ;;
 "3")
   # "Test commands" pipeline on codeship
-
   trap logSauceCommands EXIT
 
-  printf "\n-- Start server in the background, then sleep to give it time to load --"
+  printf "\n-- Start server in the background, then sleep to give it time to load --\n"
   nohup bash -c "gulp serve:dist 2>&1 &"
   sleep 40 # seconds
   cat nohup.out
 
+  printf "\n --- Saucelabs Integration Testing ---\n\n"
+  cd bin/saucelabs
+
   # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
 
-  if [ ${CI_BRANCH} != "canarytest" ]; then
-      printf "\n --- Saucelabs Integration Testing (nightwatch) ---\n\n"
-      cd bin/saucelabs
+  # Win/Chrome is our most used browser, 2018
+  # Win/FF is our second most used browser, 2018 - we have the ESR release on Library Desktop SOE
+  # IE11 should be tested on each build for earlier detection of problematic js
 
-      # Win/Chrome is our most used browser, 2018
-      # Win/FF is our second most used browser, 2018 - we have the ESR release on Library Desktop SOE
+  printf "\n --- TEST popular browsers ---\n\n"
+  ./nightwatch.js --tag e2etest --env default,ie11,firefox-on-windows-esr --tag e2etest
 
-      printf "\n --- TEST popular browsers on WINDOWS ---\n\n"
-      ./nightwatch.js --env default,ie11,firefox-on-windows-esr --tag e2etest
-  fi
-
-  if [ ${CI_BRANCH} == "production" ]; then
-    printf "\n --- Saucelabs Integration Testing (nightwatch) ---\n\n"
-
-    # Use multiple environments as we have more than 4 browsers to test.
+  if [[ ${CI_BRANCH} == "production" ]]; then
     # This is more than the number of test scripts, so parallelising environments is better
-    # than parallelising scripts. Keep to a maximum of 6 browsers so that parallel runs in
+    # than parallelising scripts. Keep to a maximum of 6 browsers so that parallel runs in 
     # other pipelines don't overrun available SauceLabs slots (10).
     printf "\n --- Check all other browsers before going live (prod branch only) ---\n\n"
     ./nightwatch.js --env firefox-on-windows,safari-on-mac,edge,chrome-on-mac,firefox-on-mac,firefox-on-mac-esr --tag e2etest
-  fi
-
-  if [ ${CI_BRANCH} == "canarytest" ]; then
-    printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
-    printf "If you get a fail, try it manually in that browser\n\n"
-
-    printf "\n --- LOCAL WCT CANARY UNIT TESTING ---\n\n"
-    cp wct.conf.js.canary wct.conf.js
-    gulp test:remote
-    rm wct.conf.js
-    printf "\n --- WCT unit testing complete ---\n\n"
-
-    printf "\n --- Saucelabs Integration Testing (nightwatch) ---\n\n"
-    cd bin/saucelabs
-
-    # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
-    ./nightwatch.js --env chrome-on-windows-beta,chrome-on-windows-dev,chrome-on-mac-beta,chrome-on-mac-dev,firefox-on-windows-beta,firefox-on-windows-dev --tag e2etest
   fi
 ;;
 esac
