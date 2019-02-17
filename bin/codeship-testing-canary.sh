@@ -27,6 +27,9 @@ case "$PIPE_NUM" in
     rm wct.conf.js
     printf "\n --- WCT unit testing complete---\n\n"
 
+
+
+
     printf "\n-- Start server in the background, then sleep to give it time to load --\n"
     nohup bash -c "gulp serve:dist 2>&1 &"
     sleep 40 # seconds
@@ -35,10 +38,15 @@ case "$PIPE_NUM" in
     printf "\n --- Saucelabs Integration Testing ---\n\n"
     cd bin/saucelabs
 
-    printf "\n --- TEST CHROME Beta and Dev on WINDOWS (canary test) ---\n\n"
+    # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
+    printf "\n --- TEST CHROME Beta on WINDOWS (canary test) ---\n\n"
     ./nightwatch.js --env chrome-on-windows-beta --tag e2etest
 
-    # saucelabs currently cant handle win chrome dev (chrome 74) for saucelabs admin reasons
+
+
+
+
+    # saucelabs currently cant handle chrome dev (chrome 74?) for saucelabs admin reasons
     # the error is: session not created: Chrome version must be between 70 and 73
     # move it to last so we can check everything else passes but still check on this one.
     # when they fix it, replace it in the main wct.conf.js.canary file and delete this block
@@ -50,7 +58,6 @@ case "$PIPE_NUM" in
     rm wct.conf.js
     printf "\n --- unreliable wct testing complete ---\n\n"
 
-    # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
     ./nightwatch.js --env chrome-on-windows-dev --tag e2etest
     printf "\n --- unreliable integration testing complete ---\n\n"
 
@@ -96,9 +103,14 @@ case "$PIPE_NUM" in
     printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
     printf "If you get a fail, try it manually in that browser\n\n"
 
-    printf "\n --- TEST Chrome Beta and Dev on MAC (canary test) ---\n\n"
+    printf "\n --- TEST Chrome Beta on MAC (canary test) ---\n\n"
     # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
-    ./nightwatch.js --env chrome-on-mac-beta,chrome-on-mac-dev --tag e2etest
+    ./nightwatch.js --env chrome-on-mac-beta --tag e2etest
+    printf "\n --- wct testing complete ---\n\n"
+
+    printf "\n --- TEST Chrome Dev on MAC (canary test) ---\n\n"
+    # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
+    ./nightwatch.js --env chrome-on-mac-dev --tag e2etest
     printf "\n --- wct testing complete ---\n\n"
 ;;
 esac
