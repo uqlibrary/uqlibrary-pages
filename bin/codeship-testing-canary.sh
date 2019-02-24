@@ -106,11 +106,11 @@ case "$PIPE_NUM" in
     printf "\n --- TEST Chrome Beta on MAC (canary test) ---\n\n"
     # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
     ./nightwatch.js --env chrome-on-mac-beta --tag e2etest
-    printf "\n --- wct testing complete ---\n\n"
+    printf "\n --- Nightwatch Mac Chrome Beta testing complete ---\n\n"
 
     printf "\n --- TEST Chrome Dev on MAC (canary test) ---\n\n"
     # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
     ./nightwatch.js --env chrome-on-mac-dev --tag e2etest
-    printf "\n --- wct testing complete ---\n\n"
+    printf "\n --- Nightwatch Mac Chrome Dev testing complete ---\n\n"
 ;;
 esac
