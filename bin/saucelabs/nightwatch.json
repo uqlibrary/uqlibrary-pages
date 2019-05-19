@@ -129,7 +129,8 @@
         "version": "dev",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
-        "screenResolution": "1280x960"
+        "screenResolution": "1280x960",
+        "chromedriverVersion": "76.0.3788.2"
       }
     },
     "chrome-on-windows-beta": {
