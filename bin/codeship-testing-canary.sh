@@ -7,6 +7,12 @@
 # the ordering of the canary browser tests is: test beta, then test dev (beta is closer to ready for prod, per http://www.chromium.org/getting-involved/dev-channel
 # win chrome, win firefox and osx chrome are tested -  other options either dont have canaries or usage is too low to justify
 
+# We are using the pipelines differently for canary tests over regular builds:
+# Normally we use them to make the tests run as fast as possible
+# This time we are trying to still be able to run tests despite a different browser failing
+# There is also a lag in the starts, because the different runs seem to interfere with each other
+# Note that speed isnt required here - it runs over the weekend
+
 case "$PIPE_NUM" in
 "1")
   # "Unit testing" pipeline on codeship
@@ -14,7 +20,7 @@ case "$PIPE_NUM" in
     trap logSauceCommands EXIT
 
     printf "\nCurrent time : $(date +"%T")\n"
-    printf "sleep to give other pipelines time to run without clashing\n"
+    printf "sleep 10 minutes to give other pipelines time to run without clashing\n"
     sleep 600 # seconds
     printf "Time of awaken : $(date +"%T")\n\n"
 
@@ -86,7 +92,7 @@ case "$PIPE_NUM" in
     # "Test commands" pipeline on codeship
 
     printf "\nCurrent time : $(date +"%T")\n"
-    printf "sleep to give other pipelines time to run without clashing\n"
+    printf "sleep 3 minutes to give first pipeline time to run without clashing\n"
     sleep 180 # seconds
     printf "Time of awaken : $(date +"%T")\n\n"
 
