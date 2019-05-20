@@ -50,22 +50,21 @@ case "$PIPE_NUM" in
 
 
 
-
-
-    # saucelabs currently cant handle chrome dev (chrome 74?) for saucelabs admin reasons
-    # the error is: session not created: Chrome version must be between 70 and 73
+    # chromedriver stable (V74) doesnt currently work with chrome dev, but V75 does
+    # manually upgraded in nightwatch.json but cant find a way to upgrade wct settings :(
     # move it to last so we can check everything else passes but still check on this one.
     # when they fix it, replace it in the main wct.conf.js.canary file and delete this block
     # and also add it back into the nightwatch section above
     printf "\n --- start unreliable testing ---\n\n"
+
+    ./nightwatch.js --env chrome-on-windows-dev --tag e2etest
+    printf "\n --- unreliable integration testing complete ---\n\n"
+
     cd ../../
     cp wct.conf.js.canary.temp wct.conf.js
     gulp test:remote
     rm wct.conf.js
     printf "\n --- unreliable wct testing complete ---\n\n"
-
-    ./nightwatch.js --env chrome-on-windows-dev --tag e2etest
-    printf "\n --- unreliable integration testing complete ---\n\n"
 
 ;;
 "2")
