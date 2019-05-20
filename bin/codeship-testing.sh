@@ -51,7 +51,6 @@ fi
 
 # "canarytest" is used by a job that runs weekly to test the polymer repos on the upcoming browser versions
 # The intent is to get early notice of polymer 1 failing in modern browsers
-#  if [[ ${CI_BRANCH} == "canarytest" ]]; then
 if [[ ${CI_BRANCH} == "canarytest" ]]; then
   source ./bin/codeship-testing-canary.sh
   exit 0
