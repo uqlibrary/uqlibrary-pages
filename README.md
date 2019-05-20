@@ -51,14 +51,10 @@ Build and optimize the current project, ready for deployment. This includes vulc
 
 #### Default setup for pages (index.html, etc)
 
-##### IMS force login
+##### IMS considerations
 
-IMS script should be included in the header to force on-campus users to login to be able to access content on S3 and Internet
-
-```html
-<!-- force IMS login for on-campus users -->
-<script src="//www.library.uq.edu.au/js/ims.js"></script>
-```
+The new (April 2019) IMS system allows whitelisting of domains so there is no longer a need to do the old checks we used to do.
+That said, if any vendor includes or CDNs are added to this project, please check they are already covered by the IMS domain whitelist or ask ITS to add them via the helpdesk.
 
 ##### Preloader
 
