@@ -13,7 +13,8 @@ list=""
 
 # Collect all components for testing
 for component in ${components[@]}; do
-  list="$list\n        '$component',"
+#  list="$list\n        '$component',"
+  list="$list '$component',"
 done
 
 list="[ $list ]"
