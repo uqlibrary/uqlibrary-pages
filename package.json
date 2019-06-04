@@ -1,12 +1,14 @@
 {
   "private": true,
   "devDependencies": {
+    "axios": "^0.18.0",
     "browser-sync": "^2.26.3",
     "chai": "^4.2.0",
     "connect-history-api-fallback": "^1.5.0",
     "deep-extend": "^0.6.0",
     "del": "^3.0.0",
     "forwarded": "^0.1.2",
+    "fstream": "^1.0.12",
     "growl": "^1.10.5",
     "gulp": "^4.0.0",
     "gulp-autoprefixer": "^6.0.0",
@@ -49,6 +51,7 @@
     "require-dir": "^1.2.0",
     "run-sequence": "^2.2.1",
     "sauce-connect-launcher": "^1.2.4",
+    "tar": "^2.2.2",
     "tough-cookie": "^2.5.0",
     "vulcanize": "^1.16.0",
     "wct-local": "^2.1.3",
