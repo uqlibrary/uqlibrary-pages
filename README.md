@@ -225,7 +225,7 @@ Sometimes you will need to test functionality end to end or demonstrate in the b
 
 #### 404s
 
-It may appear that the 404 page is not used, for example, if you visit <https://www.library.uq.edu.au/404missing> you will get the Drupal template 404 (actually you are seeing a file that Dan has stolen from the drupal layout and put on one of the old servers and served via haproxy, but never mind that...), but the uqlibrary-pages 404 is loaded at times, for example, any missing image or .js on www.library.uq.edu.au which is loaded directly (for example when a user notes it is missing and tries it manually) will load the uqlibrary-pages 404, and some s3 buckets on AWS are configured to return the uqlibrarypages 404 when there is a missing file, eg <https://www.library.uq.edu.au/bomdata/doesntoexist>.
+It may appear that the 404 page is not used, for example, if you visit <https://www.library.uq.edu.au/404missing> you will get the Drupal template 404 (actually you are seeing a file that Dan has stolen from the drupal layout and put on one of the old servers and served via haproxy, but never mind that...), but the uqlibrary-pages 404 is loaded at times, for example, any missing image or .js on www.library.uq.edu.au which is loaded directly (for example when a user notes it is missing and tries it manually) will load the uqlibrary-pages 404, and some s3 buckets on AWS are configured to return the uqlibrarypages 404 when there is a missing file, eg <https://www.library.uq.edu.au/bomdata/doesntoexist> and uqlapp-frontend pages such as <http://app.library.uq.edu.au/this-doesnt-exist.html>.
 
 ## Application Theming & Styling
 
