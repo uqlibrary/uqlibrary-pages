@@ -66,6 +66,18 @@
     //bower_components/uqlibrary-browser-supported/browser-update.js
   </script>
 
+  <script>
+    if (window.location.hostname === 'app.library.uq.edu.au') {
+        var badPathPrefix = '//';
+        var goodPathPrefix = '/#/membership/form/';
+
+        if (window.location.pathname.startsWith(badPathPrefix)) {
+            var newAddress = window.location.pathname.replace(badPathPrefix, goodPathPrefix);
+            window.location.replace(newAddress);
+        }
+    }
+  </script>
+
   <!-- Because this project uses vulcanize this should be your only html import
        in this file. All other imports should go in elements.html -->
   <link rel="import" href="elements/elements.html">
