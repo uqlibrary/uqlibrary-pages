@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <meta name="generator" content="Library">
 
-  <title>Page not found | Library</title>
+  <title>Page not found | Library – University of Queensland, Australia</title>
 
   <!-- Place favicon.ico in the `app/` directory -->
 
@@ -48,6 +48,8 @@
   <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
   <meta name="msapplication-square150x150logo" content="images/touch/apple-touch-icon-152x152.png">
 
+  <link type="text/css" rel="stylesheet" href="//static.uq.net.au/v6/fonts/Roboto/roboto.css" media="all" />
+
   <!-- build:css styles/main.css -->
   <link rel="stylesheet" href="styles/main.css">
   <!-- endbuild-->
@@ -64,18 +66,6 @@
     //display browser update message for unsupported browsers,
     //will be inserted by gulp task, do not remove
     //bower_components/uqlibrary-browser-supported/browser-update.js
-  </script>
-
-  <script>
-    if (window.location.hostname === 'app.library.uq.edu.au') {
-        var badPathPrefix = '//';
-        var goodPathPrefix = '/#/membership/form/';
-
-        if (window.location.pathname.startsWith(badPathPrefix)) {
-            var newAddress = window.location.pathname.replace(badPathPrefix, goodPathPrefix);
-            window.location.replace(newAddress);
-        }
-    }
   </script>
 
   <!-- Because this project uses vulcanize this should be your only html import

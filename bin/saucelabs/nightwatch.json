@@ -99,8 +99,7 @@
         "version": "dev",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
-        "screenResolution": "1280x960",
-        "chromedriverVersion": "75.0.3770.8"
+        "screenResolution": "1280x960"
       }
     },
     "firefox-on-windows-dev": {
@@ -130,8 +129,7 @@
         "version": "dev",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
-        "screenResolution": "1280x960",
-        "chromedriverVersion": "75.0.3770.8"
+        "screenResolution": "1280x960"
       }
     },
     "chrome-on-windows-beta": {
