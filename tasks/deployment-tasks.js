@@ -13,8 +13,6 @@ var path = require('path');
 var fs = require('fs');
 var argv = require('yargs').argv;
 
-$.util.log('parameter passed: ', argv.path);
-
 var DIST = 'dist';
 var dist = function(subpath) {
   return !subpath ? DIST : path.join(DIST, subpath);

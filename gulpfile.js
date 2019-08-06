@@ -295,10 +295,10 @@ gulp.task('default', gulp.series(
   'inject-preloader',
   'inject-ga-values',
   'monkey-patch-paper-input',
-  'app-cache-version-update',
   'rev',
   'monkey-patch-rev-manifest',
   'rev-replace-polymer-fix',
+  'app-cache-version-update',
   'rev-appcache-update',
   'remove-rev-file',
   function(cb) {

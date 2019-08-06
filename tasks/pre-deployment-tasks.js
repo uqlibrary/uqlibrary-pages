@@ -1,4 +1,4 @@
-/* 
+/*
  * pre-deployment tasks
  *
  * contains tasks for managing browser caching, eg revision number for resources, cache manifest update
@@ -40,11 +40,11 @@ gulp.task('app-cache-version-update', function() {
 
   return gulp.src(dist('**/*.appcache'))
       .pipe(replace({
-        patterns: [{ match: regExVersion, replacement: timeStamp.getTime()}], 
+        patterns: [{ match: regExVersion, replacement: timeStamp.getTime()}],
         usePrefix: false
       }))
       .pipe(replace({
-        patterns: [{ match: regExPath, replacement: absPath + 'pages'}], 
+        patterns: [{ match: regExPath, replacement: absPath + 'pages'}],
         usePrefix: false
       }))
       .pipe(gulp.dest(dist()));
@@ -76,8 +76,7 @@ gulp.task('rev', function () {
     '**/elements.html',
     '**/elements.js',
     '**/main.css',
-    '**/app.js',
-    '**/index.appcache'
+    '**/app.js'
   ];
 
   var filter = $.filter(fileFilter, {restore: true});
@@ -86,7 +85,7 @@ gulp.task('rev', function () {
     .pipe(rev())
     .pipe(revDelete())
     .pipe(filter.restore)
-    .pipe(revReplace({replaceInExtensions: ['.appcache']}))
+    .pipe(revReplace())
     .pipe(gulp.dest(dist()))
     .pipe(rev.manifest())
     .pipe(gulp.dest(dist()));
