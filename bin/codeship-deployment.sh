@@ -3,7 +3,11 @@
 # start debugging/tracing commands, -e - exit if command returns error (non-zero status)
 set -e
 
-# start debugging/tracing commands, -e - exit if command returns error (non-zero status)
+# CI_BRANCH environment variable will be supplied by codeship
+if [[ -z $CI_BRANCH ]]; then
+  CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+fi
+
 echo "Deploying branch: ${CI_BRANCH}"
 
 branch=${CI_BRANCH}
@@ -28,13 +32,12 @@ pwd
 echo "Build distribution"
 gulp
 
-# use codeship branch environment variable to push to branch name dir unless it's 'production' branch (or master for now)
-if [ ${CI_BRANCH} != "production" ]; then
-  export S3BucketSubDir=/${CI_BRANCH}/${dest}
-  export InvalidationPath=/${CI_BRANCH}/${dest}
+if [ ${CI_BRANCH} == "production" ]; then
+  S3BucketSubDir="${dest}"
+  InvalidationPath="/${dest}"
 else
-  export S3BucketSubDir=${dest}
-  export InvalidationPath=/${dest}
+  S3BucketSubDir="/${CI_BRANCH}/${dest}"
+  InvalidationPath="/${CI_BRANCH}/${dest}"
 fi
 
 echo "Deploying to S3 bucket sub-dir: ${S3BucketSubDir}"

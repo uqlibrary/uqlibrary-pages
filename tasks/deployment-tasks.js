@@ -11,7 +11,7 @@ var cloudfront = require('gulp-invalidate-cloudfront');
 
 var path = require('path');
 var fs = require('fs');
-var argv = require('yargs/yargs')(process.argv.slice(2));
+var argv = require('yargs/yargs').argv;
 
 var DIST = 'dist';
 var dist = function(subpath) {
@@ -29,10 +29,10 @@ gulp.task('invalidate', function () {
 
   var invalidatePath = '';
 
-  if (argv.path) {
-    invalidatePath = argv.path + '/*';
-  } else {
+  if (argv.path === undefined) {
     invalidatePath += '/pages/*';
+  } else {
+    invalidatePath = argv.path + '/*';
   }
 
   $.util.log('Invalidation path: ' + invalidatePath);
