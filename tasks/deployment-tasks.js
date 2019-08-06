@@ -11,9 +11,9 @@ var cloudfront = require('gulp-invalidate-cloudfront');
 
 var path = require('path');
 var fs = require('fs');
-var argv = require('yargs/yargs')(process.argv.slice(2));
+var argv = require('yargs').argv;
 
-$.util.log('parameter passed: ', argv);
+$.util.log('parameter passed: ', argv.path);
 
 var DIST = 'dist';
 var dist = function(subpath) {
