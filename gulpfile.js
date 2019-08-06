@@ -180,7 +180,7 @@ gulp.task('clean_bower', function() {
 
   return gulp.src('app/bower_components/**/*.html')
       .pipe(replace({
-        patterns: [{ match: regEx, replacement: ".." }], 
+        patterns: [{ match: regEx, replacement: ".." }],
         usePrefix: false
       }))
       .pipe(gulp.dest('app/bower_components'))
@@ -215,27 +215,27 @@ gulp.task('vulcanize', gulp.series('clean_bower', function() {
 
     //replace menu-json with value from resources/uql-menu.json
     .pipe($.if('*.js', replace({
-      patterns: [{ match: regEx, replacement: menuJson + ';' }], 
+      patterns: [{ match: regEx, replacement: menuJson + ';' }],
       usePrefix: false
     })))
 
     //replace contacts.json with value from uqlibrary-api
     .pipe($.if('*.js', replace({
-      patterns: [{ match: contactsRegEx, replacement: contactsJson + ';' }], 
+      patterns: [{ match: contactsRegEx, replacement: contactsJson + ';' }],
       usePrefix: false
     })))
 
     // Minify js output - Erroring with:
     //   GulpUglifyError: unable to minify JavaScript
     //   Caused by: SyntaxError: Unexpected token: keyword (const)
-    .pipe($.if('*.js', uglify({ 
+    .pipe($.if('*.js', uglify({
       output: { comments: 'some' }
     })))
 
     // Minify html output
     .pipe($.if('*.html', $.minifyHtml({
-      quotes: true, 
-      empty: true, 
+      quotes: true,
+      empty: true,
       spare: true
     })))
 
@@ -295,12 +295,12 @@ gulp.task('default', gulp.series(
   'inject-preloader',
   'inject-ga-values',
   'monkey-patch-paper-input',
+  'app-cache-version-update',
   'rev',
   'monkey-patch-rev-manifest',
   'rev-replace-polymer-fix',
-  'app-cache-version-update',
   'rev-appcache-update',
-  'remove-rev-file', 
+  'remove-rev-file',
   function(cb) {
     cb();
   }
