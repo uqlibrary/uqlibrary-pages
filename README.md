@@ -229,7 +229,7 @@ It may appear that the 404 page is not used, for example, if you visit <https://
 
 ## Application Theming & Styling
 
-Style guide for the project is [uqlibrary-styles](https://github.com/uqlibrary/uqlibrary-styles). [Demo here](http://uqlibrary.github.io/uqlibrary-styles/style-guide/demo/).
+Style guide for the project is [uqlibrary-styles](https://github.com/uqlibrary/uqlibrary-styles). [Demo here](http://uqlibrary.github.io/uqlibrary-styles/uqlibrary-styles/style-guide/demo/).
 
 [Read more](https://www.polymer-project.org/1.0/docs/devguide/styling.html) about CSS custom properties.
 
