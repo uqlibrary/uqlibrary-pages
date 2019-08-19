@@ -18,12 +18,14 @@
     "uqlibrary-secure-file-access": "uqlibrary/uqlibrary-secure-file-access",
     "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights",
     "uqlibrary-styles": "uqlibrary/uqlibrary-styles",
-    "uqlibrary-training": "uqlibrary/uqlibrary-training"
+    "uqlibrary-training": "uqlibrary/uqlibrary-training",
+    "validator-js": "~11.1.0"
   },
   "devDependencies": {
     "web-component-tester": "*"
   },
   "resolutions": {
-    "test-fixture": "^1.1.2"
+    "test-fixture": "^1.1.2",
+    "lodash": "^4.17.15"
   }
 }
