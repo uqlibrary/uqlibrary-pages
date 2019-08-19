@@ -61,11 +61,15 @@
     "yargs": "^13.3.0"
   },
   "scripts": {
+    "postinstall": "bower update",
+    "pretest": "./bin/test-setup.sh",
     "test": "gulp test:local",
-    "start": "gulp serve"
+    "test:remote": "gulp test:remote",
+    "start": "gulp serve",
+    "clean": "rm -rf .tmp dist node_modules app/bower_components app/test/bower_components app/test/index.html"
   },
   "engines": {
-    "npm": "^6.7.0",
-    "node": "^11.8.0"
+    "npm": "^6",
+    "node": "11.10.1"
   }
 }
