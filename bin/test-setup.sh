@@ -6,6 +6,24 @@ set -e
 # Update paths in bower_components
 gulp clean_bower
 
+# cleanup in case of multiple runs
+rm -rf ./app/bower_components/validator/
+rm -rf ./app/bower_components/uqlibrary-hours/node_modules/
+rm -rf ./app/bower_components/uqlibrary-computers/node_modules/
+
+# because we are supplying components from npm rather than bower, we have to make sure they are available :(
+mkdir -p ./app/bower_components/uqlibrary-computers/node_modules/lodash/
+cp ./node_modules/lodash/lodash.min.js ./app/bower_components/uqlibrary-computers/node_modules/lodash/lodash.min.js
+
+mkdir -p ./app/bower_components/uqlibrary-hours/node_modules/lodash/
+cp ./node_modules/lodash/lodash.min.js  ./app/bower_components/uqlibrary-hours/node_modules/lodash/lodash.min.js
+mkdir -p ./app/bower_components/uqlibrary-hours/node_modules/moment/
+cp ./node_modules/moment/moment.js  ./app/bower_components/uqlibrary-hours/node_modules/moment/moment.js
+
+mkdir -p ./app/bower_components/validator/
+cp -R ./node_modules/validator/  ./app/bower_components/validator/
+
+echo "$ cp -R app/bower_components app/test"
 cp -R app/bower_components app/test
 components=$(ls -d app/test/bower_components/uqlibrary-*/test/*test* | grep -v index)
 COUNTER=0

@@ -9,23 +9,21 @@
     "uqlibrary-api": "uqlibrary/uqlibrary-api",
     "uqlibrary-autosuggest-input": "uqlibrary/uqlibrary-autosuggest-input",
     "uqlibrary-browser-supported": "uqlibrary/uqlibrary-browser-supported",
-    "uqlibrary-computers": "uqlibrary/uqlibrary-computers",
+    "uqlibrary-computers": "uqlibrary/uqlibrary-computers#feature-port-167659453",
     "uqlibrary-ga": "uqlibrary/uqlibrary-ga",
-    "uqlibrary-hours": "uqlibrary/uqlibrary-hours",
+    "uqlibrary-hours": "uqlibrary/uqlibrary-hours#feature-port-167659453",
     "uqlibrary-receipt": "uqlibrary/uqlibrary-receipt",
-    "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components",
+    "uqlibrary-reusable-components": "uqlibrary/uqlibrary-reusable-components#feature-port-167659453-B",
     "uqlibrary-search": "uqlibrary/uqlibrary-search",
     "uqlibrary-secure-file-access": "uqlibrary/uqlibrary-secure-file-access",
     "uqlibrary-spotlights": "uqlibrary/uqlibrary-spotlights",
     "uqlibrary-styles": "uqlibrary/uqlibrary-styles",
-    "uqlibrary-training": "uqlibrary/uqlibrary-training",
-    "validator-js": "~11.1.0"
+    "uqlibrary-training": "uqlibrary/uqlibrary-training"
   },
   "devDependencies": {
     "web-component-tester": "*"
   },
   "resolutions": {
-    "test-fixture": "^1.1.2",
-    "lodash": "^4.17.15"
+    "test-fixture": "^1.1.2"
   }
 }

@@ -71,5 +71,9 @@
   "engines": {
     "npm": "^6",
     "node": "11.10.1"
+  },
+  "dependencies": {
+    "moment": "^2.24.0",
+    "validator": "^11.1.0"
   }
 }
