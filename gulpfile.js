@@ -124,6 +124,21 @@ gulp.task('images', function() {
   return imageOptimizeTask('app/images/**/*', dist('images'));
 });
 
+// copy the js into the mode-modules where the components expect it
+// (running from npm instead of bower to get security coverage from github)
+gulp.task('npm_copy', function() {
+  gulp.src(['node_modules/validator/*'])
+      .pipe(gulp.dest('app/bower_components'));
+
+  gulp.src(['node_modules/lodash/lodash.min.js'])
+      .pipe(gulp.dest('app/bower_components/uqlibrary-hours/node_modules/lodash/lodash.min.js'));
+  gulp.src(['node_modules/moment/moment.js'])
+      .pipe(gulp.dest('app/bower_components/uqlibrary-hours/node_modules/moment/moment.js'));
+
+  return gulp.src(['node_modules/lodash/lodash.min.js'])
+      .pipe(gulp.dest('app/bower_components/uqlibrary-computers/node_modules/lodash/lodash.min.js'));
+});
+
 // Copy all files at the root level (app)
 gulp.task('copy_files', gulp.series('npm_copy', function() {
   var app = gulp.src([
@@ -171,21 +186,6 @@ gulp.task('html', function() {
   return optimizeHtmlTask(
       ['app/**/*.html', '!app/{elements,test,bower_components}/**/*.html'],
       dist());
-});
-
-// copy the js into the mode-modules where the components expect it
-// (running from npm instead of bower to get security coverage from github)
-gulp.task('npm_copy', function() {
-  gulp.src(['node_modules/validator/*'])
-      .pipe(gulp.dest('app/bower_components'));
-
-  gulp.src(['node_modules/lodash/lodash.min.js'])
-      .pipe(gulp.dest('app/bower_components/uqlibrary-hours/node_modules/lodash/lodash.min.js'));
-  gulp.src(['node_modules/moment/moment.js'])
-      .pipe(gulp.dest('app/bower_components/uqlibrary-hours/node_modules/moment/moment.js'));
-
-  return gulp.src(['node_modules/lodash/lodash.min.js'])
-      .pipe(gulp.dest('app/bower_components/uqlibrary-computers/node_modules/lodash/lodash.min.js'));
 });
 
 // update paths to bower_components for all components inside bower_components
