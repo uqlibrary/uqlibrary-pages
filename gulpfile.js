@@ -42,61 +42,61 @@ var dist = function(subpath) {
 
 var styleTask = function(stylesPath, srcs) {
   return gulp.src(srcs.map(function(src) {
-      return path.join('app', stylesPath, src);
-    }))
-    //Concatenate all SASS files into 1 compiled CSS file
-    .pipe($.sass({style: 'expanded'}))
-    .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
-    //Save a copy next to the original SASS file
-    .pipe(gulp.dest('app/' + stylesPath),{overwrite:true})
-    //Save it to a temp dir
-    .pipe(gulp.dest('.tmp/' + stylesPath),{overwrite:true})
-    //Minify the CSS
-    .pipe($.minifyCss())
-    //Copy it to the distribution folder
-    .pipe(gulp.dest(dist(stylesPath),{overwrite:true}))
-    .pipe($.size({title: stylesPath}))
-  ;
+    return path.join('app', stylesPath, src);
+  }))
+  //Concatenate all SASS files into 1 compiled CSS file
+      .pipe($.sass({style: 'expanded'}))
+      .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
+      //Save a copy next to the original SASS file
+      .pipe(gulp.dest('app/' + stylesPath),{overwrite:true})
+      //Save it to a temp dir
+      .pipe(gulp.dest('.tmp/' + stylesPath),{overwrite:true})
+      //Minify the CSS
+      .pipe($.minifyCss())
+      //Copy it to the distribution folder
+      .pipe(gulp.dest(dist(stylesPath),{overwrite:true}))
+      .pipe($.size({title: stylesPath}))
+      ;
 };
 
 var imageOptimizeTask = function(src, dest) {
   return gulp.src(src)
-    .pipe($.imagemin({
-      progressive: true,
-      interlaced: true
-    }))
-    .pipe(gulp.dest(dest))
-    .pipe($.size({title: 'images'}));
+      .pipe($.imagemin({
+        progressive: true,
+        interlaced: true
+      }))
+      .pipe(gulp.dest(dest))
+      .pipe($.size({title: 'images'}));
 };
 
 var optimizeHtmlTask = function(src, dest) {
 
   return gulp.src(src)
-    .pipe($.useref())
+      .pipe($.useref())
 
-    // Concatenate and minify JavaScript
-    .pipe($.if('*.js', uglify({
-      output: { comments: 'some' }
-    })))
+      // Concatenate and minify JavaScript
+      .pipe($.if('*.js', uglify({
+        output: { comments: 'some' }
+      })))
 
-    // Concatenate and minify styles
-    // In case you are still using useref build blocks
-    .pipe($.if('*.css', $.minifyCss()))
-    .pipe($.useref())
+      // Concatenate and minify styles
+      // In case you are still using useref build blocks
+      .pipe($.if('*.css', $.minifyCss()))
+      .pipe($.useref())
 
-    // Minify any HTML
-    .pipe($.if('*.html', $.minifyHtml({
-      quotes: true,
-      empty: true,
-      spare: true
-    })))
+      // Minify any HTML
+      .pipe($.if('*.html', $.minifyHtml({
+        quotes: true,
+        empty: true,
+        spare: true
+      })))
 
-    // Output files
-    .pipe(gulp.dest(dest))
-    .pipe($.size({
-      title: 'html'
-    }))
-  ;
+      // Output files
+      .pipe(gulp.dest(dest))
+      .pipe($.size({
+        title: 'html'
+      }))
+      ;
 };
 
 // Compile and automatically prefix stylesheets
@@ -125,7 +125,7 @@ gulp.task('images', function() {
 });
 
 // Copy all files at the root level (app)
-gulp.task('copy', function() {
+gulp.task('copy_files', gulp.series('npm_copy', function() {
   var app = gulp.src([
     'app/*',
     '!app/test',
@@ -152,25 +152,40 @@ gulp.task('copy', function() {
 
 
   return merge(app, bower, data)
-    .pipe($.size({
-      title: 'copy'
-    }));
-});
+      .pipe($.size({
+        title: 'copy_files'
+      }));
+}));
 
 // Copy web fonts to dist
 gulp.task('fonts', function() {
   return gulp.src(['app/fonts/**'])
-    .pipe(gulp.dest(dist('fonts')))
-    .pipe($.size({
-      title: 'fonts'
-    }));
+      .pipe(gulp.dest(dist('fonts')))
+      .pipe($.size({
+        title: 'fonts'
+      }));
 });
 
 // Scan your HTML for assets & optimize them
 gulp.task('html', function() {
   return optimizeHtmlTask(
-    ['app/**/*.html', '!app/{elements,test,bower_components}/**/*.html'],
-    dist());
+      ['app/**/*.html', '!app/{elements,test,bower_components}/**/*.html'],
+      dist());
+});
+
+// copy the js into the mode-modules where the components expect it
+// (running from npm instead of bower to get security coverage from github)
+gulp.task('npm_copy', function() {
+  gulp.src(['node_modules/validator/*'])
+      .pipe(gulp.dest('app/bower_components'));
+
+  gulp.src(['node_modules/lodash/lodash.min.js'])
+      .pipe(gulp.dest('app/bower_components/uqlibrary-hours/node_modules/lodash/lodash.min.js'));
+  gulp.src(['node_modules/moment/moment.js'])
+      .pipe(gulp.dest('app/bower_components/uqlibrary-hours/node_modules/moment/moment.js'));
+
+  return gulp.src(['node_modules/lodash/lodash.min.js'])
+      .pipe(gulp.dest('app/bower_components/uqlibrary-computers/node_modules/lodash/lodash.min.js'));
 });
 
 // update paths to bower_components for all components inside bower_components
@@ -198,51 +213,51 @@ gulp.task('vulcanize', gulp.series('clean_bower', function() {
 
   return gulp.src('app/elements/elements.html')
 
-    .pipe($.vulcanize({
-      stripComments: true,
-      inlineCss: true,
-      inlineScripts: true
-    }))
+      .pipe($.vulcanize({
+        stripComments: true,
+        inlineCss: true,
+        inlineScripts: true
+      }))
 
-    .on('error', function (err) {
-      process.exit(1);
-    })
+      .on('error', function (err) {
+        process.exit(1);
+      })
 
-    .pipe($.crisper({
-      scriptInHead: false,
-      onlySplit: false
-    }))
+      .pipe($.crisper({
+        scriptInHead: false,
+        onlySplit: false
+      }))
 
-    //replace menu-json with value from resources/uql-menu.json
-    .pipe($.if('*.js', replace({
-      patterns: [{ match: regEx, replacement: menuJson + ';' }],
-      usePrefix: false
-    })))
+      //replace menu-json with value from resources/uql-menu.json
+      .pipe($.if('*.js', replace({
+        patterns: [{ match: regEx, replacement: menuJson + ';' }],
+        usePrefix: false
+      })))
 
-    //replace contacts.json with value from uqlibrary-api
-    .pipe($.if('*.js', replace({
-      patterns: [{ match: contactsRegEx, replacement: contactsJson + ';' }],
-      usePrefix: false
-    })))
+      //replace contacts.json with value from uqlibrary-api
+      .pipe($.if('*.js', replace({
+        patterns: [{ match: contactsRegEx, replacement: contactsJson + ';' }],
+        usePrefix: false
+      })))
 
-    // Minify js output - Erroring with:
-    //   GulpUglifyError: unable to minify JavaScript
-    //   Caused by: SyntaxError: Unexpected token: keyword (const)
-    .pipe($.if('*.js', uglify({
-      output: { comments: 'some' }
-    })))
+      // Minify js output - Erroring with:
+      //   GulpUglifyError: unable to minify JavaScript
+      //   Caused by: SyntaxError: Unexpected token: keyword (const)
+      .pipe($.if('*.js', uglify({
+        output: { comments: 'some' }
+      })))
 
-    // Minify html output
-    .pipe($.if('*.html', $.minifyHtml({
-      quotes: true,
-      empty: true,
-      spare: true
-    })))
+      // Minify html output
+      .pipe($.if('*.html', $.minifyHtml({
+        quotes: true,
+        empty: true,
+        spare: true
+      })))
 
-    .pipe(gulp.dest(dist('elements')))
+      .pipe(gulp.dest(dist('elements')))
 
-    .pipe($.size({title: 'vulcanize'}))
-  ;
+      .pipe($.size({title: 'vulcanize'}))
+      ;
 }));
 
 // Clean output directory
@@ -286,24 +301,24 @@ gulp.task('serve', gulp.series('clean_bower', 'styles', 'elements', function(don
 
 // Build production files, the default task
 gulp.task('default', gulp.series(
-  'clean',
-  gulp.parallel('ensureFiles', 'copy', 'styles'),
-  'elements',
-  gulp.parallel('images', 'fonts', 'html'),
-  'vulcanize',
-  'inject-browser-update',
-  'inject-preloader',
-  'inject-ga-values',
-  'monkey-patch-paper-input',
-  'rev',
-  'monkey-patch-rev-manifest',
-  'rev-replace-polymer-fix',
-  'app-cache-version-update',
-  'rev-appcache-update',
-  'remove-rev-file',
-  function(cb) {
-    cb();
-  }
+    'clean',
+    gulp.parallel('ensureFiles', 'copy_files', 'styles'),
+    'elements',
+    gulp.parallel('images', 'fonts', 'html'),
+    'vulcanize',
+    'inject-browser-update',
+    'inject-preloader',
+    'inject-ga-values',
+    'monkey-patch-paper-input',
+    'rev',
+    'monkey-patch-rev-manifest',
+    'rev-replace-polymer-fix',
+    'app-cache-version-update',
+    'rev-appcache-update',
+    'remove-rev-file',
+    function(cb) {
+      cb();
+    }
 ));
 
 // Build and serve the output from the dist build
@@ -367,9 +382,9 @@ var testfiles = ['error.js', 'warning.js'];
 // Task that emits an error that's treated as a warning.
 gulp.task('warning', function(done) {
   gulp.src(testfiles)
-  .pipe(jshint())
-  .pipe(jshint.reporter('fail'))
-  .on('error', onWarning);
+      .pipe(jshint())
+      .pipe(jshint.reporter('fail'))
+      .on('error', onWarning);
   done();
 });
 
