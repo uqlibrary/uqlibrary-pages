@@ -21,7 +21,7 @@ mkdir -p ./app/bower_components/uqlibrary-hours/node_modules/moment/
 cp ./node_modules/moment/moment.js  ./app/bower_components/uqlibrary-hours/node_modules/moment/moment.js
 
 mkdir -p ./app/bower_components/validator/
-cp -R ./node_modules/validator/  ./app/bower_components/validator/
+cp -R node_modules/validator app/bower_components
 
 echo "$ cp -R app/bower_components app/test"
 cp -R app/bower_components app/test
