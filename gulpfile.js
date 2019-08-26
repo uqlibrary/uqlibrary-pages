@@ -42,21 +42,21 @@ var dist = function(subpath) {
 
 var styleTask = function(stylesPath, srcs) {
   return gulp.src(srcs.map(function(src) {
-    return path.join('app', stylesPath, src);
-  }))
-  //Concatenate all SASS files into 1 compiled CSS file
-      .pipe($.sass({style: 'expanded'}))
-      .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
-      //Save a copy next to the original SASS file
-      .pipe(gulp.dest('app/' + stylesPath),{overwrite:true})
-      //Save it to a temp dir
-      .pipe(gulp.dest('.tmp/' + stylesPath),{overwrite:true})
-      //Minify the CSS
-      .pipe($.minifyCss())
-      //Copy it to the distribution folder
-      .pipe(gulp.dest(dist(stylesPath),{overwrite:true}))
-      .pipe($.size({title: stylesPath}))
-      ;
+      return path.join('app', stylesPath, src);
+    }))
+    //Concatenate all SASS files into 1 compiled CSS file
+    .pipe($.sass({style: 'expanded'}))
+    .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
+    //Save a copy next to the original SASS file
+    .pipe(gulp.dest('app/' + stylesPath),{overwrite:true})
+    //Save it to a temp dir
+    .pipe(gulp.dest('.tmp/' + stylesPath),{overwrite:true})
+    //Minify the CSS
+    .pipe($.minifyCss())
+    //Copy it to the distribution folder
+    .pipe(gulp.dest(dist(stylesPath),{overwrite:true}))
+    .pipe($.size({title: stylesPath}))
+  ;
 };
 
 var imageOptimizeTask = function(src, dest) {
@@ -128,19 +128,19 @@ gulp.task('images', function() {
 // (running from npm instead of bower to get security coverage from github)
 gulp.task('npm_copy', function() {
   gulp.src(['node_modules/validator/*'])
-      .pipe(gulp.dest('app/bower_components'));
+      .pipe(gulp.dest('app/bower_components/validator'));
 
-  gulp.src(['node_modules/lodash/lodash.min.js'])
-      .pipe(gulp.dest('app/bower_components/uqlibrary-hours/node_modules/lodash/lodash.min.js'));
-  gulp.src(['node_modules/moment/moment.js'])
-      .pipe(gulp.dest('app/bower_components/uqlibrary-hours/node_modules/moment/moment.js'));
+  gulp.src(['node_modules/lodash/*'])
+      .pipe(gulp.dest('app/bower_components/uqlibrary-hours/node_modules/lodash'));
+  gulp.src(['node_modules/moment/*'])
+      .pipe(gulp.dest('app/bower_components/uqlibrary-hours/node_modules/moment'));
 
-  return gulp.src(['node_modules/lodash/lodash.min.js'])
-      .pipe(gulp.dest('app/bower_components/uqlibrary-computers/node_modules/lodash/lodash.min.js'));
+  return gulp.src(['node_modules/lodash/*'])
+      .pipe(gulp.dest('app/bower_components/uqlibrary-computers/node_modules/lodash'));
 });
 
 // Copy all files at the root level (app)
-gulp.task('copy_files', gulp.series('npm_copy', function() {
+gulp.task('copy_files', function() {
   var app = gulp.src([
     'app/*',
     '!app/test',
@@ -170,7 +170,7 @@ gulp.task('copy_files', gulp.series('npm_copy', function() {
       .pipe($.size({
         title: 'copy_files'
       }));
-}));
+});
 
 // Copy web fonts to dist
 gulp.task('fonts', function() {
@@ -203,15 +203,17 @@ gulp.task('clean_bower', function() {
 });
 
 // Vulcanize granular configuration
-gulp.task('vulcanize', gulp.series('clean_bower', function() {
+gulp.task('vulcanize', gulp.series(
+  'clean_bower',
+  'npm_copy',
+  function() {
+    var menuJson = fs.readFileSync('app/bower_components/uqlibrary-reusable-components/resources/uql-menu.json', 'utf8');
+    var regEx = new RegExp('menuJsonFileData;', 'g');
 
-  var menuJson = fs.readFileSync('app/bower_components/uqlibrary-reusable-components/resources/uql-menu.json', 'utf8');
-  var regEx = new RegExp('menuJsonFileData;', 'g');
+    var contactsJson = fs.readFileSync('app/bower_components/uqlibrary-api/data/contacts.json', 'utf8');
+    var contactsRegEx = new RegExp('contactsJsonFileData;', 'g');
 
-  var contactsJson = fs.readFileSync('app/bower_components/uqlibrary-api/data/contacts.json', 'utf8');
-  var contactsRegEx = new RegExp('contactsJsonFileData;', 'g');
-
-  return gulp.src('app/elements/elements.html')
+    return gulp.src('app/elements/elements.html')
 
       .pipe($.vulcanize({
         stripComments: true,
@@ -266,7 +268,7 @@ gulp.task('clean', function() {
 });
 
 // Watch files for changes & reload
-gulp.task('serve', gulp.series('clean_bower', 'styles', 'elements', function(done) {
+gulp.task('serve', gulp.series('clean_bower', 'npm_copy', 'styles', 'elements', function(done) {
   browserSync({
     open: "external",
     host: 'dev-app.library.uq.edu.au',
