@@ -5,7 +5,9 @@ set -e
 
 # Update paths in bower_components
 gulp clean_bower
+gulp npm_copy
 
+echo "$ cp -R app/bower_components app/test"
 cp -R app/bower_components app/test
 components=$(ls -d app/test/bower_components/uqlibrary-*/test/*test* | grep -v index)
 COUNTER=0

@@ -11,7 +11,7 @@ var cloudfront = require('gulp-invalidate-cloudfront');
 
 var path = require('path');
 var fs = require('fs');
-var argv = require('yargs/yargs')(process.argv.slice(2));
+var argv = require('yargs').argv;
 
 var DIST = 'dist';
 var dist = function(subpath) {
@@ -19,20 +19,20 @@ var dist = function(subpath) {
 };
 
 /**
- * Command line param:
- *    --path {INVALIDATION_PATH}
+ * usage:
+ *  gulp invalidate --path {INVALIDATION_PATH}
  *
- * If no bucket path passed will invalidate production subdir
+ * If no bucket folder-path passed, it will invalidate the production subdirectory
  */
 gulp.task('invalidate', function () {
   var awsConfig = JSON.parse(fs.readFileSync('./aws.json', 'utf8'));
 
   var invalidatePath = '';
 
-  if (argv.path) {
+  if (!!argv.path) {
     invalidatePath = argv.path + '/*';
   } else {
-    invalidatePath += '/pages/*';
+    invalidatePath = '/pages/*';
   }
 
   $.util.log('Invalidation path: ' + invalidatePath);
