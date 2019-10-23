@@ -66,28 +66,6 @@ case "$PIPE_NUM" in
     rm wct.conf.js
     printf "\n --- unreliable wct testing complete ---\n\n"
 
-;;
-"2")
-    # "Nightwatch" pipeline on codeship
-
-    trap logSauceCommands EXIT
-
-    printf "\n-- Start server in the background, then sleep to give it time to load --\n"
-    nohup bash -c "gulp serve:dist 2>&1 &"
-    sleep 40 # seconds
-    cat nohup.out
-
-    printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
-    printf "If you get a fail, try it manually in that browser\n\n"
-
-    printf "\n --- Saucelabs Integration Testing ---\n\n"
-    cd bin/saucelabs
-
-    printf "\n --- TEST FIREFOX Beta and Dev on WINDOWS (canary test) ---\n\n"
-    # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
-    ./nightwatch.js --env firefox-on-windows-beta,firefox-on-windows-dev --tag e2etest
-;;
-"3")
     # "Test commands" pipeline on codeship
 
     printf "\nCurrent time : $(date +"%T")\n"
@@ -117,5 +95,26 @@ case "$PIPE_NUM" in
     # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
     ./nightwatch.js --env chrome-on-mac-dev --tag e2etest
     printf "\n --- Nightwatch Mac Chrome Dev testing complete ---\n\n"
+
+;;
+"2")
+    # "Nightwatch" pipeline on codeship
+
+    trap logSauceCommands EXIT
+
+    printf "\n-- Start server in the background, then sleep to give it time to load --\n"
+    nohup bash -c "gulp serve:dist 2>&1 &"
+    sleep 40 # seconds
+    cat nohup.out
+
+    printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
+    printf "If you get a fail, try it manually in that browser\n\n"
+
+    printf "\n --- Saucelabs Integration Testing ---\n\n"
+    cd bin/saucelabs
+
+    printf "\n --- TEST FIREFOX Beta and Dev on WINDOWS (canary test) ---\n\n"
+    # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
+    ./nightwatch.js --env firefox-on-windows-beta,firefox-on-windows-dev --tag e2etest
 ;;
 esac
