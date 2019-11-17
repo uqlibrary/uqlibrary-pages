@@ -80,6 +80,35 @@ case "$PIPE_NUM" in
     cp wct.conf.js.remoteB wct.conf.js
     gulp test:remote
     rm wct.conf.js
+
+    # "Test commands" pipeline on codeship
+  trap logSauceCommands EXIT
+
+  printf "\n-- Start server in the background, then sleep to give it time to load --\n"
+  nohup bash -c "gulp serve:dist 2>&1 &"
+  sleep 40 # seconds
+  cat nohup.out
+
+  printf "\n --- Saucelabs Integration Testing ---\n\n"
+  cd bin/saucelabs
+
+  # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
+
+  # Win/Chrome is our most used browser, 2018
+  # Win/FF is our second most used browser, 2018 - we have the ESR release on Library Desktop SOE
+  # IE11 should be tested on each build for earlier detection of problematic js
+
+  printf "\n --- TEST popular browsers ---\n\n"
+  ./nightwatch.js --tag e2etest --env default,ie11,firefox-on-windows-esr --tag e2etest
+
+  if [[ ${CI_BRANCH} == "production" ]]; then
+  # This is more than the number of test scripts, so parallelising environments is better
+  # than parallelising scripts. Keep to a maximum of 6 browsers so that parallel runs in
+  # other pipelines don't overrun available SauceLabs slots (10).
+  printf "\n --- Check all other browsers before going live (prod branch only) ---\n\n"
+  ./nightwatch.js --env firefox-on-windows,safari-on-mac,edge,chrome-on-mac,firefox-on-mac,firefox-on-mac-esr --tag e2etest
+  fi
+
   fi
 ;;
 "2")
@@ -103,34 +132,5 @@ case "$PIPE_NUM" in
 
   printf "\n --- TEST CHROME ---\n\n"
   ./nightwatch.js --env chrome --tag e2etest
-;;
-"3")
-  # "Test commands" pipeline on codeship
-  trap logSauceCommands EXIT
-
-  printf "\n-- Start server in the background, then sleep to give it time to load --\n"
-  nohup bash -c "gulp serve:dist 2>&1 &"
-  sleep 40 # seconds
-  cat nohup.out
-
-  printf "\n --- Saucelabs Integration Testing ---\n\n"
-  cd bin/saucelabs
-
-  # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
-
-  # Win/Chrome is our most used browser, 2018
-  # Win/FF is our second most used browser, 2018 - we have the ESR release on Library Desktop SOE
-  # IE11 should be tested on each build for earlier detection of problematic js
-
-  printf "\n --- TEST popular browsers ---\n\n"
-  ./nightwatch.js --tag e2etest --env default,ie11,firefox-on-windows-esr --tag e2etest
-
-  if [[ ${CI_BRANCH} == "production" ]]; then
-    # This is more than the number of test scripts, so parallelising environments is better
-    # than parallelising scripts. Keep to a maximum of 6 browsers so that parallel runs in 
-    # other pipelines don't overrun available SauceLabs slots (10).
-    printf "\n --- Check all other browsers before going live (prod branch only) ---\n\n"
-    ./nightwatch.js --env firefox-on-windows,safari-on-mac,edge,chrome-on-mac,firefox-on-mac,firefox-on-mac-esr --tag e2etest
-  fi
 ;;
 esac
