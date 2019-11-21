@@ -29,7 +29,7 @@ case "$PIPE_NUM" in
     printf "If you get a fail, try it manually in that browser\n\n"
 
     printf "\n --- WCT CANARY UNIT TESTING ---\n\n"
-    cp wct.conf.canary.js wct.conf.js
+    cp wct.conf.js.canary wct.conf.js
     gulp test:remote
     rm wct.conf.js
     printf "\n --- WCT unit testing complete---\n\n"

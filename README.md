@@ -119,7 +119,7 @@ Run `bin/test-setup.sh` to update settings for remote nightwatch.js testing and 
 
 Tests are run with gulp:
 
-- Setup the `wct.conf.js` file by choosing which file you want to use and copying, eg: `cp wct.conf.local.js wct.conf.js`
+- Setup the `wct.conf.js` file by choosing which file you want to use and copying, eg: `cp wct.conf.js.local wct.conf.js`
 - `gulp test` to launch the tests (`gulp test:remote` for testing on SauceLabs)
 
 When you run this command, you may get the error:
