@@ -62,7 +62,7 @@ case "$PIPE_NUM" in
 
   # quick single browser testing during dev
   printf "\n --- LOCAL UNIT TESTING ---\n\n"
-  cp wct.conf.js.local wct.conf.js
+  cp wct.conf.local.js wct.conf.js
   gulp test
   rm wct.conf.js
 
@@ -71,13 +71,13 @@ case "$PIPE_NUM" in
   if [[ ${CI_BRANCH} == "production" ]]; then
     printf "\n --- REMOTE UNIT TESTING (prod branch only) ---\n\n"
     # split testing into 2 runs so it doesnt occupy all saucelab resources in one hit
-    cp wct.conf.js.remoteA wct.conf.js
+    cp wct.conf.remoteA.js wct.conf.js
     gulp test:remote
     rm wct.conf.js
 
     sleep 10 # seconds
 
-    cp wct.conf.js.remoteB wct.conf.js
+    cp wct.conf.remoteB.js wct.conf.js
     gulp test:remote
     rm wct.conf.js
 

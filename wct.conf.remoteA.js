@@ -8,10 +8,11 @@ var ret = {
     plugins: {
         sauce: {
             browsers: [
-                'Windows 10/chrome@beta',
-                'Windows 10/firefox@dev',
-                'Windows 10/firefox@beta',
-                'OS X 10.13/chrome@beta'
+                'Windows 10/microsoftedge',
+                'Windows 10/internet explorer',
+                'Windows 10/chrome',
+                'Windows 10/firefox',
+                'Windows 10/firefox@68' // ESR - check # at https://www.mozilla.org/en-US/firefox/organizations/
             ]
         }
     }
