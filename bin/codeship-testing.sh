@@ -62,7 +62,7 @@ case "$PIPE_NUM" in
 
   # quick single browser testing during dev
   printf "\n --- LOCAL UNIT TESTING ---\n\n"
-  cp wct.conf.local.js wct.conf.js
+  cp wct.conf.js.local wct.conf.js
   gulp test
   rm wct.conf.js
 

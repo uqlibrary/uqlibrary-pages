@@ -114,7 +114,7 @@ Run `bin/test-setup.sh` to update settings for remote nightwatch.js testing and 
 
 - On codeship, tests are run by `bin/codeship-testing.sh`. You may find reading through this file helpful to follow what happens.
 - Tests are run with [Web Component Tester](https://github.com/Polymer/web-component-tester)
-- Configuration is defined in `wct.conf.js` (various files such as wct.conf.local.js are renamed at run time), it contains configuration for local testing (Chrome / Firefox) and for remote testing on SauceLabs (IE, Edge, Safari, etc.)
+- Configuration is defined in `wct.conf.js` (various files such as wct.conf.js.local are renamed at run time), it contains configuration for local testing (Chrome / Firefox) and for remote testing on SauceLabs (IE, Edge, Safari, etc.)
 - From `bower_components` all custom `uqlibrary-*` tests suites are collected with in `test-setup.sh` into `app/test/index.html`
 
 Tests are run with gulp:
