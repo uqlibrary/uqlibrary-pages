@@ -11,7 +11,7 @@ var ret = {
                 'Windows 10/chrome@beta',
                 'Windows 10/firefox@dev',
                 'Windows 10/firefox@beta',
-                'OS X 10.13/chrome@beta'
+                'OS X 10.14/chrome@beta'
             ]
         }
     }

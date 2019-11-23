@@ -58,7 +58,7 @@
     "chrome-on-mac": {
       "desiredCapabilities": {
         "browserName": "chrome",
-        "platform": "macOS 10.13",
+        "platform": "macOS 10.14",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
         "screenResolution": "1280x960"
@@ -67,7 +67,7 @@
     "firefox-on-mac": {
       "desiredCapabilities": {
         "browserName": "firefox",
-        "platform": "macOS 10.13",
+        "platform": "macOS 10.14",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
         "screenResolution": "1280x960"
@@ -76,7 +76,7 @@
     "safari-on-mac": {
       "desiredCapabilities": {
         "browserName": "safari",
-        "platform": "macOS 10.13",
+        "platform": "macOS 10.14",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
         "screenResolution": "1280x960"
@@ -85,7 +85,7 @@
     "chrome-on-mac-beta": {
       "desiredCapabilities": {
         "browserName": "chrome",
-        "platform": "macOS 10.13",
+        "platform": "macOS 10.14",
         "version": "beta",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
@@ -95,7 +95,7 @@
     "chrome-on-mac-dev": {
       "desiredCapabilities": {
         "browserName": "chrome",
-        "platform": "macOS 10.13",
+        "platform": "macOS 10.14",
         "version": "dev",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
@@ -146,7 +146,7 @@
       "desiredCapabilities": {
         "browserName": "firefox",
         "platform": "Windows 10",
-        "version": "60.0",
+        "version": "68.0",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
         "screenResolution": "1280x960"
@@ -155,8 +155,8 @@
     "firefox-on-mac-esr": {
       "desiredCapabilities": {
         "browserName": "firefox",
-        "platform": "macOS 10.13",
-        "version": "60.0",
+        "platform": "macOS 10.14",
+        "version": "68.0",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
         "screenResolution": "1280x960"
