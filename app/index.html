@@ -88,6 +88,25 @@
       text-align: right;
     }
 
+    .covid-alert {
+      background-color: var(--notice-background-color);
+      border: 1px solid var(--notice-border-color);
+      color: var(--notice-text-color);
+      padding: 20px 10px;
+    }
+    .covid-alert div:nth-child(2) {
+      padding-top: 3px
+    }
+    .covid-alert a {
+      color: var(--notice-text-color);
+      background-color: inherit;
+      text-decoration: underline;
+    }
+    .covid-icon {
+      float: left;
+      width: 36px;
+    }
+
     @media all and (max-width: 400px) {
       .card-actions paper-button {
         @apply --layout-vertical;
@@ -115,6 +134,24 @@
     <!-- End of Preloader/Unsupported browser message -->
 
     <template is="dom-bind" id="uqlFrontPage" unresolved>
+      <div id="covid">
+        <paper-card elevation="1">
+          <div class="covid-alert">
+            <div class="covid-icon">
+              <iron-icon icon="icons:info" aria-label="information icon"></iron-icon>
+            </div>
+            <div>
+              <strong>Library services have now moved online.</strong>
+              Contact us anytime - we're here to help.
+              <a
+                 aria-label="More details about Library services have now moved online."
+                 href="https://web.library.uq.edu.au/library-services/services-students/covid-19"
+              >Library updates about COVID-19</a>
+            </div>
+          </div>
+        </paper-card>
+      </div>
+
     <div id="layout">
       <div id="main">
         <div id="search">
