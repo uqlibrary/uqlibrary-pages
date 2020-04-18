@@ -68,21 +68,21 @@ case "$PIPE_NUM" in
 
   trap logSauceCommands EXIT
 
-  if [[ ${CI_BRANCH} == "production" ]]; then
-    printf "\n --- REMOTE UNIT TESTING (prod branch only) ---\n\n"
+  if [[ ${CI_BRANCH} == "master" ]]; then
+    printf "\n --- REMOTE UNIT TESTING (master branch only) ---\n\n"
     # split testing into 2 runs so it doesnt occupy all saucelab resources in one hit
+    printf "\ncp wct.conf.js.remoteA wct.conf.js\n"
     cp wct.conf.js.remoteA wct.conf.js
     gulp test:remote
     rm wct.conf.js
 
     sleep 10 # seconds
 
+    printf "\ncp wct.conf.js.remoteB wct.conf.js\n"
     cp wct.conf.js.remoteB wct.conf.js
     gulp test:remote
     rm wct.conf.js
-
-    # "Test commands" pipeline on codeship
-  trap logSauceCommands EXIT
+  fi
 
   printf "\n-- Start server in the background, then sleep to give it time to load --\n"
   nohup bash -c "gulp serve:dist 2>&1 &"
@@ -99,16 +99,17 @@ case "$PIPE_NUM" in
   # IE11 should be tested on each build for earlier detection of problematic js
 
   printf "\n --- TEST popular browsers ---\n\n"
-  ./nightwatch.js --tag e2etest --env default,ie11,firefox-on-windows-esr --tag e2etest
+  ./nightwatch.js --tag e2etest --env default --tag e2etest
 
-  if [[ ${CI_BRANCH} == "production" ]]; then
-  # This is more than the number of test scripts, so parallelising environments is better
-  # than parallelising scripts. Keep to a maximum of 6 browsers so that parallel runs in
-  # other pipelines don't overrun available SauceLabs slots (10).
-  printf "\n --- Check all other browsers before going live (prod branch only) ---\n\n"
-  ./nightwatch.js --env firefox-on-windows,safari-on-mac,edge,chrome-on-mac,firefox-on-mac,firefox-on-mac-esr --tag e2etest
-  fi
+  if [[ ${CI_BRANCH} == "master" ]]; then
+    ./nightwatch.js --tag e2etest --env ie11,firefox-on-windows-esr --tag e2etest
 
+    printf "\n --- REMOTE UNIT TESTING (master branch only) ---\n\n"
+    # This is more than the number of test scripts, so parallelising environments is better
+    # than parallelising scripts. Keep to a maximum of 6 browsers so that parallel runs in
+    # other pipelines don't overrun available SauceLabs slots (10).
+    printf "\n --- Check all other browsers before going live (master branch only) ---\n\n"
+    ./nightwatch.js --env firefox-on-windows,safari-on-mac,edge,chrome-on-mac,firefox-on-mac,firefox-on-mac-esr --tag e2etest
   fi
 ;;
 "2")

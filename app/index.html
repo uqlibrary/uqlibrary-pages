@@ -88,6 +88,27 @@
       text-align: right;
     }
 
+    #covid {
+      margin-top: 8px;
+    }
+    .covid-alert {
+      background-color: #2377CB;
+      color: #fff;
+      padding: 20px 10px;
+    }
+    .covid-alert div:nth-child(2) {
+      padding-top: 3px
+    }
+    .covid-alert a {
+      color: #fff;
+      background-color: inherit;
+      text-decoration: underline;
+    }
+    .covid-icon {
+      float: left;
+      width: 36px;
+    }
+
     @media all and (max-width: 400px) {
       .card-actions paper-button {
         @apply --layout-vertical;
@@ -115,6 +136,24 @@
     <!-- End of Preloader/Unsupported browser message -->
 
     <template is="dom-bind" id="uqlFrontPage" unresolved>
+      <div id="covid">
+        <paper-card elevation="1">
+          <div class="covid-alert">
+            <div class="covid-icon">
+              <iron-icon icon="icons:info" aria-label="information icon"></iron-icon>
+            </div>
+            <div>
+              <strong>The Library is open online.</strong>
+              Access collections, services, and support to help you continue your work and study.
+              <a
+                 aria-label="More details about accessing Library services online."
+                 href="https://web.library.uq.edu.au/library-services/covid-19"
+              >Library COVID-19 updates</a>
+            </div>
+          </div>
+        </paper-card>
+      </div>
+
     <div id="layout">
       <div id="main">
         <div id="search">
