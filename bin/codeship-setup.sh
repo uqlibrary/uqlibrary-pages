@@ -20,4 +20,9 @@ printf "\n\n--- Install dependencies ---\n"
 npm install -g gulp-cli bower nightwatch npm@6
 npm install
 
+# node_modules from reusable repo required
+cd app/bower_components/uqlibrary-reusable-components/
+npm install
+cd ../../../
+
 npm rebuild node-sass
