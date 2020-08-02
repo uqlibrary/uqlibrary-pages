@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-var Logger = require('../../node_modules/nightwatch/lib/util/logger.js');
+var Logger = require('../../node_modules/nightwatch/lib/utils/logger.js');
 var Nightwatch = require('../../node_modules/nightwatch/lib/index.js');
 
 try {

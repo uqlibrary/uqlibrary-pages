@@ -2,7 +2,7 @@
 
 var sauceConnectLauncher = require('../../node_modules/sauce-connect-launcher/lib/sauce-connect-launcher');
 
-var Logger = require('../../node_modules/nightwatch/lib/util/logger.js');
+var Logger = require('../../node_modules/nightwatch/lib/utils/logger.js');
 var Nightwatch = require('../../node_modules/nightwatch/lib/index.js');
 
 sauceConnectLauncher(
@@ -14,7 +14,7 @@ sauceConnectLauncher(
     verboseDebugging: false,
     logfile: "/tmp/sc.log"
   },
-  
+
   function (err, sauceConnectProcess) {
 
     if (err) {
@@ -33,7 +33,7 @@ sauceConnectLauncher(
           sauceConnectProcess.close(function() {
             console.log("Closed Sauce Connect process");
           })
-        }        
+        }
       };
 
       Nightwatch.cli(function(argv) {
