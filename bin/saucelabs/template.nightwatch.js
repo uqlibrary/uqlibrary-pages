@@ -2,7 +2,7 @@
 
 var sauceConnectLauncher = require('../../node_modules/sauce-connect-launcher/lib/sauce-connect-launcher');
 
-var Logger = require('../../node_modules/nightwatch/lib/utils/logger.js');
+var Logger = require('../../node_modules/nightwatch/lib/util/logger.js');
 var Nightwatch = require('../../node_modules/nightwatch/lib/index.js');
 
 sauceConnectLauncher(
