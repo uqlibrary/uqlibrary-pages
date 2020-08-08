@@ -14,7 +14,7 @@ sauceConnectLauncher(
     verboseDebugging: false,
     logfile: "/tmp/sc.log"
   },
-  
+
   function (err, sauceConnectProcess) {
 
     if (err) {
@@ -33,7 +33,7 @@ sauceConnectLauncher(
           sauceConnectProcess.close(function() {
             console.log("Closed Sauce Connect process");
           })
-        }        
+        }
       };
 
       Nightwatch.cli(function(argv) {
