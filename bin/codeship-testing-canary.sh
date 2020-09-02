@@ -9,16 +9,8 @@
 
 trap logSauceCommands EXIT
 
-# "Unit testing"
-
 printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
 printf "If you get a fail, try it manually in that browser\n\n"
-
-printf "\n --- WCT CANARY UNIT TESTING ---\n\n"
-cp wct.conf.js.canary wct.conf.js
-gulp test:remote
-rm wct.conf.js
-printf "\n --- WCT unit testing complete---\n\n"
 
 
 # "Nightwatch integreation testing" 
@@ -42,3 +34,14 @@ printf "\n --- TEST FIREFOX Beta and Dev on WINDOWS (canary test) ---\n\n"
 # error received: 'This version of ChromeDriver only supports Chrome version 78' (for whatever the latest version is)
 # in theory we could work around this in nightwatch by setting chromedriverVersion to the latest version in the nightwatch.json
 # in practice - it doesnt work, and wouldnt help us with the wct unit tests
+
+cd ../../
+
+# "Unit testing"
+
+printf "\n --- WCT CANARY UNIT TESTING ---\n\n"
+cp wct.conf.js.canary wct.conf.js
+gulp test:remote
+rm wct.conf.js
+printf "\n --- WCT unit testing complete---\n\n"
+
