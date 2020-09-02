@@ -48,116 +48,66 @@ fi
 # "canarytest" is used by a job that runs weekly to test the polymer repos on the upcoming browser versions
 # The intent is to get early notice of polymer 1 failing in modern browsers
 if [[ ${CI_BRANCH} == "canarytest" ]]; then
-
-    # "Nightwatch" pipeline on codeship
-
-    trap logSauceCommands EXIT
-
-    printf "\n-- Start server in the background, then sleep to give it time to load --\n"
-    nohup bash -c "gulp serve:dist 2>&1 &"
-    sleep 40 # seconds
-    cat nohup.out
-
-    printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
-    printf "If you get a fail, try it manually in that browser\n\n"
-
-    printf "\n --- Saucelabs Integration Testing ---\n\n"
-    cd bin/saucelabs
-
-    printf "\n --- TEST FIREFOX Beta and Dev on WINDOWS (canary test) ---\n\n"
-    # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
-    ./nightwatch.js --env firefox-on-windows-beta,firefox-on-windows-dev --tag e2etest
-
-    cd ../../
-
-  # "Unit testing" pipeline on codeship
-
-    trap logSauceCommands EXIT
-
-    printf "Running standard tests against canary versions of the browsers for early diagnosis of polymer failure\n"
-    printf "If you get a fail, try it manually in that browser\n\n"
-
-    printf "\n --- WCT CANARY UNIT TESTING ---\n\n"
-    cp wct.conf.js.canary wct.conf.js
-    gulp test:remote
-    rm wct.conf.js
-    printf "\n --- WCT unit testing complete---\n\n"
-
-    printf "\n-- Start server in the background, then sleep to give it time to load --\n"
-    nohup bash -c "gulp serve:dist 2>&1 &"
-    sleep 40 # seconds
-    cat nohup.out
-
-    printf "\n --- Saucelabs Integration Testing ---\n\n"
-    cd bin/saucelabs
-
-    # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
-    printf "\n --- TEST CHROME Beta (canary test) ---\n\n"
-    ./nightwatch.js --env chrome-on-windows-beta,chrome-on-mac-beta --tag e2etest
-
-    # note: we do not test chrome dev because chromium doesnt allow it.
-    # error received: 'This version of ChromeDriver only supports Chrome version 78' (for whatever the latest version is)
-    # in theory we could work around this in nightwatch by setting chromedriverVersion to the latest version in the nightwatch.json
-    # in practice - it doesnt work, and wouldnt help us with the wct unit tests
-
-else
-
-  # "Nightwatch" pipeline on codeship
-
-  trap logSauceCommands EXIT
-
-  printf "\n-- Start server in the background, then sleep to give it time to load --\n"
-  nohup bash -c "gulp serve:dist 2>&1 &"
-  sleep 40 # seconds
-  cat nohup.out
-
-  printf "\n --- Saucelabs Integration Testing ---\n\n"
-  cd bin/saucelabs
-
-  # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
-  printf "\n --- TEST popular browsers ---\n\n"
-  ./nightwatch.js --tag e2etest --env default --tag e2etest
-
-  if [[ ${CI_BRANCH} == "master" ]]; then
-    # Win/Chrome is our most used browser, 2018
-    # Win/FF is our second most used browser, 2018 - we have the ESR release on Library Desktop SOE
-
-    printf "\n --- REMOTE UNIT TESTING (master branch only) ---\n\n"
-    # This is more than the number of test scripts, so parallelising environments is better
-    # than parallelising scripts. Keep to a maximum of 6 browsers so that parallel runs in
-    # other pipelines don't overrun available SauceLabs slots (10).
-    ./nightwatch.js --tag e2etest --env firefox-on-windows-esr,safari-on-mac,edge,chrome-on-mac --tag e2etest
-
-    ./nightwatch.js --env firefox-on-windows,firefox-on-mac,firefox-on-mac-esr --tag e2etest
-  fi
-
-  cd ../../
-
-  # "Unit testing" pipeline on codeship
-
-  # quick single browser testing during dev
-  printf "\n --- LOCAL UNIT TESTING ---\n\n"
-  cp wct.conf.js.local wct.conf.js
-  gulp test
-  rm wct.conf.js
-
-  trap logSauceCommands EXIT
-
-  if [[ ${CI_BRANCH} == "master" ]]; then
-    printf "\n --- REMOTE UNIT TESTING (master branch only) ---\n\n"
-    # split testing into 2 runs so it doesnt occupy all saucelab resources in one hit
-    printf "\ncp wct.conf.js.remoteA wct.conf.js\n"
-    cp wct.conf.js.remoteA wct.conf.js
-    gulp test:remote
-    rm wct.conf.js
-
-    sleep 10 # seconds
-
-    printf "\ncp wct.conf.js.remoteB wct.conf.js\n"
-    cp wct.conf.js.remoteB wct.conf.js
-    gulp test:remote
-    rm wct.conf.js
-  fi
-
+  source ./bin/codeship-testing-canary.sh
+  exit 0
 fi
 
+
+# Clear out saucelabs log
+trap logSauceCommands EXIT
+
+
+# "Nightwatch" pipeline on codeship
+
+printf "\n-- Start server in the background, then sleep to give it time to load --\n"
+nohup bash -c "gulp serve:dist 2>&1 &"
+sleep 40 # seconds
+cat nohup.out
+
+printf "\n --- Saucelabs Integration Testing ---\n\n"
+cd bin/saucelabs
+
+# the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
+printf "\n --- TEST popular browsers ---\n\n"
+./nightwatch.js --tag e2etest --env default --tag e2etest
+
+if [[ ${CI_BRANCH} == "master" ]]; then
+  # Win/Chrome is our most used browser, 2018
+  # Win/FF is our second most used browser, 2018 - we have the ESR release on Library Desktop SOE
+
+  printf "\n --- REMOTE UNIT TESTING (master branch only) ---\n\n"
+  # This is more than the number of test scripts, so parallelising environments is better
+  # than parallelising scripts. Keep to a maximum of 6 browsers so that parallel runs in
+  # other pipelines don't overrun available SauceLabs slots (10).
+  ./nightwatch.js --tag e2etest --env firefox-on-windows-esr,safari-on-mac,edge,chrome-on-mac
+
+  ./nightwatch.js --tag e2etest --env firefox-on-windows,firefox-on-mac,firefox-on-mac-esr 
+fi
+
+cd ../../
+
+
+# "Unit testing"
+
+# quick single browser testing during dev
+printf "\n --- LOCAL UNIT TESTING ---\n\n"
+cp wct.conf.js.local wct.conf.js
+gulp test
+rm wct.conf.js
+
+if [[ ${CI_BRANCH} == "master" ]]; then
+  sleep 10 # seconds
+  printf "\n --- REMOTE UNIT TESTING (master branch only) ---\n\n"
+  # split testing into 2 runs so it doesnt occupy all saucelab resources in one hit
+  printf "\ncp wct.conf.js.remoteA wct.conf.js\n"
+  cp wct.conf.js.remoteA wct.conf.js
+  gulp test:remote
+  rm wct.conf.js
+
+  sleep 10 # seconds
+
+  printf "\ncp wct.conf.js.remoteB wct.conf.js\n"
+  cp wct.conf.js.remoteB wct.conf.js
+  gulp test:remote
+  rm wct.conf.js
+fi
