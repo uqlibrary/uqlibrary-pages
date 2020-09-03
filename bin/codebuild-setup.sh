@@ -22,6 +22,7 @@ printf "(Before npm i -g) npm v"; npm -v
 printf "\n\n--- Install dependencies ---\n"
 npm install -g gulp-cli bower nightwatch npm@6
 npm install
+bower --allow-root update
 
 # node_modules from reusable repo required
 cd app/bower_components/uqlibrary-reusable-components/
