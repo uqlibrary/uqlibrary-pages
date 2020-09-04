@@ -26,9 +26,17 @@ printf "If you get a fail, try it manually in that browser\n\n"
 printf "\n --- Saucelabs Integration Testing ---\n\n"
 cd bin/saucelabs
 
-printf "\n --- TEST FIREFOX Beta and Dev on WINDOWS (canary test) ---\n\n"
+printf "\n --- TEST CHROME Beta on WINDOWS (canary test) ---\n\n"
 # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
-./nightwatch.js --env firefox-on-windows-beta,firefox-on-windows-dev,chrome-on-windows-beta,chrome-on-mac-beta --tag e2etest
+./nightwatch.js --env chrome-on-windows-beta --tag e2etest
+
+printf "\n --- TEST CHROME Beta on MAC (canary test) ---\n\n"
+# the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
+./nightwatch.js --env chrome-on-mac-beta --tag e2etest
+
+#printf "\n --- TEST FIREFOX Beta and Dev on WINDOWS (canary test) ---\n\n"
+## the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
+#./nightwatch.js --env firefox-on-windows-beta,firefox-on-windows-dev,chrome-on-windows-beta,chrome-on-mac-beta --tag e2etest
 
 # note: we do not test chrome dev because chromium doesnt allow it.
 # error received: 'This version of ChromeDriver only supports Chrome version 78' (for whatever the latest version is)

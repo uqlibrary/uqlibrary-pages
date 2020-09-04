@@ -75,13 +75,15 @@ if [[ ${CI_BRANCH} == "master" ]]; then
   # Win/Chrome is our most used browser, 2018
   # Win/FF is our second most used browser, 2018 - we have the ESR release on Library Desktop SOE
 
-  printf "\n --- REMOTE UNIT TESTING (master branch only) ---\n\n"
+  printf "\n --- EXTENSIVE BROWSER TESTING (master branch only) ---\n\n"
   # This is more than the number of test scripts, so parallelising environments is better
   # than parallelising scripts. Keep to a maximum of 6 browsers so that parallel runs in
   # other pipelines don't overrun available SauceLabs slots (10).
-  ./nightwatch.js --tag e2etest --env firefox-on-windows-esr,safari-on-mac,edge,chrome-on-mac
+  ./nightwatch.js --tag e2etest --env firefox-on-windows-esr,edge
+  ./nightwatch.js --tag e2etest --env safari-on-mac,chrome-on-mac
 
-  ./nightwatch.js --tag e2etest --env firefox-on-windows,firefox-on-mac,firefox-on-mac-esr 
+  ./nightwatch.js --tag e2etest --env firefox-on-windows
+  ./nightwatch.js --tag e2etest --env firefox-on-mac,firefox-on-mac-esr 
 fi
 
 cd ../../
