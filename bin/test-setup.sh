@@ -3,6 +3,10 @@
 # start debugging/tracing commands, -e - exit if command returns error (non-zero status)
 set -e
 
+cd app/bower_components/uqlibrary-reusable-components
+npm i
+cd ../../../
+
 # Update paths in bower_components
 gulp clean_bower
 gulp npm_copy
