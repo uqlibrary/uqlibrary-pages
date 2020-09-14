@@ -45,6 +45,10 @@ if [[ -z $CI_BRANCH ]]; then
   CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 fi
 
+if [[ -z $PIPE_NUM ]]; then
+  PIPE_NUM=3
+fi
+
 # "canarytest" is used by a job that runs weekly to test the polymer repos on the upcoming browser versions
 # The intent is to get early notice of polymer 1 failing in modern browsers
 if [[ ${CI_BRANCH} == "canarytest" ]]; then
@@ -52,64 +56,62 @@ if [[ ${CI_BRANCH} == "canarytest" ]]; then
   exit 0
 fi
 
+case "$PIPE_NUM" in
+"1")
+  # "Unit testing" pipeline on codeship
 
-# Clear out saucelabs log
-trap logSauceCommands EXIT
-
-
-# "Nightwatch" pipeline on codeship
-
-printf "\n-- Start server in the background, then sleep to give it time to load --\n"
-nohup bash -c "gulp serve:dist 2>&1 &"
-sleep 40 # seconds
-cat nohup.out
-
-printf "\n --- Saucelabs Integration Testing ---\n\n"
-cd bin/saucelabs
-
-# the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
-printf "\n --- TEST popular browsers ---\n\n"
-./nightwatch.js --tag e2etest --env default --tag e2etest
-
-if [[ ${CI_BRANCH} == "master" ]]; then
-  # Win/Chrome is our most used browser, 2018
-  # Win/FF is our second most used browser, 2018 - we have the ESR release on Library Desktop SOE
-
-  printf "\n --- EXTENSIVE BROWSER TESTING (master branch only) ---\n\n"
-  # This is more than the number of test scripts, so parallelising environments is better
-  # than parallelising scripts. Keep to a maximum of 6 browsers so that parallel runs in
-  # other pipelines don't overrun available SauceLabs slots (10).
-  ./nightwatch.js --tag e2etest --env firefox-on-windows-esr,edge
-  ./nightwatch.js --tag e2etest --env safari-on-mac,chrome-on-mac
-
-  ./nightwatch.js --tag e2etest --env firefox-on-windows
-  ./nightwatch.js --tag e2etest --env firefox-on-mac,firefox-on-mac-esr 
-fi
-
-cd ../../
-
-
-# "Unit testing"
-
-# quick single browser testing during dev
-printf "\n --- LOCAL UNIT TESTING ---\n\n"
-cp wct.conf.js.local wct.conf.js
-gulp test
-rm wct.conf.js
-
-if [[ ${CI_BRANCH} == "master" ]]; then
-  sleep 10 # seconds
-  printf "\n --- REMOTE UNIT TESTING (master branch only) ---\n\n"
-  # split testing into 2 runs so it doesnt occupy all saucelab resources in one hit
-  printf "\ncp wct.conf.js.remoteA wct.conf.js\n"
-  cp wct.conf.js.remoteA wct.conf.js
-  gulp test:remote
+  # quick single browser testing during dev
+  printf "\n --- LOCAL UNIT TESTING ---\n\n"
+  cp wct.conf.js.local wct.conf.js
+  gulp test
   rm wct.conf.js
 
-  sleep 10 # seconds
+  trap logSauceCommands EXIT
 
-  printf "\ncp wct.conf.js.remoteB wct.conf.js\n"
-  cp wct.conf.js.remoteB wct.conf.js
-  gulp test:remote
-  rm wct.conf.js
-fi
+  if [[ ${CI_BRANCH} == "master" ]]; then
+    printf "\n --- REMOTE UNIT TESTING (master branch only) ---\n\n"
+    # split testing into 2 runs so it doesnt occupy all saucelab resources in one hit
+    printf "\ncp wct.conf.js.remoteA wct.conf.js\n"
+    cp wct.conf.js.remoteA wct.conf.js
+    gulp test:remote
+    rm wct.conf.js
+
+    sleep 10 # seconds
+
+    printf "\ncp wct.conf.js.remoteB wct.conf.js\n"
+    cp wct.conf.js.remoteB wct.conf.js
+    gulp test:remote
+    rm wct.conf.js
+  fi
+;;
+"2")
+  # "Nightwatch" pipeline on codeship
+
+  trap logSauceCommands EXIT
+
+  printf "\n-- Start server in the background, then sleep to give it time to load --\n"
+  nohup bash -c "gulp serve:dist 2>&1 &"
+  sleep 40 # seconds
+  cat nohup.out
+
+  printf "\n --- Saucelabs Integration Testing ---\n\n"
+  cd bin/saucelabs
+
+  # the env names on the call to nightwatch.js must match the entries in saucelabs/nightwatch.json
+  printf "\n --- TEST popular browsers ---\n\n"
+  ./nightwatch.js --tag e2etest --env default --tag e2etest
+
+  if [[ ${CI_BRANCH} == "master" ]]; then
+    # Win/Chrome is our most used browser, 2018
+    # Win/FF is our second most used browser, 2018 - we have the ESR release on Library Desktop SOE
+
+    printf "\n --- REMOTE UNIT TESTING (master branch only) ---\n\n"
+    # This is more than the number of test scripts, so parallelising environments is better
+    # than parallelising scripts. Keep to a maximum of 6 browsers so that parallel runs in
+    # other pipelines don't overrun available SauceLabs slots (10).
+    ./nightwatch.js --tag e2etest --env firefox-on-windows-esr,safari-on-mac,edge,chrome-on-mac --tag e2etest
+
+    ./nightwatch.js --env firefox-on-windows,firefox-on-mac,firefox-on-mac-esr --tag e2etest
+  fi
+;;
+esac
